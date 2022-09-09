@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Reflection;
+using System.Windows.Forms;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -13,6 +15,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Windows.Application;
+using static System.Windows.Forms.DialogResult;
+using static System.Windows.Forms.MessageBox;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace PhotoTufin
 {
@@ -39,6 +45,25 @@ namespace PhotoTufin
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 return version != null ? $"{version}" : "1.0";
             }
+        }
+        
+        private void mnuOpen_Click(object sender, RoutedEventArgs e)
+        {
+            
+            using var fbd = new FolderBrowserDialog();
+            
+            var result = fbd.ShowDialog();
+            if (result != OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
+ 
+            lblSelectedDirectory.Text = $"Verzeichnis: {fbd.SelectedPath}";
+            var files = Directory.GetFiles(fbd.SelectedPath);
+
+            MessageBox.Show("Files found: " + files.Length, "Message");
+        }
+    
+        private void mnuExit_Click(object sender, RoutedEventArgs e)
+        {   
+            Current.Shutdown();
         }
         
         /// <summary>

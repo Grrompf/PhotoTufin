@@ -8,15 +8,20 @@
         Title="Photo Tuplet Finder" Height="450" Width="800">
     <DockPanel Margin="10">
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_Dateien">
-                <MenuItem  Header="_Öffnen" />
+            <MenuItem Header="_Ordner">
+                <MenuItem  Header="_Öffnen" Click="mnuOpen_Click"/>
                 <Separator />
-                <MenuItem Header="_Beenden" />
+                <MenuItem Header="_Beenden" Click="mnuExit_Click"/>
             </MenuItem>
             <MenuItem Name="SignTool" Header="_Signtool" IsEnabled="False">
                 <MenuItem  Header="_Verifizieren" />
                 <Separator />
                 <MenuItem Header="_Signieren" />
+            </MenuItem>
+            <MenuItem Header="_Hilfe" IsEnabled="True">
+                <MenuItem  Header="_Hilfe" />
+                <Separator />
+                <MenuItem Header="_Info" />
             </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Top">
