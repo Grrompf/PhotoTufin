@@ -34,19 +34,6 @@ namespace PhotoTufin
             Title = AppName;
             AppVersion.Text = $"v{VersionShort}";
         }
-
-        /// <summary>
-        /// Gibt die Versionsnummer der Assembly zurück.
-        /// </summary>
-        /// <returns>string</returns>
-        private static string Version
-        {
-            get
-            {
-                var version = Assembly.GetExecutingAssembly().GetName().Version;
-                return version != null ? $"{version}" : "1.0";
-            }
-        }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
         {
@@ -69,8 +56,21 @@ namespace PhotoTufin
 
         private void mnuInfo_Click(object sender, RoutedEventArgs e)
         {
-            string message = $"{Title} {Version}\nentwickelt für McGerhard Photography\nhttp://mcgerhard.de/\n";
+            var message = $"{Title} {Version}\nentwickelt für McGerhard Photography\nhttp://mcgerhard.de/\n";
             MessageBox.Show(message, $"Über {Title}", MessageBoxButtons.OK, MessageBoxIcon.Question);
+        }
+        
+        /// <summary>
+        /// Gibt die Versionsnummer der Assembly zurück.
+        /// </summary>
+        /// <returns>string</returns>
+        private static string Version
+        {
+            get
+            {
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                return version != null ? $"{version}" : "1.0";
+            }
         }
         
         /// <summary>

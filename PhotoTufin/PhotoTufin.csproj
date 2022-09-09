@@ -12,7 +12,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.123" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+      <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
     </ItemGroup>
 
 </Project>
