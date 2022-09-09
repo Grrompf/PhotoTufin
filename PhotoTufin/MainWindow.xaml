@@ -7,22 +7,30 @@
         mc:Ignorable="d"
         Title="Photo Tuplet Finder" Height="450" Width="800">
     <DockPanel Margin="10">
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_Ordner">
+        <Menu DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <MenuItem Header="_Ordner" Grid.Column="0">
                 <MenuItem  Header="_Öffnen" Click="mnuOpen_Click"/>
                 <Separator />
                 <MenuItem Header="_Beenden" Click="mnuExit_Click"/>
             </MenuItem>
-            <MenuItem Name="SignTool" Header="_Signtool" IsEnabled="False">
+            <MenuItem Name="SignTool" Header="_Signtool" Grid.Column="1" IsEnabled="False">
                 <MenuItem  Header="_Verifizieren" />
                 <Separator />
                 <MenuItem Header="_Signieren" />
             </MenuItem>
-            <MenuItem Header="_Hilfe" IsEnabled="True">
-                <MenuItem  Header="_Hilfe" />
-                <Separator />
-                <MenuItem Header="_Info" />
-            </MenuItem>
+            <MenuItem Header="_Info"  Grid.Column="2" IsEnabled="True" HorizontalAlignment="Right" Click="mnuInfo_Click" />
+            
         </Menu>
         <Grid DockPanel.Dock="Top">
             <ListView Margin="10" Name="lbFiles" VerticalAlignment="Stretch">

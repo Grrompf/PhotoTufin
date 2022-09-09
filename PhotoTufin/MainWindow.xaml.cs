@@ -10,6 +10,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -64,6 +65,12 @@ namespace PhotoTufin
         private void mnuExit_Click(object sender, RoutedEventArgs e)
         {   
             Current.Shutdown();
+        }
+
+        private void mnuInfo_Click(object sender, RoutedEventArgs e)
+        {
+            string message = $"{Title} {Version}\nentwickelt für McGerhard Photography\nhttp://mcgerhard.de/\n";
+            MessageBox.Show(message, $"Über {Title}", MessageBoxButtons.OK, MessageBoxIcon.Question);
         }
         
         /// <summary>
