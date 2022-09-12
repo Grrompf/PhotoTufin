@@ -17,4 +17,11 @@
       <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="ElephantPorcelaine.ico" />
+      <Resource Include="ElephantPorcelaine.ico" />
+      <None Remove="Logo_McG1700-1-1589x1600.png" />
+      <Resource Include="Logo_McG1700-1-1589x1600.png" />
+    </ItemGroup>
+
 </Project>

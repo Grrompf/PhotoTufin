@@ -7,18 +7,8 @@ using System.Windows;
 using System.Reflection;
 using System.Windows.Forms;
 using System.IO;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms.VisualStyles;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
-using static System.Windows.Forms.MessageBox;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace PhotoTufin
@@ -56,15 +46,15 @@ namespace PhotoTufin
 
         private void mnuInfo_Click(object sender, RoutedEventArgs e)
         {
-            var message = $"{Title} {Version}\nentwickelt für McGerhard Photography\nhttp://mcgerhard.de/\n";
-            MessageBox.Show(message, $"Über {Title}", MessageBoxButtons.OK, MessageBoxIcon.Question);
+            var about = new About();
+            about.ShowDialog();
         }
         
         /// <summary>
         /// Gibt die Versionsnummer der Assembly zurück.
         /// </summary>
         /// <returns>string</returns>
-        private static string Version
+        public static string Version
         {
             get
             {
@@ -90,7 +80,7 @@ namespace PhotoTufin
         /// Gibt die Versionsnummer der Assembly zurück.
         /// </summary>
         /// <returns>string</returns>
-        private static string AppName
+        public static string AppName
         {
             get
             {
