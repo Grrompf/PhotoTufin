@@ -24,7 +24,12 @@
                 <Separator />
                 <MenuItem Header="_Beenden" Click="mnuExit_Click"/>
             </MenuItem>
-            <MenuItem Name="SignTool" Header="_Signtool" Grid.Column="1" IsEnabled="False">
+            <MenuItem Name="SignTool" Header="_Filter" Grid.Column="1" IsEnabled="False">
+                <MenuItem  Header="_Verifizieren" />
+                <Separator />
+                <MenuItem Header="_Signieren" />
+            </MenuItem>
+            <MenuItem Header="_Anzeige" Grid.Column="2" IsEnabled="False">
                 <MenuItem  Header="_Verifizieren" />
                 <Separator />
                 <MenuItem Header="_Signieren" />
@@ -33,7 +38,7 @@
             
         </Menu>
         <Grid DockPanel.Dock="Top">
-            <ListView Margin="10" Name="lbFiles" VerticalAlignment="Stretch">
+            <ListView Margin="10" Name="lbFiles" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -41,9 +46,11 @@
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" Width="300" DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="Verifiziert" Width="60"  DisplayMemberBinding="{Binding IsVerified}" />
-                        <GridViewColumn Header="Signiert" Width="60" DisplayMemberBinding="{Binding IsSigned}" />
+                        <GridViewColumn Header="Datei" Width="400" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Dublette" Width="100" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Größe" Width="60"  DisplayMemberBinding="{Binding IsVerified}" />
+                        <GridViewColumn Header="Datum" Width="60" DisplayMemberBinding="{Binding IsSigned}" />
+                        <GridViewColumn Header="Aktion" Width="60" DisplayMemberBinding="{Binding IsSigned}" />
                     </GridView>
                 </ListView.View>
             </ListView>
