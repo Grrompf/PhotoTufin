@@ -24,10 +24,64 @@
                 <Separator />
                 <MenuItem Header="_Beenden" Click="mnuExit_Click"/>
             </MenuItem>
-            <MenuItem Name="SignTool" Header="_Filter" Grid.Column="1" IsEnabled="False">
-                <MenuItem  Header="_Verifizieren" />
-                <Separator />
-                <MenuItem Header="_Signieren" />
+            <MenuItem Name="Filter" Header="Filter" Grid.Column="1" IsEnabled="True">
+                <MenuItem Header="bmp"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
+                <MenuItem Header="gif"  ToolTip="Graphics Interchange Format" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="jpg, jpeg"  ToolTip="Joint Photographic Expert Group" IsCheckable="True" IsChecked="True" />
+                <MenuItem Header="png"  ToolTip="Portable Network Graphics" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="tif"  ToolTip="Tagged Image File" IsCheckable="True" IsChecked="True"/>
+                <Separator Margin="0,5,0,0">
+                    <Separator.Template>
+                        <ControlTemplate TargetType="Separator">
+                            <StackPanel HorizontalAlignment="Stretch">
+                                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" Foreground="Gray" Text="Photo Raw" />
+                                <Separator/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Separator.Template>
+                </Separator>
+                <MenuItem Header="3fr"  ToolTip="Hasselbad" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="arw"  ToolTip="Sony" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="crw, cr2, cr3"  ToolTip="Canon Raw" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="dcr, dcs"  ToolTip="Kodac" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="dng"  ToolTip="Leica" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="kdc"  ToolTip="Kodac" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="mdc, mew"  ToolTip="Minolta" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="nef"  ToolTip="Nikon Electric Format" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="orf"  ToolTip="Olympus Raw Image File" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="pef"  ToolTip="Pentax Electronic Format" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="raf"  ToolTip="Fujifilm" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="raw"  ToolTip="Rohbildformat" IsCheckable="True" IsChecked="True"/>
+                <Separator Margin="0,5,0,0">
+                    <Separator.Template>
+                        <ControlTemplate TargetType="Separator">
+                            <StackPanel HorizontalAlignment="Stretch">
+                                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" Foreground="Gray" Text="Adobe" />
+                                <Separator/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Separator.Template>
+                </Separator>
+                <MenuItem Header="ai"   ToolTip="Adobe Illustrator Document" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="indd" ToolTip="Indesign Document" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="pdf"  ToolTip="Portable Document Format" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="psd"  ToolTip="Photoshop Document" IsCheckable="True" IsChecked="False"/>
+                <Separator Margin="0,5,0,0">
+                    <Separator.Template>
+                        <ControlTemplate TargetType="Separator">
+                            <StackPanel HorizontalAlignment="Stretch">
+                                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" Foreground="Gray" Text="Andere" />
+                                <Separator/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Separator.Template>
+                </Separator>
+                <MenuItem Header="eps"  ToolTip="Encapsulated PostScript" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="svg"  ToolTip="Scalable Vector Graphics" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="swf"  ToolTip="Shockwave Flash" IsCheckable="True" IsChecked="False"/>
+                
+                        
+                    
             </MenuItem>
             <MenuItem Header="_Anzeige" Grid.Column="2" IsEnabled="False">
                 <MenuItem  Header="_Verifizieren" />

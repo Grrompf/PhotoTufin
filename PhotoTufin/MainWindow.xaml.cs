@@ -16,13 +16,16 @@ namespace PhotoTufin
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
             InitializeComponent();
             Title = AppName;
             AppVersion.Text = $"v{VersionShort}";
+
+            ImageFilter myFilter = new ImageFilter();
+            myFilter.makeFilter(Filter);
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
