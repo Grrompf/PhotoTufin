@@ -8,7 +8,7 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <NeutralLanguage>de</NeutralLanguage>
         <Company>Dr. Holger Maerz</Company>
-        <ApplicationIcon>ElephantPorcelaine.ico</ApplicationIcon>
+        <ApplicationIcon>Ressources\ElephantPorcelaine.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,9 +19,11 @@
 
     <ItemGroup>
       <None Remove="ElephantPorcelaine.ico" />
-      <Resource Include="ElephantPorcelaine.ico" />
       <None Remove="Logo_McG1700-1-1589x1600.png" />
-      <Resource Include="Logo_McG1700-1-1589x1600.png" />
+      <Resource Include="Ressources\ElephantPorcelaine.ico" />
+      <Resource Include="Ressources\Logo_McG1700-1-1589x1600.png" />
+      <None Remove="Ressources\Elephant.svg" />
+      <Resource Include="Ressources\Elephant.svg" />
     </ItemGroup>
 
 </Project>

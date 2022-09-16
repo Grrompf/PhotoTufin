@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PhotoTufin"
         mc:Ignorable="d"
         Title="Photo Tuplet Finder" Height="450" Width="800">
     <DockPanel Margin="10">
@@ -19,10 +18,10 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Header="_Ordner" Grid.Column="0">
-                <MenuItem  Header="_Öffnen" Click="mnuOpen_Click"/>
+            <MenuItem Header="Ordner" Grid.Column="0">
+                <MenuItem  Header="Öffnen" Click="mnuOpen_Click"/>
                 <Separator />
-                <MenuItem Header="_Beenden" Click="mnuExit_Click"/>
+                <MenuItem Header="Beenden" Click="mnuExit_Click"/>
             </MenuItem>
             <MenuItem Name="Filter" Header="Filter" Grid.Column="1" IsEnabled="True">
                 <MenuItem Header="bmp"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>

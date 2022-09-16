@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Reflection;
+﻿using System.Windows;
 using System.Windows.Forms;
 using System.IO;
 using static System.Windows.Application;
@@ -21,8 +15,8 @@ namespace PhotoTufin
         public MainWindow()
         {
             InitializeComponent();
-            Title = AppName;
-            AppVersion.Text = $"v{VersionShort}";
+            Title = App.AppName;
+            AppVersion.Text = $"v{App.VersionShort}";
 
             ImageFilter myFilter = new ImageFilter();
             myFilter.makeFilter(Filter);
@@ -51,45 +45,6 @@ namespace PhotoTufin
         {
             var about = new About();
             about.ShowDialog();
-        }
-        
-        /// <summary>
-        /// Gibt die Versionsnummer der Assembly zurück.
-        /// </summary>
-        /// <returns>string</returns>
-        public static string Version
-        {
-            get
-            {
-                var version = Assembly.GetExecutingAssembly().GetName().Version;
-                return version != null ? $"{version}" : "1.0";
-            }
-        }
-        
-        /// <summary>
-        /// Gibt die Versionsnummer der Assembly zurück.
-        /// </summary>
-        /// <returns>string</returns>
-        private static string VersionShort
-        {
-            get
-            {
-                var version = Assembly.GetExecutingAssembly().GetName().Version;
-                return version != null ? $"{version.Major}.{version.Minor}" : "1.0";
-            }
-        }
-        
-        /// <summary>
-        /// Gibt die Versionsnummer der Assembly zurück.
-        /// </summary>
-        /// <returns>string</returns>
-        public static string AppName
-        {
-            get
-            {
-                var name = Assembly.GetExecutingAssembly().GetName().Name;
-                return name != null ? $"{name}" : "MyApp";
-            }
         }
     }
 }

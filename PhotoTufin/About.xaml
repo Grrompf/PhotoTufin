@@ -16,13 +16,13 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <Image Grid.Column="0" Grid.Row="0" Margin="10" MaxHeight="128" MaxWidth="128" Source="/ElephantPorcelaine.ico" />
+        <Image Grid.Column="0" Grid.Row="0" Margin="10" MaxHeight="128" MaxWidth="128" Source="/Ressources/ElephantPorcelaine.ico" />
         <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" TextWrapping="Wrap">
             <TextBlock HorizontalAlignment="Left">Photo Tupled Finder</TextBlock><LineBreak/>
             <TextBlock Name="VersionLong">Version: 1.0.0.0</TextBlock><LineBreak/>
             <TextBlock HorizontalAlignment="Left">Autor: Grrompf</TextBlock>    
         </TextBlock>
-        <Image Grid.Column="0" Grid.Row="1" Margin="10" VerticalAlignment="Center" MaxHeight="128" MaxWidth="128" Source="/Logo_McG1700-1-1589x1600.png" />
+        <Image Grid.Column="0" Grid.Row="1" Margin="10" VerticalAlignment="Center" MaxHeight="128" MaxWidth="128" Source="/Ressources/Logo_McG1700-1-1589x1600.png" />
         <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" TextWrapping="Wrap">
             <TextBlock>entwickelt für</TextBlock><LineBreak/>
             <TextBlock FontWeight="Bold"> McGerhard Photography </TextBlock><LineBreak/>
