@@ -9,7 +9,7 @@ namespace PhotoTufin
     public partial class App
     {
         private const string DEFAULT_VERSION = "1.0";
-        private const string DEFAULT_APP = "PhotoTufin";
+        private const string DEFAULT_APP = "Photo Tufin";
         private const int YEAR  = 2022;
         private const int MONTH = 10;
         private const int DAY = 22;
@@ -47,7 +47,7 @@ namespace PhotoTufin
         private static string Revision => DateTime.Today.DayOfYear.ToString();
 
         /// <summary>
-        /// Gibt die Versionsnummer der Assembly zurück.
+        /// Major and Minor of the actual version
         /// </summary>
         /// <returns>string</returns>
         public static string VersionShort
@@ -60,15 +60,31 @@ namespace PhotoTufin
         }
         
         /// <summary>
-        /// Gibt die Versionsnummer der Assembly zurück.
+        /// Productname of the App.
         /// </summary>
         /// <returns>string</returns>
-        public static string AppName
+        public static string Product
         {
             get
             {
                 var name = Assembly.GetExecutingAssembly().GetName().Name;
                 return name == null ? DEFAULT_APP : $"{name}";
+            }
+        }
+        
+        /// <summary>
+        /// Title of the Assembly.
+        /// </summary>
+        /// <returns>string</returns>
+        public static string Title
+        {
+            get
+            {
+                var element = Assembly.GetExecutingAssembly();
+                var type = typeof(AssemblyTitleAttribute);
+                var attribute = Attribute.GetCustomAttribute(element, type, false);
+                
+                return attribute != null ? ((AssemblyTitleAttribute)attribute).Title : DEFAULT_APP;
             }
         }
     }

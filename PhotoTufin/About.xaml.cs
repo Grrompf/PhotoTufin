@@ -9,8 +9,8 @@ public partial class About
     public About()
     {
         InitializeComponent();
-        Title = $"Über {App.AppName}";
-        AppName.Text = "Photo Tupled Finder";
+        Title = $"Über {App.Product}";
+        AppName.Text = App.Title;
         Version.Text = $"Version: {App.Version}";
         Author.Text  = $"Autor: Grrompf";
         Company.Text = $"McGerhard Photography";

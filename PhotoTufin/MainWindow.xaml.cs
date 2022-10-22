@@ -15,7 +15,7 @@ namespace PhotoTufin
         public MainWindow()
         {
             InitializeComponent();
-            Title = App.AppName;
+            Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
 
             ImageFilter myFilter = new ImageFilter();
