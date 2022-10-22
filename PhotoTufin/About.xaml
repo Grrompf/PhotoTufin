@@ -18,15 +18,15 @@
         </Grid.RowDefinitions>
         <Image Grid.Column="0" Grid.Row="0" Margin="10" MaxHeight="128" MaxWidth="128" Source="/Ressources/ElephantPorcelaine.ico" />
         <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Center" TextWrapping="Wrap">
-            <TextBlock HorizontalAlignment="Left">Photo Tupled Finder</TextBlock><LineBreak/>
-            <TextBlock Name="VersionLong">Version: 1.0.0.0</TextBlock><LineBreak/>
-            <TextBlock HorizontalAlignment="Left">Autor: Grrompf</TextBlock>    
+            <TextBlock Name="AppName" HorizontalAlignment="Left" Text="Photo Tupled Finder" /><LineBreak/>
+            <TextBlock Name="Version" Text="Version: 1.0.0.0" /><LineBreak/>
+            <TextBlock Name="Author" HorizontalAlignment="Left" Text="Autor: Grrompf"/>    
         </TextBlock>
         <Image Grid.Column="0" Grid.Row="1" Margin="10" VerticalAlignment="Center" MaxHeight="128" MaxWidth="128" Source="/Ressources/Logo_McG1700-1-1589x1600.png" />
         <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" TextWrapping="Wrap">
             <TextBlock>entwickelt für</TextBlock><LineBreak/>
-            <TextBlock FontWeight="Bold"> McGerhard Photography </TextBlock><LineBreak/>
-            <Hyperlink NavigateUri="http://mcgerhard.de/">http://mcgerhard.de</Hyperlink>   
+            <TextBlock Name="Company" FontWeight="Bold" Text="McGerhard Photography" /><LineBreak/>
+            <Hyperlink Click="btnUri_Click" NavigateUri="http://mcgerhard.de/">http://mcgerhard.de</Hyperlink>   
         </TextBlock>  
         <StackPanel Grid.Column="0" Grid.ColumnSpan="3"  Grid.Row="2" Orientation="Horizontal" Height="45" VerticalAlignment="Bottom" Margin="20" HorizontalAlignment="Center">
             <Button Content="OK" Height="25" Margin="10" Width="75" IsDefault="True" VerticalContentAlignment="Center"
