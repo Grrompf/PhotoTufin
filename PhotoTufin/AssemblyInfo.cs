@@ -10,7 +10,10 @@ using System.Windows;
     // app, or any theme specific resource dictionaries)
 )]
 
-[assembly: AssemblyDescription ( "Tool für das Finden doppelter Photos" )]
+[assembly: AssemblyTitle("Photo Tupled Finder")]
+[assembly: AssemblyCompany("McGerhard Photography")]
+[assembly: AssemblyProduct("Photo Tufin")]
+[assembly: AssemblyDescription ( "Notifying identical multiple images (Tuplets) by building a database." )]
 [assembly: AssemblyCopyright ( "Copyright © Dr. Holger Maerz 2022" )]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
