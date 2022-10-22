@@ -6,9 +6,11 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <Deterministic>false</Deterministic>
         <NeutralLanguage>de</NeutralLanguage>
-        <Company>Dr. Holger Maerz</Company>
+        <Company>McGerhard Photography</Company>
         <ApplicationIcon>Ressources\ElephantPorcelaine.ico</ApplicationIcon>
+        <PackageVersion />
     </PropertyGroup>
 
     <ItemGroup>
