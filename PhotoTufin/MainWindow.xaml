@@ -100,7 +100,7 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Datei" Width="400" DisplayMemberBinding="{Binding fileName}" />
-                        <GridViewColumn Header="Dublette" Width="100" DisplayMemberBinding="{Binding dublette}" />
+                        <GridViewColumn Header="Hash" Width="100" DisplayMemberBinding="{Binding hashContent}" />
                         <GridViewColumn Header="Größe" Width="60"  DisplayMemberBinding="{Binding size}" />
                         <GridViewColumn Header="Datum" Width="60" DisplayMemberBinding="{Binding date}" />
                         <GridViewColumn Header="Aktion" Width="60" DisplayMemberBinding="{Binding action}" />

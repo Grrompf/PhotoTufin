@@ -25,6 +25,7 @@ namespace PhotoTufin
         {
             
             using var fbd = new FolderBrowserDialog();
+            lbFiles.Items.Clear();
             
             var result = fbd.ShowDialog();
             if (result != OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
@@ -34,12 +35,15 @@ namespace PhotoTufin
             lblSelectedDirectory.Text = $"Verzeichnis: {fbd.SelectedPath}";
             var search = new WalkFolders(fbd.SelectedPath, extensions);
             var fileInfos = search.search();
+            lblNoSelectedFiles.Text = $"{fileInfos.Count.ToString()} Bilder";
 
             // adds each data found to list
-            foreach (var row in fileInfos.Select(file => new FileRow(file)))
+            foreach (var row in fileInfos.Select(file => new ImageInfo(file)))
             {
                 lbFiles.Items.Add(row);
             }
+
+            
         }
     
         private void mnuExit_Click(object sender, RoutedEventArgs e)
