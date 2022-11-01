@@ -24,11 +24,11 @@
                 <MenuItem Header="Beenden" Click="mnuExit_Click"/>
             </MenuItem>
             <MenuItem Name="Filter" Header="Filter" Grid.Column="1" IsEnabled="True">
-                <MenuItem Header="bmp"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
-                <MenuItem Header="gif"  ToolTip="Graphics Interchange Format" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="jpg, jpeg"  ToolTip="Joint Photographic Expert Group" IsCheckable="True" IsChecked="True" />
-                <MenuItem Header="png"  ToolTip="Portable Network Graphics" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="tif"  ToolTip="Tagged Image File" IsCheckable="True" IsChecked="True"/>
+                <MenuItem Name="bmp" Header="bmp, dib"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
+                <MenuItem Name="gif" Header="gif"  ToolTip="Graphics Interchange Format" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Name="jpg" Header="jpg, jpeg, jpe, jfif"  ToolTip="Joint Photographic Expert Group" IsCheckable="True" IsChecked="True" />
+                <MenuItem Name="png" Header="png"  ToolTip="Portable Network Graphics" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Name="tif" Header="tif, tiff"  ToolTip="Tagged Image File" IsCheckable="True" IsChecked="True"/>
                 <Separator Margin="0,5,0,0">
                     <Separator.Template>
                         <ControlTemplate TargetType="Separator">
@@ -99,11 +99,11 @@
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Datei" Width="400" DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="Dublette" Width="100" DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="Größe" Width="60"  DisplayMemberBinding="{Binding IsVerified}" />
-                        <GridViewColumn Header="Datum" Width="60" DisplayMemberBinding="{Binding IsSigned}" />
-                        <GridViewColumn Header="Aktion" Width="60" DisplayMemberBinding="{Binding IsSigned}" />
+                        <GridViewColumn Header="Datei" Width="400" DisplayMemberBinding="{Binding fileName}" />
+                        <GridViewColumn Header="Dublette" Width="100" DisplayMemberBinding="{Binding dublette}" />
+                        <GridViewColumn Header="Größe" Width="60"  DisplayMemberBinding="{Binding size}" />
+                        <GridViewColumn Header="Datum" Width="60" DisplayMemberBinding="{Binding date}" />
+                        <GridViewColumn Header="Aktion" Width="60" DisplayMemberBinding="{Binding action}" />
                     </GridView>
                 </ListView.View>
             </ListView>

@@ -1,9 +1,9 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Forms;
-using System.IO;
+using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
-using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace PhotoTufin
 {
@@ -18,8 +18,7 @@ namespace PhotoTufin
             Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
 
-            ImageFilter myFilter = new ImageFilter();
-            myFilter.makeFilter(Filter);
+            ImageFilter.makeFilter(Filter);
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
@@ -29,11 +28,18 @@ namespace PhotoTufin
             
             var result = fbd.ShowDialog();
             if (result != OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
- 
-            lblSelectedDirectory.Text = $"Verzeichnis: {fbd.SelectedPath}";
-            var files = Directory.GetFiles(fbd.SelectedPath);
 
-            MessageBox.Show("Files found: " + files.Length, "Message");
+            var extensions = ImageFilter.makeFilter(Filter);
+            
+            lblSelectedDirectory.Text = $"Verzeichnis: {fbd.SelectedPath}";
+            var search = new WalkFolders(fbd.SelectedPath, extensions);
+            var fileInfos = search.search();
+
+            // adds each data found to list
+            foreach (var row in fileInfos.Select(file => new FileRow(file)))
+            {
+                lbFiles.Items.Add(row);
+            }
         }
     
         private void mnuExit_Click(object sender, RoutedEventArgs e)
