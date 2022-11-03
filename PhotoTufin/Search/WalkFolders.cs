@@ -16,13 +16,13 @@ public class WalkFolders
     }
 
     private int Count { get; set; }
-    private List<FileInfo> Files { get; } = new();
+    private List<ImageInfo> Files { get; } = new();
 
     /// <summary>
     /// Start search and collect file infos.
     /// </summary>
     /// <returns>List</returns>
-    public List<FileInfo> search()
+    public List<ImageInfo> search()
     {
         Files.Clear();
         Count = 0; //init
@@ -68,7 +68,7 @@ public class WalkFolders
             
             
             Count++; // use for debugging
-            Files.Add(fileInfo);
+            Files.Add(new ImageInfo(fileInfo));
         }
     }
 }

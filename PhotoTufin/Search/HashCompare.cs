@@ -5,7 +5,7 @@ namespace PhotoTufin.Search;
 
 public class HashCompare
 {
-    private bool isTuplet(IEnumerable<byte> myHash, IEnumerable<byte> mySecHash)
+    private static bool isTuplet(IEnumerable<byte> myHash, IEnumerable<byte> mySecHash)
     {
         return myHash.SequenceEqual(mySecHash);
     }

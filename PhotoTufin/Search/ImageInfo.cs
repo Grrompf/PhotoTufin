@@ -2,11 +2,12 @@ using System.IO;
 
 namespace PhotoTufin.Search;
 
-public struct ImageInfo
+public class ImageInfo
 {
     public ImageInfo(FileInfo fileInfo)
     {
         fileName = fileInfo.Name;
+        path = fileInfo.FullName;
         size = (fileInfo.Length / 1024).ToString();
         date = fileInfo.CreationTime.ToShortDateString();
         tuplet = false;
@@ -16,6 +17,9 @@ public struct ImageInfo
     }
     
     public string fileName { get; set; }
+    
+    public string path { get; set; }
+    
     public string size { get; set; }
     public string date { get; set; }
     public bool tuplet { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using PhotoTufin.Search;
@@ -34,11 +35,15 @@ namespace PhotoTufin
             
             lblSelectedDirectory.Text = $"Verzeichnis: {fbd.SelectedPath}";
             var search = new WalkFolders(fbd.SelectedPath, extensions);
-            var fileInfos = search.search();
-            lblNoSelectedFiles.Text = $"{fileInfos.Count.ToString()} Bilder";
+            var imageInfos = search.search();
+            
+            
+            DuplicateFinder.findDuplicates(ref imageInfos);
+            lblNoSelectedFiles.Text = $"{imageInfos.Count.ToString()} Bilder";
 
+            
             // adds each data found to list
-            foreach (var row in fileInfos.Select(file => new ImageInfo(file)))
+            foreach (var row in imageInfos)
             {
                 lbFiles.Items.Add(row);
             }

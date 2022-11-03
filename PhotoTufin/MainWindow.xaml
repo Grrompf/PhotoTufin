@@ -96,14 +96,26 @@
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
                     </Style>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <!-- path in toolTip -->
+                        <Setter Property="ToolTip" Value="{Binding path}" />
+                        <!-- trigger bgColor on tuplet is true -->
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding tuplet}"
+                                         Value="true">
+                                <Setter Property="Background"
+                                        Value="LimeGreen" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Datei" Width="400" DisplayMemberBinding="{Binding fileName}" />
-                        <GridViewColumn Header="Hash" Width="100" DisplayMemberBinding="{Binding hashContent}" />
-                        <GridViewColumn Header="Größe" Width="60"  DisplayMemberBinding="{Binding size}" />
-                        <GridViewColumn Header="Datum" Width="60" DisplayMemberBinding="{Binding date}" />
-                        <GridViewColumn Header="Aktion" Width="60" DisplayMemberBinding="{Binding action}" />
+                        <GridViewColumn Header="Datei" Width="350" DisplayMemberBinding="{Binding fileName}" />
+                        <GridViewColumn Header="Hash" Width="160" DisplayMemberBinding="{Binding hashContent}" />
+                        <GridViewColumn Header="Größe (kB)" Width="70"  DisplayMemberBinding="{Binding size}" />
+                        <GridViewColumn Header="Datum" Width="90" DisplayMemberBinding="{Binding date}" />
+                        <GridViewColumn Header="Tuplet" Width="60" DisplayMemberBinding="{Binding tuplet}" />
                     </GridView>
                 </ListView.View>
             </ListView>
