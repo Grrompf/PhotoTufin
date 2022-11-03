@@ -91,7 +91,7 @@
             
         </Menu>
         <Grid DockPanel.Dock="Top">
-            <ListView Margin="10" Name="lbFiles" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListView Margin="10" Name="lbFiles" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -127,6 +127,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
@@ -135,14 +137,18 @@
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem>
-                <TextBlock Name="lblNoSelectedFiles" Text="kein Verzeichnis ausgewählt" />
+                <TextBlock Name="lblNoFiles" Text="keine Bilder" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock Name="lblSelectedDirectory" />
+                <TextBlock Name="lblNoDuplicates" Text="keine Duplikate" />
             </StatusBarItem>
             <Separator Grid.Column="3" />
-            <StatusBarItem Grid.Column="4" HorizontalContentAlignment="Right">
+            <StatusBarItem Grid.Column="4">
+                <TextBlock Name="lblSelectedDirectory" Text="kein Verzeichnis ausgewählt" />
+            </StatusBarItem>
+            <Separator Grid.Column="5" />
+            <StatusBarItem Grid.Column="6" HorizontalContentAlignment="Right">
                 <TextBlock Name="AppVersion" Text="1.0" />
             </StatusBarItem>
         </StatusBar>

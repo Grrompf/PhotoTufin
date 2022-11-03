@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 
-namespace PhotoTufin.Search;
+namespace PhotoTufin.Search.Filter;
 
 public class ImageFilter
 {

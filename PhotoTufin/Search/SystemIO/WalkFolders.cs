@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace PhotoTufin.Search;
+namespace PhotoTufin.Search.SystemIO;
 
 public class WalkFolders
 {

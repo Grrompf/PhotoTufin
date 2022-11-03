@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PhotoTufin.Search;
+namespace PhotoTufin.Search.Duplication;
 
-public class DuplicateFinder
+public static class DuplicateFinder
 {
-    public static void findDuplicates(ref List<ImageInfo> imageInfos)
+    public static int findDuplicates(ref List<ImageInfo> imageInfos)
     {
         var dupes = imageInfos.GroupBy(x => x.hashContent)
             .Where(g => g.Count() > 1)
@@ -13,7 +13,10 @@ public class DuplicateFinder
             ;
 
         var duplicates = dupes.ToList();
+        
         indicateDuplicates(ref imageInfos, duplicates);
+
+        return duplicates.Count;
     }
 
     private static void indicateDuplicates(ref List<ImageInfo> imageInfos, ICollection<ImageInfo> duplicates)

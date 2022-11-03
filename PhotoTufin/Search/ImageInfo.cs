@@ -1,4 +1,5 @@
 using System.IO;
+using PhotoTufin.Search.Duplication;
 
 namespace PhotoTufin.Search;
 

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace PhotoTufin.Search;
+namespace PhotoTufin.Search.Duplication;
 
 public class HashContent
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Forms;
 using PhotoTufin.Search;
 using static System.Windows.Application;
@@ -18,29 +16,22 @@ namespace PhotoTufin
             InitializeComponent();
             Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
-
-            ImageFilter.makeFilter(Filter);
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
         {
             
             using var fbd = new FolderBrowserDialog();
+            
+            // remove tbl rows  
             lbFiles.Items.Clear();
             
             var result = fbd.ShowDialog();
             if (result != OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
-
-            var extensions = ImageFilter.makeFilter(Filter);
             
-            lblSelectedDirectory.Text = $"Verzeichnis: {fbd.SelectedPath}";
-            var search = new WalkFolders(fbd.SelectedPath, extensions);
-            var imageInfos = search.search();
-            
-            
-            DuplicateFinder.findDuplicates(ref imageInfos);
-            lblNoSelectedFiles.Text = $"{imageInfos.Count.ToString()} Bilder";
-
+            // find files and duplicates
+            var factory = new TupletFactory(fbd.SelectedPath, Filter);
+            var imageInfos = factory.findImages();
             
             // adds each data found to list
             foreach (var row in imageInfos)
@@ -48,7 +39,9 @@ namespace PhotoTufin
                 lbFiles.Items.Add(row);
             }
 
-            
+            lblNoDuplicates.Text = $"{factory.NoDuplicates.ToString()} Duplikate";
+            lblSelectedDirectory.Text = $"Startverzeichnis: {fbd.SelectedPath}";
+            lblNoFiles.Text = $"{imageInfos.Count.ToString()} Bilder";
         }
     
         private void mnuExit_Click(object sender, RoutedEventArgs e)
