@@ -1,8 +1,10 @@
 using System;
 using System.Management;
+using System.Runtime.Versioning;
 
 namespace PhotoTufin.Search.SystemIO;
 
+[SupportedOSPlatform("windows")]
 public class HDDInfoReader
 {
     /// <summary>

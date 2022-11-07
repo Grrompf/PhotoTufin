@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.Versioning;
+using System.Windows;
 using System.Windows.Forms;
 using PhotoTufin.Search;
 using PhotoTufin.Search.SystemIO;
@@ -12,6 +13,7 @@ namespace PhotoTufin
     /// </summary>
     public partial class MainWindow
     {
+        [SupportedOSPlatform("windows")]
         public MainWindow()
         {
             InitializeComponent();
