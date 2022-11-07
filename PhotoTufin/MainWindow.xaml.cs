@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
 using PhotoTufin.Search;
+using PhotoTufin.Search.SystemIO;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
 
@@ -16,6 +17,7 @@ namespace PhotoTufin
             InitializeComponent();
             Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
+            HDDInfoReader.GetSerialNumber("D:");
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
