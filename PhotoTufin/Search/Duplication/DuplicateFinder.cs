@@ -7,7 +7,7 @@ public static class DuplicateFinder
 {
     public static int findDuplicates(ref List<ImageInfo> imageInfos)
     {
-        var dupes = imageInfos.GroupBy(x => x.hashContent)
+        var dupes = imageInfos.GroupBy(x => x.HashString)
             .Where(g => g.Count() > 1)
             .SelectMany(g => g)
             ;
@@ -23,7 +23,7 @@ public static class DuplicateFinder
     {
         foreach (var t in imageInfos.Where(duplicates.Contains))
         {
-            t.tuplet = true;
+            t.Tuplet = true;
         }
     }
 }

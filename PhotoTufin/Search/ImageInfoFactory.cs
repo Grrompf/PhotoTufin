@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using System.Windows.Controls;
 using PhotoTufin.Search.Duplication;
 using PhotoTufin.Search.Filter;
@@ -6,22 +7,31 @@ using PhotoTufin.Search.SystemIO;
 
 namespace PhotoTufin.Search;
 
-public class TupletFactory
+[SupportedOSPlatform("windows")]
+public class ImageInfoFactory
 {
-    public TupletFactory(string selectedPath, MenuItem filter)
+    public ImageInfoFactory(string selectedPath, MenuItem filter)
     {
         SelectedPath = selectedPath;
         Filter = filter;
+        DiskReader = new HDDInfoReader(selectedPath);
     }
     
     public int NoDuplicates { get; private set; }
+    
+    public HDDInfo? HDDInfo { get; set;  }
 
-    public string SelectedPath { get; }
+    private string SelectedPath { get; }
 
-    public MenuItem Filter { get; }
-
+    private HDDInfoReader DiskReader { get; }
+    
+    private MenuItem Filter { get; }
+    
     public List<ImageInfo> findImages()
     {
+        // get wmi infos of the hdd
+        HDDInfo = DiskReader.GetDiskInfo();
+        
         var fileExtensions = ImageFilter.makeFilter(Filter);
         var search = new WalkFolders(SelectedPath, fileExtensions);
         var imageInfos = search.search();
