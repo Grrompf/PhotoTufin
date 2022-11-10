@@ -1,6 +1,9 @@
-﻿using System.Runtime.Versioning;
+﻿using System;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Forms;
+using PhotoTufin.Data;
+using PhotoTufin.Model;
 using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
@@ -19,6 +22,35 @@ namespace PhotoTufin
             InitializeComponent();
             Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
+            // ICustomerRepository rep = new SqLiteCustomerRepository();
+            // var customer = new Customer
+            // {
+            //     FirstName = "Sergey",
+            //     LastName = "Maskalik",
+            //     DateOfBirth = DateTime.Now
+            // };
+            // rep.SaveCustomer(customer);
+
+            var repo = new DiskInfoRepository();
+            repo.DropTable();
+            repo.CreateTable();
+            
+            var info = new DiskInfo
+            {
+                Model = "Sergey",
+                SerialNo = "Maskalik",
+                CreatedAt = DateTime.Now
+            };
+            repo.SaveDiskInfo(info);
+            
+            info = repo.GetDiskInfo(1);
+            
+            Console.WriteLine($"{info}");
+
+            info = repo.GetDiskInfo(2);
+            
+            Console.WriteLine($"{info}");
+            //Customer retrievedCustomer = rep.GetCustomer(customer.Id);
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace PhotoTufin
 {
@@ -85,6 +87,20 @@ namespace PhotoTufin
                 var attribute = Attribute.GetCustomAttribute(element, type, false);
                 
                 return attribute != null ? ((AssemblyTitleAttribute)attribute).Title : DEFAULT_APP;
+            }
+        }
+        
+        /// <summary>
+        /// Full path file name of the SQLite database.
+        /// </summary>
+        /// <returns>string</returns>
+        public static string DataBaseFile
+        {
+            get
+            {
+                var product = Regex.Replace(Product.Trim(), @"\s+", "");
+                var dbName = $"{product}.sqlite"; //PhotoTufin.sqlite
+                return $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar.ToString()}{dbName}";
             }
         }
     }
