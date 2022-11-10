@@ -5,11 +5,16 @@ namespace PhotoTufin.Data;
 
 public abstract class BaseRepository : IRepository
 {
+    protected BaseRepository()
+    {
+        CreateTable();    
+    }
+    
     /// <summary>
     /// SQLite database file is in the application directory. The file name is the trimmed Productname of the application as
     /// defined in App.xaml.cs, e.g. "PhotoTufin.sqlite" 
     /// </summary>
-    protected static string DbFile => $"{App.DataBaseFile}";
+    private static string DbFile => $"{App.DataBaseFile}";
 
     /// <summary>
     /// Creates a connection to the database. If datebase is not existing, it will be created.
@@ -26,6 +31,7 @@ public abstract class BaseRepository : IRepository
     public void CreateTable()
     {
         var sql = CreateTableSQL();
+
         ExecDbCmd(sql);
     }
     
@@ -38,17 +44,13 @@ public abstract class BaseRepository : IRepository
         ExecDbCmd(sql);
     }
 
-    /// <summary>
-    /// Generic sql execution by dapper.
-    /// </summary>
-    /// <param name="sql"></param>
     private static void ExecDbCmd(string sql)
     {
         using var conn = DbConnection();
         conn.Open();
         conn.Execute(sql);
     }
-    
+   
     public abstract string DropTableSQL();
     public abstract string CreateTableSQL();
 }

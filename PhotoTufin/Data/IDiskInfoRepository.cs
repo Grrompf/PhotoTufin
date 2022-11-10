@@ -4,6 +4,6 @@ namespace PhotoTufin.Data;
 
 public interface IDiskInfoRepository
 {
-    DiskInfo GetDiskInfo(long id);
-    void SaveDiskInfo(DiskInfo diskInfo);
+    DiskInfo? Find(long id);
+    void Save(DiskInfo diskInfo);
 }

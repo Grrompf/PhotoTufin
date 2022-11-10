@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Forms;
@@ -32,24 +33,25 @@ namespace PhotoTufin
             // rep.SaveCustomer(customer);
 
             var repo = new DiskInfoRepository();
-            repo.DropTable();
-            repo.CreateTable();
-            
             var info = new DiskInfo
             {
                 Model = "Sergey",
-                SerialNo = "Maskalik",
-                CreatedAt = DateTime.Now
+                SerialNo = "Maskali34k"
             };
-            repo.SaveDiskInfo(info);
+          //  repo.Save(info);
             
-            info = repo.GetDiskInfo(1);
+            info = new DiskInfo
+            {
+                Model = "Hummel",
+                SerialNo = "Holli"
+            };
+          //  repo.Save(info);
+            
             
             Console.WriteLine($"{info}");
 
-            info = repo.GetDiskInfo(2);
-            
-            Console.WriteLine($"{info}");
+            List<DiskInfo> myList = repo.FindAll();
+            Console.WriteLine($"{myList}");
             //Customer retrievedCustomer = rep.GetCustomer(customer.Id);
         }
         

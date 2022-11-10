@@ -1,46 +1,51 @@
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using PhotoTufin.Model;
 
 namespace PhotoTufin.Data;
 
-internal class DiskInfoRepository : BaseRepository
+internal class DiskInfoRepository : BaseRepository, IDiskInfoRepository
 {
-    public DiskInfo? GetDiskInfo(long id)
+    public DiskInfo? Find(long id)
     {
-        if (!File.Exists(DbFile)) return null;
-
-        using var con = DbConnection();
-        con.Open();
+        using var conn = DbConnection();
+        conn.Open();
         
-        return con.QueryFirstOrDefault<DiskInfo>(@"SELECT * FROM DiskInfo WHERE Id = @id", new { id });
+        return conn.QueryFirstOrDefault<DiskInfo>(@"SELECT * FROM DiskInfo WHERE Id = @id", new { id });
     }
-
-    public void SaveDiskInfo(DiskInfo diskInfo)
+    
+    public List<DiskInfo> FindAll()
     {
-        if (!File.Exists(DbFile)) CreateTable();
-
-        using var cnn = DbConnection();
-        cnn.Open();
-        diskInfo.Id = cnn.Query<long>(
-            @"INSERT INTO DiskInfo 
+        using var conn = DbConnection();
+        conn.Open();
+        
+        return conn.Query<DiskInfo>(@"SELECT * FROM DiskInfo").ToList();
+    }
+    
+    public void Save(DiskInfo diskInfo)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+        
+        // select query is for setting the Id of the model
+        diskInfo.ID = conn.Query<long>(
+            sql: @"INSERT INTO DiskInfo 
                     ( InterfaceType, MediaType, Model, SerialNo, CreatedAt ) VALUES 
                     ( @InterfaceType, @MediaType, @Model, @SerialNo, @CreatedAt );
-                    
-                select last_insert_rowid()", diskInfo).First();
+                    SELECT last_insert_rowid()", diskInfo).First();
     }
 
     public override string CreateTableSQL()
     {
         return @"CREATE TABLE IF NOT EXISTS DiskInfo
                       (
-                         ID                              INTEGER NOT NULL PRIMARY KEY ,
-                         InterfaceType                   TEXT DEFAULT 'UNKNOWN',
-                         MediaType                       TEXT DEFAULT 'UNKNOWN',
-                         Model                           TEXT NOT NULL,
-                         SerialNo                        TEXT NOT NULL UNIQUE,
-                         CreatedAt                       TEXT NOT NULL
+                         ID                             INTEGER NOT NULL PRIMARY KEY,
+                         InterfaceType                  TEXT,
+                         MediaType                      TEXT,
+                         Model                          TEXT NOT NULL,
+                         SerialNo                       TEXT NOT NULL UNIQUE,
+                         CreatedAt                      TEXT NOT NULL
                       );
                 ";
     }
