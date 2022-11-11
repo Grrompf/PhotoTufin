@@ -1,15 +1,10 @@
 using System.Data.SQLite;
 using Dapper;
 
-namespace PhotoTufin.Data;
+namespace PhotoTufin.Repository;
 
 public abstract class BaseRepository : IRepository
 {
-    protected BaseRepository()
-    {
-        CreateTable();    
-    }
-    
     /// <summary>
     /// SQLite database file is in the application directory. The file name is the trimmed Productname of the application as
     /// defined in App.xaml.cs, e.g. "PhotoTufin.sqlite" 
@@ -26,31 +21,18 @@ public abstract class BaseRepository : IRepository
     }
 
     /// <summary>
-    /// Creates a table if not existing.
+    /// Open a database connection and execute an sql statement. Finally, the connection is closed.
     /// </summary>
-    public void CreateTable()
-    {
-        var sql = CreateTableSQL();
-
-        ExecDbCmd(sql);
-    }
-    
-    /// <summary>
-    /// Drops (Delete) a table if existing.
-    /// </summary>
-    public void DropTable()
-    {
-        var sql = DropTableSQL();
-        ExecDbCmd(sql);
-    }
-
-    private static void ExecDbCmd(string sql)
+    /// <param name="sql"></param>
+    protected static void ExecDbCmd(string sql)
     {
         using var conn = DbConnection();
         conn.Open();
         conn.Execute(sql);
+        conn.Close();
     }
-   
-    public abstract string DropTableSQL();
-    public abstract string CreateTableSQL();
+    
+    public abstract void CreateTable();
+
+    public abstract void DropTable();
 }

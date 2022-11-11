@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Forms;
-using PhotoTufin.Data;
+using PhotoTufin.Repository;
 using PhotoTufin.Model;
 using PhotoTufin.Search;
 using static System.Windows.Application;
@@ -36,16 +36,19 @@ namespace PhotoTufin
             var info = new DiskInfo
             {
                 Model = "Sergey",
-                SerialNo = "Maskali34k"
+                SerialNo = "123"
             };
-          //  repo.Save(info);
+            repo.Save(info);
             
             info = new DiskInfo
             {
                 Model = "Hummel",
-                SerialNo = "Holli"
+                SerialNo = "567"
             };
-          //  repo.Save(info);
+            repo.Save(info);
+            
+            info = repo.FindBySerialNo("567");
+            
             
             
             Console.WriteLine($"{info}");
