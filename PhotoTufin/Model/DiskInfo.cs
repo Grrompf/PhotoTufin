@@ -31,7 +31,7 @@ public class DiskInfo : IModel
     public string Model { get; set; } = null!;
     
     /// <summary>
-    /// when this file was created 
+    /// when this model was created 
     /// </summary>
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 }

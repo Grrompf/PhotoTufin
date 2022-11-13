@@ -56,6 +56,46 @@ namespace PhotoTufin
             List<DiskInfo> myList = repo.FindAll();
             Console.WriteLine($"{myList}");
             //Customer retrievedCustomer = rep.GetCustomer(customer.Id);
+            
+            var repository = new PhotoInfoRepository();
+            repository.DropTable();
+            
+            repository.CreateTable();
+            var photo = new PhotoInfo
+            {
+                DiskInfoId = info.Id,
+                FileName = "hans.jpg",
+                FilePath = "hans.jpg",
+                Size = "null",
+                HashString = "jkdsahkjahfk"
+            };
+            repository.Save(photo);
+
+            photo.Size = "45";
+            repository.Save(photo);
+            
+            photo.HashString = "blabla";
+            repository.Save(photo);
+            
+            photo = new PhotoInfo
+            {
+                DiskInfoId = 2,
+                FileName = "jupp.jpg",
+                FilePath = "jupp.jpg",
+                Size = "null",
+                HashString = "12jkdsahkjahfk"
+            };
+            repository.Save(photo);
+            
+            
+            var klist = repository.FindAll();
+            Console.WriteLine($"{klist}");
+            
+            var ph = repository.Find(1);
+            Console.WriteLine($"{ph}");
+            
+            List<PhotoInfo> myList2 = repository.FindDuplicates();
+            Console.WriteLine($"{myList2}");
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
