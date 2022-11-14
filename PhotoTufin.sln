@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotoTufin", "PhotoTufin\PhotoTufin.csproj", "{DBDBEAAC-AC39-40DD-9A78-982D9D0CEE8B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{5235937E-B49A-4D5F-B6CF-F4C5EBFECA70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{DBDBEAAC-AC39-40DD-9A78-982D9D0CEE8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBDBEAAC-AC39-40DD-9A78-982D9D0CEE8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBDBEAAC-AC39-40DD-9A78-982D9D0CEE8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5235937E-B49A-4D5F-B6CF-F4C5EBFECA70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5235937E-B49A-4D5F-B6CF-F4C5EBFECA70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5235937E-B49A-4D5F-B6CF-F4C5EBFECA70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5235937E-B49A-4D5F-B6CF-F4C5EBFECA70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

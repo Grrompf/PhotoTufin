@@ -37,5 +37,5 @@ public interface IDiskInfoRepository
     /// using i.e. "DeleteByDiskInfo(int diskInfoId)". 
     /// </summary>
     /// <param name="diskInfoId"></param>
-    public void DeleteById(int diskInfoId);
+    public void DeleteById(long diskInfoId);
 }

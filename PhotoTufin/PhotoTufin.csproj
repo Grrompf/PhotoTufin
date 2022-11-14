@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -11,6 +10,7 @@
         <Company>McGerhard Photography</Company>
         <ApplicationIcon>Ressources\ElephantPorcelaine.ico</ApplicationIcon>
         <PackageVersion />
+        <TargetFramework>net6.0-windows</TargetFramework>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -25,6 +25,9 @@
 
     <ItemGroup>
       <PackageReference Include="Dapper" Version="2.0.123" />
+      <PackageReference Include="NLog" Version="5.0.5" />
+      <PackageReference Include="NUnit" Version="3.13.3" />
+      <PackageReference Include="NUnit3TestAdapter" Version="4.3.0" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
       <PackageReference Include="System.Data.SQLite" Version="1.0.116" />
       <PackageReference Include="System.Management" Version="6.0.0" />

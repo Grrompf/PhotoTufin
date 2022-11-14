@@ -5,7 +5,7 @@ using PhotoTufin.Model;
 
 namespace PhotoTufin.Repository;
 
-internal class DiskInfoRepository : BaseRepository, IDiskInfoRepository
+public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
 {
     /// <summary>
     /// By Using the constructor, database and table will be created if not existing.  
@@ -94,12 +94,12 @@ internal class DiskInfoRepository : BaseRepository, IDiskInfoRepository
     /// using i.e. "DeleteByDiskInfo(int diskInfoId)". 
     /// </summary>
     /// <param name="diskInfoId"></param>
-    public void DeleteById(int diskInfoId)
+    public void DeleteById(long id)
     {
         using var conn = DbConnection();
         conn.Open();
             
-        conn.Execute(@"DELETE FROM DiskInfo WHERE DiskInfoId = @DiskInfoId", new { diskInfoId });
+        conn.Execute(@"DELETE FROM DiskInfo WHERE Id = @Id", new { id });
         
         conn.Close();
     }

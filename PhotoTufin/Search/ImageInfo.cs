@@ -16,7 +16,7 @@ public class ImageInfo
         Tuplet = false;
         Action = false;
         Hash = HashContent.readHash(fileInfo.FullName);
-        HashString = HashContent.readHash(fileInfo.FullName)?.ToString();
+        HashString = HashContent.convertHash(Hash);
     }
     
     /// <summary>

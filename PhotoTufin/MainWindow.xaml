@@ -98,10 +98,10 @@
                     </Style>
                     <Style TargetType="{x:Type ListViewItem}">
                         <!-- path in toolTip -->
-                        <Setter Property="ToolTip" Value="{Binding path}" />
+                        <Setter Property="ToolTip" Value="{Binding Path}" />
                         <!-- trigger bgColor on tuplet is true -->
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding tuplet}"
+                            <DataTrigger Binding="{Binding Tuplet}"
                                          Value="true">
                                 <Setter Property="Background"
                                         Value="LimeGreen" />
@@ -111,11 +111,11 @@
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Datei" Width="350" DisplayMemberBinding="{Binding fileName}" />
-                        <GridViewColumn Header="Hash" Width="160" DisplayMemberBinding="{Binding hashContent}" />
-                        <GridViewColumn Header="Größe (kB)" Width="70"  DisplayMemberBinding="{Binding size}" />
-                        <GridViewColumn Header="Datum" Width="90" DisplayMemberBinding="{Binding date}" />
-                        <GridViewColumn Header="Tuplet" Width="60" DisplayMemberBinding="{Binding tuplet}" />
+                        <GridViewColumn Header="Datei" Width="350" DisplayMemberBinding="{Binding FileName}" />
+                        <GridViewColumn Header="Hash" Width="180" DisplayMemberBinding="{Binding HashString}" />
+                        <GridViewColumn Header="Größe (kB)" Width="70"  DisplayMemberBinding="{Binding Size}" />
+                        <GridViewColumn Header="Datum" Width="90" DisplayMemberBinding="{Binding Date}" />
+                        <GridViewColumn Header="Tuplet" Width="60" DisplayMemberBinding="{Binding Tuplet}" />
                     </GridView>
                 </ListView.View>
             </ListView>

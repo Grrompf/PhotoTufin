@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Forms;
-using PhotoTufin.Repository;
-using PhotoTufin.Model;
 using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
@@ -23,92 +19,6 @@ namespace PhotoTufin
             InitializeComponent();
             Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
-            // ICustomerRepository rep = new SqLiteCustomerRepository();
-            // var customer = new Customer
-            // {
-            //     FirstName = "Sergey",
-            //     LastName = "Maskalik",
-            //     DateOfBirth = DateTime.Now
-            // };
-            // rep.SaveCustomer(customer);
-
-            var repo = new DiskInfoRepository();
-            var info = new DiskInfo
-            {
-                Model = "Sergey",
-                SerialNo = "123"
-            };
-            repo.Save(info);
-            
-            info = new DiskInfo
-            {
-                Model = "Hummel",
-                SerialNo = "567"
-            };
-            repo.Save(info);
-            
-            info = repo.FindBySerialNo("567");
-            
-            
-            
-            Console.WriteLine($"{info}");
-
-            List<DiskInfo> myList = repo.FindAll();
-            Console.WriteLine($"{myList}");
-            //Customer retrievedCustomer = rep.GetCustomer(customer.Id);
-            
-            var repository = new PhotoInfoRepository();
-            repository.DropTable();
-            
-            repository.CreateTable();
-            if (info != null)
-            {
-                var photo = new PhotoInfo
-                {
-                    DiskInfoId = info.Id,
-                    FileName = "hans.jpg",
-                    FilePath = "hans.jpg",
-                    Size = "null",
-                    HashString = "jkdsahkjahfk"
-                };
-                repository.Save(photo);
-
-                photo.Size = "45";
-                repository.Save(photo);
-            
-                photo.DiskInfoId = 1;
-                repository.Save(photo);
-            
-                photo.HashString = "blabla";
-                repository.Save(photo);
-            
-                photo = new PhotoInfo
-                {
-                    DiskInfoId = 2,
-                    FileName = "jupp.jpg",
-                    FilePath = "jupp.jpg",
-                    Size = "null",
-                    HashString = "12jkdsahkjahfk"
-                };
-                repository.Save(photo);
-            }
-
-
-            var klist = repository.FindAll();
-            Console.WriteLine($"{klist}");
-            
-            var ph = repository.Find(1);
-            Console.WriteLine($"{ph}");
-            
-            List<PhotoInfo> myList2 = repository.FindDuplicates();
-            Console.WriteLine($"{myList2}");
-            
-            myList2 = repository.FindDuplicatesByDiskInfo(1);
-            Console.WriteLine($"{myList2}");
-            
-            repository.DeleteByDiskInfo(1);
-            myList2 = repository.FindDuplicatesByDiskInfo(1);
-            Console.WriteLine($"{myList2}");
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
