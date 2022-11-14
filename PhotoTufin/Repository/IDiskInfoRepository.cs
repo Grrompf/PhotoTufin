@@ -30,4 +30,12 @@ public interface IDiskInfoRepository
     /// </summary>
     /// <param name="diskInfo"></param>
     void Save(DiskInfo diskInfo);
+
+    /// <summary>
+    /// Delete DiskInfo (volume) by its Id.
+    /// Make sure, you have cleared the dependant data by
+    /// using i.e. "DeleteByDiskInfo(int diskInfoId)". 
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    public void DeleteById(int diskInfoId);
 }

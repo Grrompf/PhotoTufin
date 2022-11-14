@@ -61,33 +61,39 @@ namespace PhotoTufin
             repository.DropTable();
             
             repository.CreateTable();
-            var photo = new PhotoInfo
+            if (info != null)
             {
-                DiskInfoId = info.Id,
-                FileName = "hans.jpg",
-                FilePath = "hans.jpg",
-                Size = "null",
-                HashString = "jkdsahkjahfk"
-            };
-            repository.Save(photo);
+                var photo = new PhotoInfo
+                {
+                    DiskInfoId = info.Id,
+                    FileName = "hans.jpg",
+                    FilePath = "hans.jpg",
+                    Size = "null",
+                    HashString = "jkdsahkjahfk"
+                };
+                repository.Save(photo);
 
-            photo.Size = "45";
-            repository.Save(photo);
+                photo.Size = "45";
+                repository.Save(photo);
             
-            photo.HashString = "blabla";
-            repository.Save(photo);
+                photo.DiskInfoId = 1;
+                repository.Save(photo);
             
-            photo = new PhotoInfo
-            {
-                DiskInfoId = 2,
-                FileName = "jupp.jpg",
-                FilePath = "jupp.jpg",
-                Size = "null",
-                HashString = "12jkdsahkjahfk"
-            };
-            repository.Save(photo);
+                photo.HashString = "blabla";
+                repository.Save(photo);
             
-            
+                photo = new PhotoInfo
+                {
+                    DiskInfoId = 2,
+                    FileName = "jupp.jpg",
+                    FilePath = "jupp.jpg",
+                    Size = "null",
+                    HashString = "12jkdsahkjahfk"
+                };
+                repository.Save(photo);
+            }
+
+
             var klist = repository.FindAll();
             Console.WriteLine($"{klist}");
             
@@ -95,6 +101,13 @@ namespace PhotoTufin
             Console.WriteLine($"{ph}");
             
             List<PhotoInfo> myList2 = repository.FindDuplicates();
+            Console.WriteLine($"{myList2}");
+            
+            myList2 = repository.FindDuplicatesByDiskInfo(1);
+            Console.WriteLine($"{myList2}");
+            
+            repository.DeleteByDiskInfo(1);
+            myList2 = repository.FindDuplicatesByDiskInfo(1);
             Console.WriteLine($"{myList2}");
         }
         

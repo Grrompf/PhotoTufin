@@ -87,6 +87,22 @@ internal class DiskInfoRepository : BaseRepository, IDiskInfoRepository
         
         conn.Close();
     }
+    
+    /// <summary>
+    /// Delete DiskInfo (volume) by its Id.
+    /// Make sure, you have cleared the dependant data by
+    /// using i.e. "DeleteByDiskInfo(int diskInfoId)". 
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    public void DeleteById(int diskInfoId)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+            
+        conn.Execute(@"DELETE FROM DiskInfo WHERE DiskInfoId = @DiskInfoId", new { diskInfoId });
+        
+        conn.Close();
+    }
 
     /// <summary>
     /// Creates table if not existing. Primary key is autoimcremented while serialNo is UNIQUE

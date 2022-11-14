@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
@@ -36,7 +35,7 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
     }
     
     /// <summary>
-    /// Returns the model by its unique key or null if not found.
+    /// Returns a list of all duplicates in database.
     /// </summary>
     /// <returns>List</returns>
     public List<PhotoInfo> FindDuplicates()
@@ -49,6 +48,27 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         var result = conn.Query<PhotoInfo>(
             @"SELECT * FROM PhotoInfo WHERE HashString IN 
                  (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)"
+            ).ToList();
+        
+        conn.Close();
+
+        return result;
+    }
+    
+    /// <summary>
+    /// Find alle duplicates of a volume (DiskInfo) of a HDD or removable media.
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    /// <returns></returns>
+    public List<PhotoInfo> FindDuplicatesByDiskInfo(int diskInfoId)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+        
+        var result = conn.Query<PhotoInfo>(
+            @"SELECT * FROM PhotoInfo WHERE DiskInfoId = @DiskInfoId AND HashString IN 
+                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)",
+            new {diskInfoId}
             ).ToList();
         
         conn.Close();
@@ -87,6 +107,20 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
                     ( @DiskInfoId, @FileName, @FilePath, @Size, @HashString, @Tuplet, @CreatedAt );
                     SELECT last_insert_rowid()", photoInfo
             ).First();
+        
+        conn.Close();
+    }
+
+    /// <summary>
+    /// Deletes all PhotoInfo of a DiskInfo (volume).   
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    public void DeleteByDiskInfo(int diskInfoId)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+            
+        conn.Execute(@"DELETE FROM PhotoInfo WHERE DiskInfoId = @DiskInfoId", new { diskInfoId });
         
         conn.Close();
     }

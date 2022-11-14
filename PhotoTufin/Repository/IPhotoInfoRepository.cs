@@ -13,10 +13,17 @@ public interface IPhotoInfoRepository
     PhotoInfo? Find(long id);
     
     /// <summary>
-    /// Find PhotoInfo by unique serial number. Returns null if not found. 
+    /// Returns a list of all duplicates in database.
     /// </summary>
     /// <returns>List</returns>
     List<PhotoInfo> FindDuplicates();
+
+    /// <summary>
+    /// Find alle duplicates of a volume 
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    /// <returns></returns>
+    public List<PhotoInfo> FindDuplicatesByDiskInfo(int diskInfoId);
 
     /// <summary>
     /// Returns a list of all PhotoInfo. 
@@ -29,4 +36,10 @@ public interface IPhotoInfoRepository
     /// </summary>
     /// <param name="photoInfo"></param>
     void Save(PhotoInfo photoInfo);
+    
+    /// <summary>
+    /// Deletes all PhotoInfo of a DiskInfo (volume).   
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    void DeleteByDiskInfo(int diskInfoId);
 }
