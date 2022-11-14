@@ -22,8 +22,15 @@ public interface IPhotoInfoRepository
     /// Find alle duplicates of a volume 
     /// </summary>
     /// <param name="diskInfoId"></param>
-    /// <returns></returns>
+    /// <returns>List</returns>
     public List<PhotoInfo> FindDuplicatesByDiskInfo(int diskInfoId);
+
+    /// <summary>
+    /// Find alle duplicates by its hash and inner request for having a duplicate.
+    /// </summary>
+    /// <param name="hashString"></param>
+    /// <returns>List</returns>
+    public List<PhotoInfo> FindDuplicatesByHashString(string hashString);
 
     /// <summary>
     /// Returns a list of all PhotoInfo. 

@@ -59,7 +59,7 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
     /// Find alle duplicates of a volume (DiskInfo) of a HDD or removable media.
     /// </summary>
     /// <param name="diskInfoId"></param>
-    /// <returns></returns>
+    /// <returns>List</returns>
     public List<PhotoInfo> FindDuplicatesByDiskInfo(int diskInfoId)
     {
         using var conn = DbConnection();
@@ -70,6 +70,27 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
                  (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)",
             new {diskInfoId}
             ).ToList();
+        
+        conn.Close();
+
+        return result;
+    }
+    
+    /// <summary>
+    /// Find alle duplicates by its hash and inner request for having a duplicate.
+    /// </summary>
+    /// <param name="hashString"></param>
+    /// <returns>List</returns>
+    public List<PhotoInfo> FindDuplicatesByHashString(string hashString)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+        
+        var result = conn.Query<PhotoInfo>(
+            @"SELECT * FROM PhotoInfo WHERE HashString = @HashString AND HashString IN 
+                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)",
+            new {hashString}
+        ).ToList();
         
         conn.Close();
 
