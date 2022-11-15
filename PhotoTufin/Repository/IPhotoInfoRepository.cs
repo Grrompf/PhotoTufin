@@ -23,7 +23,7 @@ public interface IPhotoInfoRepository
     /// </summary>
     /// <param name="diskInfoId"></param>
     /// <returns>List</returns>
-    public List<PhotoInfo> FindDuplicatesByDiskInfo(int diskInfoId);
+    public List<PhotoInfo> FindDuplicatesByDiskInfo(long diskInfoId);
 
     /// <summary>
     /// Find alle duplicates by its hash and inner request for having a duplicate.
@@ -48,5 +48,5 @@ public interface IPhotoInfoRepository
     /// Deletes all PhotoInfo of a DiskInfo (volume).   
     /// </summary>
     /// <param name="diskInfoId"></param>
-    void DeleteByDiskInfo(int diskInfoId);
+    void DeleteByDiskInfo(long diskInfoId);
 }

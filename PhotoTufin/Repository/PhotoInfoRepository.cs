@@ -5,7 +5,7 @@ using PhotoTufin.Model;
 
 namespace PhotoTufin.Repository;
 
-internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
+public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
 {
     /// <summary>
     /// By Using the constructor, database and table will be created if not existing.  
@@ -43,7 +43,7 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         using var conn = DbConnection();
         conn.Open();
         
-        // we have to make an inner request for duplicates by gruop and having. 
+        // we have to make an inner request for duplicates by group and having. 
         // a count > 1 means there a more than just one - so it is a duplicate
         var result = conn.Query<PhotoInfo>(
             @"SELECT * FROM PhotoInfo WHERE HashString IN 
@@ -60,7 +60,7 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
     /// </summary>
     /// <param name="diskInfoId"></param>
     /// <returns>List</returns>
-    public List<PhotoInfo> FindDuplicatesByDiskInfo(int diskInfoId)
+    public List<PhotoInfo> FindDuplicatesByDiskInfo(long diskInfoId)
     {
         using var conn = DbConnection();
         conn.Open();
@@ -136,7 +136,7 @@ internal class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
     /// Deletes all PhotoInfo of a DiskInfo (volume).   
     /// </summary>
     /// <param name="diskInfoId"></param>
-    public void DeleteByDiskInfo(int diskInfoId)
+    public void DeleteByDiskInfo(long diskInfoId)
     {
         using var conn = DbConnection();
         conn.Open();

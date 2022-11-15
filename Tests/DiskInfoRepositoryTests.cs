@@ -1,5 +1,6 @@
 using PhotoTufin.Model;
 using PhotoTufin.Repository;
+using Tests.DataProvider;
 
 namespace Tests;
 
@@ -12,7 +13,7 @@ public class DiskInfoRepositoryTests
         InterfaceType = "SCSI",
         MediaType = "Fixed hard disk media",
         Model = "WD_BLACK SN750 SE 1TB",
-        SerialNo = "E823_8FA6_BF53_0001_001B_444A_497C_45A4"
+        SerialNo = "E823_8FA6_BF53_0231_001B_444A_487C_75B4"
     };
 
     [SetUp]
@@ -51,21 +52,22 @@ public class DiskInfoRepositoryTests
     [Test]
     public void FindAllIsMoreThanOne()
     {
-        var info = DiskInfo;
-        Repository.Save(info);
-        info.SerialNo = "test";
-        Repository.Save(info);
+        var list = DiskInfoGenerator.generate(3);
+        foreach (var disk in list)
+        {
+            Repository.Save(disk);
+        }
         
         var actual = Repository.FindAll().Count;
         Assert.That(actual, Is.GreaterThan(1));
     }
     
     [Test]
-    public void SerialNoIsUnique()
+    public void UniqueSerialNoDuplicateIsIgnored()
     {
         var info = DiskInfo;
         Repository.Save(info);
-        Repository.Save(info);
+        Repository.Save(info); //ignored
         
         var actual = Repository.FindAll();
         Assert.That(actual, Has.Exactly(1).Items);

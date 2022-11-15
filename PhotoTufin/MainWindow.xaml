@@ -98,7 +98,7 @@
                     </Style>
                     <Style TargetType="{x:Type ListViewItem}">
                         <!-- path in toolTip -->
-                        <Setter Property="ToolTip" Value="{Binding Path}" />
+                        <Setter Property="ToolTip" Value="{Binding FilePath}" />
                         <!-- trigger bgColor on tuplet is true -->
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Tuplet}"
