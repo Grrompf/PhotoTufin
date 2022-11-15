@@ -147,20 +147,22 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
     }
 
     /// <summary>
-    /// Creates table if not existing. Primary key is autoimcremented while serialNo is UNIQUE
+    /// Creates table if not existing. Primary key is autoincremented while a combination of diskInfdoId, FileName
+    /// and FilePath is UNIQUE
     /// </summary>
     public sealed override void CreateTable()
     {
         const string sql = @"CREATE TABLE IF NOT EXISTS PhotoInfo
                       (
                          Id                             INTEGER PRIMARY KEY NOT NULL, 
-                         DiskInfoId                     INTEGER,
+                         DiskInfoId                     INTEGER NOT NULL,
                          FileName                       TEXT NOT NULL,
                          FilePath                       TEXT NOT NULL,
                          Size                           TEXT,
                          HashString                     TEXT NOT NULL,
                          Tuplet                         INTEGER,
-                         CreatedAt                      TEXT NOT NULL,                         
+                         CreatedAt                      TEXT NOT NULL,
+                         UNIQUE (DiskInfoId, FileName, FilePath),                        
                          CONSTRAINT fk_diskInfo
                             FOREIGN KEY (Id)
                             REFERENCES DiskInfo(Id)

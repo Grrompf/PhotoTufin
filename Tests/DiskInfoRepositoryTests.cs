@@ -22,6 +22,12 @@ public class DiskInfoRepositoryTests
         Repository.DropTable();
     }
     
+    [TearDown]
+    public void TearDown()
+    {
+        Repository.DropTable();
+    }
+    
     [Test]
     public void HasIdAfterSave()
     {

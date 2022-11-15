@@ -24,6 +24,12 @@ public class PhotoInfoRepositoryTests
         }
         DiskInfoList = list;
     }
+
+    [TearDown]
+    public void TearDown()
+    {
+        Repository.DropTable();
+    }
     
     [Test]
     public void HasIdAfterSave()
