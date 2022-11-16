@@ -3,8 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PhotoTufin"
         mc:Ignorable="d"
         Title="Photo Tuplet Finder" Height="450" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:MainWindow.ExitCommand}" Executed="mnuExit_Click"/>
+        <CommandBinding Command="{x:Static local:MainWindow.ScanCommand}" Executed="mnuOpen_Click"/>
+    </Window.CommandBindings>
     <DockPanel Margin="10">
         <Menu DockPanel.Dock="Top" HorizontalAlignment="Stretch">
             <Menu.ItemsPanel>
@@ -18,10 +23,10 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Header="Ordner" Grid.Column="0">
-                <MenuItem  Header="Öffnen" Click="mnuOpen_Click"/>
+            <MenuItem Header="_Datei" Grid.Column="0">
+                <MenuItem Header="_Scannen" InputGestureText="Ctrl+S" Command="{x:Static local:MainWindow.ScanCommand}" Click="mnuOpen_Click"/>
                 <Separator />
-                <MenuItem Header="Beenden" Click="mnuExit_Click"/>
+                <MenuItem Header="_Beenden" InputGestureText="Ctrl+X" Command="{x:Static local:MainWindow.ExitCommand}" Click="mnuExit_Click"/>
             </MenuItem>
             <MenuItem Name="Filter" Header="Filter" Grid.Column="1" IsEnabled="True">
                 <MenuItem Name="bmp" Header="bmp, dib"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
@@ -88,10 +93,26 @@
                 <MenuItem Header="_Signieren" />
             </MenuItem>
             <MenuItem Header="_Info"  Grid.Column="2" IsEnabled="True" HorizontalAlignment="Right" Click="mnuInfo_Click" />
-            
         </Menu>
+        <StatusBar Name="statusDiskInfo" Margin="0 5 0 0" DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="Collapsed">
+            <StatusBarItem>
+                <TextBlock Name="lblMedia" ToolTip="Media Typ" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Name="lblInterface" ToolTip="Interface" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Name="lblModel" ToolTip="Model" />
+            </StatusBarItem>
+            <Separator />
+            <StatusBarItem>
+                <TextBlock Name="lblSerialNo" ToolTip="Seriennummer" />
+            </StatusBarItem>
+        </StatusBar>
         <Grid DockPanel.Dock="Top">
-            <ListView Margin="10" Name="lbFiles" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListView Margin="0" Name="lbFiles" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
