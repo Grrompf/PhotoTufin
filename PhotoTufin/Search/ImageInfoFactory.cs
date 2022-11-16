@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.Versioning;
 using System.Windows.Controls;
+using PhotoTufin.Model;
+using PhotoTufin.Repository;
 using PhotoTufin.Search.Duplication;
 using PhotoTufin.Search.Filter;
 using PhotoTufin.Search.SystemIO;
@@ -31,6 +34,21 @@ public class ImageInfoFactory
     {
         // get wmi infos of the hdd
         HDDInfo = DiskReader.GetDiskInfo();
+        
+        //REFACTOR
+        var repository = new DiskInfoRepository();
+        if (HDDInfo?.SerialNo != null && null == repository.FindBySerialNo(HDDInfo.SerialNo))
+        {
+            var diskInfo = new DiskInfo
+            {
+                Model = HDDInfo.Model,
+                InterfaceType = HDDInfo.InterfaceType,
+                MediaType = HDDInfo.MediaType,
+                SerialNo = HDDInfo.SerialNo
+            };
+            repository.Save(diskInfo);
+        }
+        //REFACTOR
         
         var fileExtensions = ImageFilter.makeFilter(Filter);
         var search = new WalkFolders(SelectedPath, fileExtensions);

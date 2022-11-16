@@ -5,10 +5,14 @@ using System.Runtime.Versioning;
 
 namespace PhotoTufin.Search.SystemIO;
 
+/// <summary>
+/// Get the system information of the data storage drive you nare currently scanning for files.
+/// This uses Windows-specific libraries making this windows-only. 
+/// </summary>
 [SupportedOSPlatform("windows")]
 public class HDDInfoReader
 {
-    public HDDInfo? DiskInfo { get; set; }
+    private HDDInfo? DiskInfo { get; set; }
 
     private string FullPath { get;}
     
