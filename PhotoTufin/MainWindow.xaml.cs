@@ -43,6 +43,10 @@ namespace PhotoTufin
                 lbFiles.Items.Add(row);
             }
             
+            diskInfoBox.Items.Add(factory.HDDInfo?.Model);  
+            diskInfoBox.Text = factory.HDDInfo?.Model;
+            
+            
             lblInterface.Text = factory.HDDInfo?.InterfaceType;
             lblMedia.Text = factory.HDDInfo?.MediaType;
             lblModel.Text = factory.HDDInfo?.Model;

@@ -24,7 +24,7 @@
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
             <MenuItem Header="_Datei" Grid.Column="0">
-                <MenuItem Header="_Scannen" InputGestureText="Ctrl+S" Command="{x:Static local:MainWindow.ScanCommand}" Click="mnuOpen_Click"/>
+                <MenuItem Header="_Scannen" InputGestureText="Ctrl+S" Command="{x:Static local:MainWindow.ScanCommand}" />
                 <Separator />
                 <MenuItem Header="_Beenden" InputGestureText="Ctrl+X" Command="{x:Static local:MainWindow.ExitCommand}" Click="mnuExit_Click"/>
             </MenuItem>
@@ -95,6 +95,9 @@
             <MenuItem Header="_Info"  Grid.Column="2" IsEnabled="True" HorizontalAlignment="Right" Click="mnuInfo_Click" />
         </Menu>
         <StatusBar Name="statusDiskInfo" Margin="0 5 0 0" DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="Collapsed">
+            <StatusBarItem>
+                <ComboBox Name="diskInfoBox" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" />
+            </StatusBarItem>
             <StatusBarItem>
                 <TextBlock Name="lblMedia" ToolTip="Media Typ" />
             </StatusBarItem>
