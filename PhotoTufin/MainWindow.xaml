@@ -96,7 +96,7 @@
         </Menu>
         <StatusBar Name="statusDiskInfo" Margin="0 5 0 0" DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="Collapsed">
             <StatusBarItem>
-                <ComboBox Name="diskInfoBox" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" />
+                <ComboBox Name="diskInfoBox" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" SelectionChanged="DiskInfoBox_OnSelectionChanged"/>
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock Name="lblMedia" ToolTip="Media Typ" />
@@ -114,6 +114,30 @@
                 <TextBlock Name="lblSerialNo" ToolTip="Seriennummer" />
             </StatusBarItem>
         </StatusBar>
+        <Grid DockPanel.Dock="Top" Margin="0 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ListView Margin="0" Name="viewDiskInfo" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="WhiteSmoke">
+                <ListView.Resources>
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Model}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding InterfaceType}" />
+                        <GridViewColumn DisplayMemberBinding="{Binding MediaType}" />
+                        <GridViewColumn DisplayMemberBinding="{Binding SerialNo}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
         <Grid DockPanel.Dock="Top">
             <ListView Margin="0" Name="lbFiles" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <ListView.Resources>

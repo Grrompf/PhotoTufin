@@ -54,6 +54,25 @@ public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
     }
     
     /// <summary>
+    /// Returns the model by its unique key or null if not found.
+    /// </summary>
+    /// <param name="displayName"></param>
+    /// <returns></returns>
+    public DiskInfo? FindByDisplayName(string displayName)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+        
+        var result = conn.QueryFirstOrDefault<DiskInfo>(
+            @"SELECT * FROM DiskInfo WHERE Model = @displayName",
+            new { displayName }
+        );
+        conn.Close();
+
+        return result;
+    }
+    
+    /// <summary>
     /// Returns a list of all DiskInfo found in database.
     /// </summary>
     /// <returns>List</returns>

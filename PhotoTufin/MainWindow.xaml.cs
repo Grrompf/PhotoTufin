@@ -1,10 +1,13 @@
 ﻿using System.Runtime.Versioning;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using PhotoTufin.Data;
 using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
+using ComboBox = System.Windows.Controls.ComboBox;
 
 namespace PhotoTufin
 {
@@ -20,6 +23,7 @@ namespace PhotoTufin
             InitializeComponent();
             Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
+            InitDiskComboBox();
         }
         
         private void mnuOpen_Click(object sender, RoutedEventArgs e)
@@ -38,14 +42,19 @@ namespace PhotoTufin
             var imageInfos = factory.findImages();
             
             // adds each data found to list
-            foreach (var row in imageInfos)
-            {
-                lbFiles.Items.Add(row);
-            }
+            // foreach (var row in imageInfos)
+            // {
+            //     lbFiles.Items.Add(row);
+            // }
+
+            //REFACTOR
+            // set the scan result as selected item
+            var diskInfo = DiskInfoFactory.GetDiskByScanResult(factory.HDDInfo);
             
-            diskInfoBox.Items.Add(factory.HDDInfo?.Model);  
-            diskInfoBox.Text = factory.HDDInfo?.Model;
-            
+            InitDiskComboBox();
+            diskInfoBox.SelectedItem = diskInfo == null ? "" : diskInfo.Model;
+            viewDiskInfo.Items.Add(diskInfo);
+            //REFACTOR
             
             lblInterface.Text = factory.HDDInfo?.InterfaceType;
             lblMedia.Text = factory.HDDInfo?.MediaType;
@@ -85,6 +94,28 @@ namespace PhotoTufin
         {
             var about = new About();
             about.ShowDialog();
+        }
+
+        private void InitDiskComboBox()
+        {
+            diskInfoBox.Items.Clear();
+            var diskList = DiskInfoFactory.GetAllDisks();
+            foreach (var disk in diskList)
+            {
+                diskInfoBox.Items.Add(disk.Model);
+            }
+        }
+
+        private void DiskInfoBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = ((ComboBox)sender).SelectedItem.ToString();
+            var photoList = PhotoInfoFactory.GetDuplicatesByDiskInfo(selectedItem);
+            
+            lbFiles.Items.Clear();
+            foreach (var row in photoList)
+            {
+                lbFiles.Items.Add(row);
+            }
         }
     }
 }
