@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using PhotoTufin.Data;
+using PhotoTufin.Repository;
 using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
@@ -102,6 +103,9 @@ namespace PhotoTufin
         /// <param name="e"></param>
         private void DiskInfoBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (((ComboBox)sender).SelectedItem == null)
+                return;
+
             var displayName = ((ComboBox)sender).SelectedItem.ToString();
             ShowDiskInfo(displayName);
             ShowPhotoDuplicates(displayName);
@@ -130,9 +134,35 @@ namespace PhotoTufin
             {
                 viewDiskInfo.Items.Clear();
                 viewDiskInfo.Items.Add(diskInfo);
-                viewDiskInfo.Visibility = Visibility.Visible;
-            } else
-                viewDiskInfo.Visibility = Visibility.Collapsed;
+            }
+            viewDiskInfo.Visibility = diskInfo == null ? Visibility.Collapsed : Visibility.Visible;
+            btnClear.IsEnabled = diskInfo != null;
+        }
+
+        private void ButtonClear_OnClick(object sender, RoutedEventArgs e)
+        {
+            var displayName = diskInfoBox.SelectedItem.ToString();
+            if (displayName == null)
+                return;
+            
+            var diskInfo = DiskInfoFactory.GetDiskInfoByDisplayName(displayName);
+            if (diskInfo == null)
+                return;
+
+            var photoInfoRepo = new PhotoInfoRepository();
+            photoInfoRepo.DeleteByDiskInfo(diskInfo.Id);
+            
+            var diskInfoRepo = new DiskInfoRepository();
+            diskInfoRepo.DeleteById(diskInfo.Id);
+            
+            //here you assign the values to other List
+
+            diskInfoBox.SelectedItem = null;
+            viewPhotoList.Items.Clear();
+            diskInfoBox.Items.Remove(displayName);
+            viewDiskInfo.Items.Clear();
+            viewDiskInfo.Visibility = Visibility.Collapsed;
+            btnClear.IsEnabled = false;
         }
     }
 }

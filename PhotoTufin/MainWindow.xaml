@@ -62,7 +62,7 @@
         </Menu>
         <DockPanel Name="dbMenuBar" Margin="0 10 0 0" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="AliceBlue">
             <ComboBox Name="diskInfoBox" Margin="5,5,10,5" MinWidth="150" MinHeight="10" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionChanged="DiskInfoBox_OnSelectionChanged"/>
-            <Button Margin="5,5,10,5" MinWidth="100" Content="Disk löschen" ToolTip="Löscht Daten des ausgewählten DiskInfos" />
+            <Button Name="btnClear" Margin="5,5,10,5" MinWidth="100" Content="Disk löschen" IsEnabled="false" ToolTip="Löscht Daten des ausgewählten DiskInfos" Click="ButtonClear_OnClick"/>
             <Button Margin="5,5,10,5" MaxWidth="100" Content="DB löschen" ToolTip="Löscht alle Daten" DockPanel.Dock="Right"/>
         </DockPanel>
         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="AliceBlue">
