@@ -57,7 +57,7 @@ public class HDDInfoReader
     /// <param name="partition"></param>
     /// <returns>bool</returns>
     /// <exception cref="Exception"></exception>
-    private HDDInfo? GetHddInfoByPartition(string partition)
+    private static HDDInfo? GetHddInfoByPartition(string partition)
     {
         try
         {
@@ -82,7 +82,7 @@ public class HDDInfoReader
     /// </summary>
     /// <param name="mngObject"></param>
     /// <exception cref="Exception"></exception>
-    private HDDInfo? GetWmiHdd(ManagementBaseObject mngObject)
+    private static HDDInfo? GetWmiHdd(ManagementBaseObject mngObject)
     {
         try
         {
@@ -92,14 +92,27 @@ public class HDDInfoReader
 
             foreach (var driveObject in drive.Get())
             {
-                DiskInfo = new HDDInfo
+                if (
+                    driveObject["Model"] == null ||
+                    driveObject["SerialNumber"] == null ||
+                    driveObject["InterfaceType"] == null ||
+                    driveObject["MediaType"] == null
+                ) 
                 {
-                    MediaType = driveObject["MediaType"].ToString(),
-                    Model = driveObject["Model"].ToString(),
-                    SerialNo = driveObject["SerialNumber"].ToString(),
-                    InterfaceType = driveObject["InterfaceType"].ToString()
-                };
-                return DiskInfo;
+                    throw new Exception("Cannot read this disk drive");
+                }
+
+                var model = driveObject["Model"].ToString();
+                var serialNo = driveObject["SerialNumber"].ToString();
+                
+                if (model == null || serialNo == null) 
+                {
+                    throw new Exception("Cannot access essential disk drive information");
+                }
+                var interfaceType = driveObject["InterfaceType"].ToString();
+                var media = driveObject["MediaType"].ToString();
+
+                return new HDDInfo(model, serialNo, interfaceType, media);
             }
 
             return null;

@@ -18,5 +18,10 @@ public static class DiskInfoFactory
     {
         return info == null ? null : Repository.FindBySerialNo(info.SerialNo);
     }
+
+    public static DiskInfo? GetDiskInfoByDisplayName(string? displayName)
+    {
+        return displayName == null ? null : Repository.FindByDisplayName(displayName);
+    }
     
 }

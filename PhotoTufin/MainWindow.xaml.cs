@@ -26,41 +26,30 @@ namespace PhotoTufin
             InitDiskComboBox();
         }
         
-        private void mnuOpen_Click(object sender, RoutedEventArgs e)
+        private void mnuScan_Click(object sender, RoutedEventArgs e)
         {
             
             using var fbd = new FolderBrowserDialog();
             
             // remove tbl rows  
-            lbFiles.Items.Clear();
+            viewPhotoList.Items.Clear();
             
+            // directory selection
             var result = fbd.ShowDialog();
             if (result != OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
             
-            // find files and duplicates
+            // find files and duplicates -> saves new files to db
             var factory = new ImageInfoFactory(fbd.SelectedPath, Filter);
             var imageInfos = factory.findImages();
             
-            // adds each data found to list
-            // foreach (var row in imageInfos)
-            // {
-            //     lbFiles.Items.Add(row);
-            // }
-
-            //REFACTOR
             // set the scan result as selected item
             var diskInfo = DiskInfoFactory.GetDiskByScanResult(factory.HDDInfo);
             
             InitDiskComboBox();
             diskInfoBox.SelectedItem = diskInfo == null ? "" : diskInfo.Model;
-            viewDiskInfo.Items.Add(diskInfo);
             //REFACTOR
             
-            lblInterface.Text = factory.HDDInfo?.InterfaceType;
-            lblMedia.Text = factory.HDDInfo?.MediaType;
-            lblModel.Text = factory.HDDInfo?.Model;
-            lblSerialNo.Text = factory.HDDInfo?.SerialNo;
-            statusDiskInfo.Visibility = Visibility.Visible;
+            dbMenuBar.Visibility = Visibility.Visible;
             
             lblNoDuplicates.Text = $"{factory.NoDuplicates.ToString()} Duplikate";
             lblSelectedDirectory.Text = $"Startverzeichnis: {fbd.SelectedPath}";
@@ -72,6 +61,9 @@ namespace PhotoTufin
             Current.Shutdown();
         }
         
+        /// <summary>
+        /// Keybinding command for a shortcut to exit.
+        /// </summary>
         public static readonly RoutedCommand ExitCommand = 
         new RoutedUICommand("Exit", "ExitCommand", typeof(MainWindow), new InputGestureCollection(
                 new InputGesture[]
@@ -81,21 +73,15 @@ namespace PhotoTufin
             )
         );
         
-        public static readonly RoutedCommand ScanCommand = 
-            new RoutedUICommand("Scan", "ScanCommand", typeof(MainWindow), new InputGestureCollection(
-                    new InputGesture[]
-                    {
-                        new KeyGesture(Key.S, ModifierKeys.Control)
-                    }
-                )
-            );
-
         private void mnuInfo_Click(object sender, RoutedEventArgs e)
         {
             var about = new About();
             about.ShowDialog();
         }
 
+        /// <summary>
+        /// Init comboBox with values from database.
+        /// </summary>
         private void InitDiskComboBox()
         {
             diskInfoBox.Items.Clear();
@@ -104,18 +90,49 @@ namespace PhotoTufin
             {
                 diskInfoBox.Items.Add(disk.Model);
             }
+
+            //shows mnBar for db action
+            dbMenuBar.Visibility = diskInfoBox.Items.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// ComboBox for selecting a diskInfo
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DiskInfoBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = ((ComboBox)sender).SelectedItem.ToString();
-            var photoList = PhotoInfoFactory.GetDuplicatesByDiskInfo(selectedItem);
+            var displayName = ((ComboBox)sender).SelectedItem.ToString();
+            ShowDiskInfo(displayName);
+            ShowPhotoDuplicates(displayName);
+        }
+
+        private void ShowPhotoDuplicates(string? displayName)
+        {
+            if (displayName == null)
+                return;
             
-            lbFiles.Items.Clear();
+            var photoList = PhotoInfoFactory.GetDuplicatesByDiskInfo(displayName);    
+            viewPhotoList.Items.Clear();
             foreach (var row in photoList)
             {
-                lbFiles.Items.Add(row);
+                viewPhotoList.Items.Add(row);
             }
+        }
+
+        private void ShowDiskInfo(string? displayName)
+        {
+            if (displayName == null)
+                return;
+            
+            var diskInfo = DiskInfoFactory.GetDiskInfoByDisplayName(displayName);
+            if (diskInfo != null)
+            {
+                viewDiskInfo.Items.Clear();
+                viewDiskInfo.Items.Add(diskInfo);
+                viewDiskInfo.Visibility = Visibility.Visible;
+            } else
+                viewDiskInfo.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -29,26 +29,16 @@ public class ImageInfoFactory
     private HDDInfoReader DiskReader { get; }
     
     private MenuItem Filter { get; }
+
+    private DiskInfoRepository DiskInfoRepository { get; } = new();
+    
+    private PhotoInfoRepository PhotoInfoRepository { get; } = new();
     
     public List<ImageInfo> findImages()
     {
         // get wmi infos of the hdd
         HDDInfo = DiskReader.GetDiskInfo();
-        
-        //REFACTOR
-        var repository = new DiskInfoRepository();
-        if (HDDInfo?.SerialNo != null && null == repository.FindBySerialNo(HDDInfo.SerialNo))
-        {
-            var diskInfo = new DiskInfo
-            {
-                Model = HDDInfo.Model,
-                InterfaceType = HDDInfo.InterfaceType,
-                MediaType = HDDInfo.MediaType,
-                SerialNo = HDDInfo.SerialNo
-            };
-            repository.Save(diskInfo);
-        }
-        //REFACTOR
+        var diskInfo = CreateDiskInfo(HDDInfo);
         
         var fileExtensions = ImageFilter.makeFilter(Filter);
         var search = new WalkFolders(SelectedPath, fileExtensions);
@@ -56,6 +46,44 @@ public class ImageInfoFactory
 
         NoDuplicates = DuplicateFinder.findDuplicates(ref imageInfos);
 
+        foreach (var image in imageInfos)
+        {
+            CreatePhotoInfo(diskInfo, image);
+        }
+
         return imageInfos;
+    }
+
+    private DiskInfo? CreateDiskInfo(HDDInfo? hddInfo)
+    {
+        if (hddInfo?.SerialNo == null) return null;
+        
+        var diskInfo = DiskInfoRepository.FindBySerialNo(hddInfo.SerialNo);
+        if (diskInfo != null) return diskInfo;
+        
+        diskInfo = new DiskInfo
+        {
+            Model = hddInfo.Model,
+            InterfaceType = hddInfo.InterfaceType,
+            MediaType = hddInfo.MediaType,
+            SerialNo = hddInfo.SerialNo
+        };
+        DiskInfoRepository.Save(diskInfo);
+        
+        return diskInfo;
+    }
+    
+    private void CreatePhotoInfo(IModel? diskInfo, ImageInfo imageInfo)
+    {
+        if (diskInfo == null || imageInfo.HashString == null) return;
+        var photo = new PhotoInfo
+        {
+            DiskInfoId = diskInfo.Id,
+            HashString = imageInfo.HashString,
+            FileName = imageInfo.FileName,
+            FilePath = imageInfo.FilePath,
+            Size = imageInfo.Size
+        };
+        PhotoInfoRepository.Save(photo);
     }
 }

@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhotoTufin"
+        xmlns:model="clr-namespace:PhotoTufin.Model"
         mc:Ignorable="d"
         Title="Photo Tuplet Finder" Height="450" Width="800">
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.ExitCommand}" Executed="mnuExit_Click"/>
-        <CommandBinding Command="{x:Static local:MainWindow.ScanCommand}" Executed="mnuOpen_Click"/>
     </Window.CommandBindings>
     <DockPanel Margin="10">
         <Menu DockPanel.Dock="Top" HorizontalAlignment="Stretch">
@@ -23,17 +23,18 @@
                     </Grid>
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
-            <MenuItem Header="_Datei" Grid.Column="0">
-                <MenuItem Header="_Scannen" InputGestureText="Ctrl+S" Command="{x:Static local:MainWindow.ScanCommand}" />
+            <MenuItem  Grid.Column="0" Header="_Datei">
+                <MenuItem Header="_Not" />
                 <Separator />
                 <MenuItem Header="_Beenden" InputGestureText="Ctrl+X" Command="{x:Static local:MainWindow.ExitCommand}" Click="mnuExit_Click"/>
             </MenuItem>
-            <MenuItem Name="Filter" Header="Filter" Grid.Column="1" IsEnabled="True">
-                <MenuItem Name="bmp" Header="bmp, dib"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
-                <MenuItem Name="gif" Header="gif"  ToolTip="Graphics Interchange Format" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Name="jpg" Header="jpg, jpeg, jpe, jfif"  ToolTip="Joint Photographic Expert Group" IsCheckable="True" IsChecked="True" />
-                <MenuItem Name="png" Header="png"  ToolTip="Portable Network Graphics" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Name="tif" Header="tif, tiff"  ToolTip="Tagged Image File" IsCheckable="True" IsChecked="True"/>
+            <MenuItem Grid.Column="1" Header="_Scannen" ToolTip="Öffnet Verzeichnisauswahl um Bilder einzulesen" Click="mnuScan_Click" />
+            <MenuItem Grid.Column="2" Header="Filter" Name="Filter" ToolTip="Setzt den Dateifilter beim Einlesen von Bildern">
+                <MenuItem Header="bmp, dib"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
+                <MenuItem Header="gif"  ToolTip="Graphics Interchange Format" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="jpg, jpeg, jpe, jfif"  ToolTip="Joint Photographic Expert Group" IsCheckable="True" IsChecked="True" />
+                <MenuItem Header="png"  ToolTip="Portable Network Graphics" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="tif, tiff"  ToolTip="Tagged Image File" IsCheckable="True" IsChecked="False"/>
                 <Separator Margin="0,5,0,0">
                     <Separator.Template>
                         <ControlTemplate TargetType="Separator">
@@ -51,119 +52,54 @@
                 <MenuItem Header="dng"  ToolTip="Leica" IsCheckable="True" IsChecked="False"/>
                 <MenuItem Header="kdc"  ToolTip="Kodac" IsCheckable="True" IsChecked="False"/>
                 <MenuItem Header="mdc, mew"  ToolTip="Minolta" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="nef"  ToolTip="Nikon Electric Format" IsCheckable="True" IsChecked="False"/>
+                <MenuItem Header="nef"  ToolTip="Nikon Electric Format" IsCheckable="True" IsChecked="true"/>
                 <MenuItem Header="orf"  ToolTip="Olympus Raw Image File" IsCheckable="True" IsChecked="False"/>
                 <MenuItem Header="pef"  ToolTip="Pentax Electronic Format" IsCheckable="True" IsChecked="False"/>
                 <MenuItem Header="raf"  ToolTip="Fujifilm" IsCheckable="True" IsChecked="False"/>
                 <MenuItem Header="raw"  ToolTip="Rohbildformat" IsCheckable="True" IsChecked="True"/>
-                <Separator Margin="0,5,0,0">
-                    <Separator.Template>
-                        <ControlTemplate TargetType="Separator">
-                            <StackPanel HorizontalAlignment="Stretch">
-                                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" Foreground="Gray" Text="Adobe" />
-                                <Separator/>
-                            </StackPanel>
-                        </ControlTemplate>
-                    </Separator.Template>
-                </Separator>
-                <MenuItem Header="ai"   ToolTip="Adobe Illustrator Document" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="indd" ToolTip="Indesign Document" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="pdf"  ToolTip="Portable Document Format" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="psd"  ToolTip="Photoshop Document" IsCheckable="True" IsChecked="False"/>
-                <Separator Margin="0,5,0,0">
-                    <Separator.Template>
-                        <ControlTemplate TargetType="Separator">
-                            <StackPanel HorizontalAlignment="Stretch">
-                                <TextBlock HorizontalAlignment="Center" FontStyle="Italic" Foreground="Gray" Text="Andere" />
-                                <Separator/>
-                            </StackPanel>
-                        </ControlTemplate>
-                    </Separator.Template>
-                </Separator>
-                <MenuItem Header="eps"  ToolTip="Encapsulated PostScript" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="svg"  ToolTip="Scalable Vector Graphics" IsCheckable="True" IsChecked="False"/>
-                <MenuItem Header="swf"  ToolTip="Shockwave Flash" IsCheckable="True" IsChecked="False"/>
-                
-                        
-                    
             </MenuItem>
-            <MenuItem Header="_Anzeige" Grid.Column="2" IsEnabled="False">
-                <MenuItem  Header="_Verifizieren" />
-                <Separator />
-                <MenuItem Header="_Signieren" />
-            </MenuItem>
-            <MenuItem Header="_Info"  Grid.Column="2" IsEnabled="True" HorizontalAlignment="Right" Click="mnuInfo_Click" />
+            <MenuItem Header="_Info"  Grid.Column="2" HorizontalAlignment="Right" Click="mnuInfo_Click" />
         </Menu>
-        <StatusBar Name="statusDiskInfo" Margin="0 5 0 0" DockPanel.Dock="Top" VerticalAlignment="Top" Visibility="Collapsed">
-            <StatusBarItem>
-                <ComboBox Name="diskInfoBox" Width="200" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,0,5,0" SelectionChanged="DiskInfoBox_OnSelectionChanged"/>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock Name="lblMedia" ToolTip="Media Typ" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Name="lblInterface" ToolTip="Interface" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Name="lblModel" ToolTip="Model" />
-            </StatusBarItem>
-            <Separator />
-            <StatusBarItem>
-                <TextBlock Name="lblSerialNo" ToolTip="Seriennummer" />
-            </StatusBarItem>
-        </StatusBar>
-        <Grid DockPanel.Dock="Top" Margin="0 5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <ListView Margin="0" Name="viewDiskInfo" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="WhiteSmoke">
-                <ListView.Resources>
-                    <Style TargetType="{x:Type GridViewColumnHeader}">
-                        <Setter Property="HorizontalContentAlignment" Value="Left" />
-                        <Setter Property="Visibility" Value="Collapsed" />
-                    </Style>
-                </ListView.Resources>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Model}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding InterfaceType}" />
-                        <GridViewColumn DisplayMemberBinding="{Binding MediaType}" />
-                        <GridViewColumn DisplayMemberBinding="{Binding SerialNo}" />
-                    </GridView>
-                </ListView.View>
+        <DockPanel Name="dbMenuBar" Margin="0 10 0 0" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="AliceBlue">
+            <ComboBox Name="diskInfoBox" Margin="5,5,10,5" MinWidth="150" MinHeight="10" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionChanged="DiskInfoBox_OnSelectionChanged"/>
+            <Button Margin="5,5,10,5" MinWidth="100" Content="Disk löschen" ToolTip="Löscht Daten des ausgewählten DiskInfos" />
+            <Button Margin="5,5,10,5" MaxWidth="100" Content="DB löschen" ToolTip="Löscht alle Daten" DockPanel.Dock="Right"/>
+        </DockPanel>
+        <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="AliceBlue">
+            <ListView Name="viewDiskInfo" Background="AliceBlue" BorderThickness="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type model:DiskInfo}">
+                        <WrapPanel>
+                            <Label VerticalAlignment="Center" Foreground="Gray" Content="Model:"/>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Model}" FontWeight="Bold" Margin="0,0,10,0"/>
+                            <Label VerticalAlignment="Center" Foreground="Gray" Content="Anschluß:"/>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding InterfaceType}" Margin="0,0,10,0"/>
+                            <Label VerticalAlignment="Center" Foreground="Gray" Content="Typ:"/>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding MediaType}" Margin="0,0,10,0"/>
+                            <Label VerticalAlignment="Center"  Foreground="Gray" Content="Serien Nr.:"/>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding SerialNo}"/>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
-        </Grid>
+        </DockPanel>
         <Grid DockPanel.Dock="Top">
-            <ListView Margin="0" Name="lbFiles" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListView Margin="0" Name="viewPhotoList" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
                     </Style>
                     <Style TargetType="{x:Type ListViewItem}">
                         <!-- path in toolTip -->
-                        <Setter Property="ToolTip" Value="{Binding FilePath}" />
-                        <!-- trigger bgColor on tuplet is true -->
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Tuplet}"
-                                         Value="true">
-                                <Setter Property="Background"
-                                        Value="LimeGreen" />
-                            </DataTrigger>
-                        </Style.Triggers>
+                        <Setter Property="ToolTip" Value="{Binding (model:PhotoInfo.FilePath)}" />
                     </Style>
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Datei" Width="350" DisplayMemberBinding="{Binding FileName}" />
-                        <GridViewColumn Header="Hash" Width="180" DisplayMemberBinding="{Binding HashString}" />
-                        <GridViewColumn Header="Größe (kB)" Width="70"  DisplayMemberBinding="{Binding Size}" />
-                        <GridViewColumn Header="Datum" Width="90" DisplayMemberBinding="{Binding Date}" />
-                        <GridViewColumn Header="Tuplet" Width="60" DisplayMemberBinding="{Binding Tuplet}" />
+                        <GridViewColumn Header="Datei" Width="200" DisplayMemberBinding="{Binding (model:PhotoInfo.FileName)}" />
+                        <GridViewColumn Header="Hash" Width="200" DisplayMemberBinding="{Binding (model:PhotoInfo.HashString)}" />
+                        <GridViewColumn Header="Größe (kB)" Width="80" DisplayMemberBinding="{Binding (model:PhotoInfo.Size)}" />
+                        <GridViewColumn Header="Datum" Width="200" DisplayMemberBinding="{Binding (model:PhotoInfo.CreatedAt)}" />
                     </GridView>
                 </ListView.View>
             </ListView>
