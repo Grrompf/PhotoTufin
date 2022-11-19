@@ -21,7 +21,42 @@ public static class DiskInfoFactory
 
     public static DiskInfo? GetDiskInfoByDisplayName(string? displayName)
     {
-        return displayName == null ? null : Repository.FindByDisplayName(displayName);
+        return displayName == null ? null : DiskInfoRepository.FindByDisplayName(displayName);
     }
     
+    public static bool DeleteDiskAndPhotoData(string displayName)
+    {
+        var diskInfo = GetDiskInfoByDisplayName(displayName);
+        if (diskInfo == null)
+            return false;
+
+        var photoInfoRepo = new PhotoInfoRepository();
+        photoInfoRepo.DeleteByDiskInfo(diskInfo.Id);
+            
+        var diskInfoRepo = new DiskInfoRepository();
+        diskInfoRepo.DeleteById(diskInfo.Id);
+
+        return true;
+    }
+
+    public static string CreateUniqueDisplayName(string model)
+    {
+        var words = model.Split(' ');
+
+        var displayName = "";
+        foreach (var word in words)
+        {
+            displayName += $"{word} ";
+            if (displayName.Length > 14)
+                break;
+        }
+        
+        // get next number
+        var nextNumber = DiskInfoRepository.GetModelCount(model) + 1;
+        displayName += nextNumber;
+        
+
+        return displayName;
+
+    }
 }

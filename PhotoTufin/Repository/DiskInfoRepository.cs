@@ -56,15 +56,34 @@ public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
     /// <summary>
     /// Returns the model by its unique key or null if not found.
     /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public static int GetModelCount(string model)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+        
+        var result = conn.ExecuteScalar<int>(
+            @"SELECT COUNT(*) FROM DiskInfo WHERE Model = @model",
+            new { model }
+        );
+        conn.Close();
+
+        return result;
+    }
+    
+    /// <summary>
+    /// Returns the model by its unique key or null if not found.
+    /// </summary>
     /// <param name="displayName"></param>
     /// <returns></returns>
-    public DiskInfo? FindByDisplayName(string displayName)
+    public static DiskInfo? FindByDisplayName(string displayName)
     {
         using var conn = DbConnection();
         conn.Open();
         
         var result = conn.QueryFirstOrDefault<DiskInfo>(
-            @"SELECT * FROM DiskInfo WHERE Model = @displayName",
+            @"SELECT * FROM DiskInfo WHERE DisplayName = @displayName",
             new { displayName }
         );
         conn.Close();
@@ -99,8 +118,8 @@ public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
         // select query is for setting the Id of the model
         diskInfo.Id = conn.Query<long>(
             @"INSERT OR IGNORE INTO DiskInfo 
-                    ( InterfaceType, MediaType, Model, SerialNo, CreatedAt ) VALUES 
-                    ( @InterfaceType, @MediaType, @Model, @SerialNo, @CreatedAt );
+                    ( InterfaceType, MediaType, Model, DisplayName, SerialNo, CreatedAt ) VALUES 
+                    ( @InterfaceType, @MediaType, @Model, @DisplayName, @SerialNo, @CreatedAt );
                     SELECT last_insert_rowid()", diskInfo
             ).First();
         
@@ -112,7 +131,7 @@ public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
     /// Make sure, you have cleared the dependant data by
     /// using i.e. "DeleteByDiskInfo(int diskInfoId)". 
     /// </summary>
-    /// <param name="diskInfoId"></param>
+    /// <param name="id"></param>
     public void DeleteById(long id)
     {
         using var conn = DbConnection();
@@ -131,7 +150,8 @@ public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
         const string sql = @"CREATE TABLE IF NOT EXISTS DiskInfo
                       (
                          Id                             INTEGER PRIMARY KEY NOT NULL, 
-                         SerialNo                       TEXT NOT NULL UNIQUE ,
+                         SerialNo                       TEXT NOT NULL UNIQUE,
+                         DisplayName                    TEXT NOT NULL UNIQUE,
                          InterfaceType                  TEXT,
                          MediaType                      TEXT,
                          Model                          TEXT NOT NULL,

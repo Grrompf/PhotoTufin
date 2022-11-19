@@ -31,6 +31,11 @@ public class DiskInfo : IModel
     public string Model { get; set; } = null!;
     
     /// <summary>
+    /// eg WD_BLACK SN750 1
+    /// </summary>
+    public string DisplayName { get; set; } = null!;
+    
+    /// <summary>
     /// when this model was created 
     /// </summary>
     public DateTime CreatedAt { get; set; } = DateTime.Now;

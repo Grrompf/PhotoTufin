@@ -4,7 +4,6 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using PhotoTufin.Data;
-using PhotoTufin.Repository;
 using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
@@ -18,7 +17,6 @@ namespace PhotoTufin
     [SupportedOSPlatform("windows")]
     public partial class MainWindow
     {
-        
         public MainWindow()
         {
             InitializeComponent();
@@ -47,7 +45,7 @@ namespace PhotoTufin
             var diskInfo = DiskInfoFactory.GetDiskByScanResult(factory.HDDInfo);
             
             InitDiskComboBox();
-            diskInfoBox.SelectedItem = diskInfo == null ? "" : diskInfo.Model;
+            diskInfoBox.SelectedItem = diskInfo?.DisplayName;
             //REFACTOR
             
             dbMenuBar.Visibility = Visibility.Visible;
@@ -89,7 +87,7 @@ namespace PhotoTufin
             var diskList = DiskInfoFactory.GetAllDisks();
             foreach (var disk in diskList)
             {
-                diskInfoBox.Items.Add(disk.Model);
+                diskInfoBox.Items.Add(disk.DisplayName);
             }
 
             //shows mnBar for db action
@@ -144,24 +142,22 @@ namespace PhotoTufin
             var displayName = diskInfoBox.SelectedItem.ToString();
             if (displayName == null)
                 return;
-            
-            var diskInfo = DiskInfoFactory.GetDiskInfoByDisplayName(displayName);
-            if (diskInfo == null)
+
+            if (!DiskInfoFactory.DeleteDiskAndPhotoData(displayName))
                 return;
-
-            var photoInfoRepo = new PhotoInfoRepository();
-            photoInfoRepo.DeleteByDiskInfo(diskInfo.Id);
             
-            var diskInfoRepo = new DiskInfoRepository();
-            diskInfoRepo.DeleteById(diskInfo.Id);
-            
-            //here you assign the values to other List
-
+            // reset selection and remove item from comboBox
             diskInfoBox.SelectedItem = null;
-            viewPhotoList.Items.Clear();
             diskInfoBox.Items.Remove(displayName);
+            
+            // clear and hide the diskInfo bar 
             viewDiskInfo.Items.Clear();
             viewDiskInfo.Visibility = Visibility.Collapsed;
+            
+            // clear photo list
+            viewPhotoList.Items.Clear();
+            
+            // disable btn (no selection)
             btnClear.IsEnabled = false;
         }
     }

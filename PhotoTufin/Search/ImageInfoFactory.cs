@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 using System.Windows.Controls;
+using PhotoTufin.Data;
 using PhotoTufin.Model;
 using PhotoTufin.Repository;
 using PhotoTufin.Search.Duplication;
@@ -60,9 +61,12 @@ public class ImageInfoFactory
         
         var diskInfo = DiskInfoRepository.FindBySerialNo(hddInfo.SerialNo);
         if (diskInfo != null) return diskInfo;
+
+        var displayName = DiskInfoFactory.CreateUniqueDisplayName(hddInfo.Model);
         
         diskInfo = new DiskInfo
         {
+            DisplayName = displayName,
             Model = hddInfo.Model,
             InterfaceType = hddInfo.InterfaceType,
             MediaType = hddInfo.MediaType,
