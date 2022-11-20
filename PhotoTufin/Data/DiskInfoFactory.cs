@@ -1,14 +1,16 @@
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using PhotoTufin.Model;
 using PhotoTufin.Repository;
 using PhotoTufin.Search.SystemIO;
 
 namespace PhotoTufin.Data;
 
+[SupportedOSPlatform("windows")]
 public static class DiskInfoFactory
 {
     private static DiskInfoRepository Repository { get; } = new();
-
+    
     public static List<DiskInfo> GetAllDisks()
     {
         return Repository.FindAll();
@@ -39,7 +41,7 @@ public static class DiskInfoFactory
         return true;
     }
 
-    public static string CreateUniqueDisplayName(string model)
+    private static string CreateUniqueDisplayName(string model)
     {
         var words = model.Split(' ');
 
@@ -56,5 +58,36 @@ public static class DiskInfoFactory
         displayName += $"- {nextNumber}";
         
         return displayName;
+    }
+
+    public static DiskInfo? SaveDiskInfo(string selectedPath)
+    {
+        var reader = new HDDInfoReader(selectedPath);
+        
+        // get wmi infos of the hdd
+        var hddInfo = reader.GetDiskInfo();
+        if (hddInfo?.SerialNo == null)
+            return null;
+
+        var repository = new DiskInfoRepository();
+        var diskInfo = repository.FindBySerialNo(hddInfo.SerialNo);
+        
+        // diskInfo already exist
+        if (diskInfo != null)
+            return diskInfo;
+        
+        var displayName = CreateUniqueDisplayName(hddInfo.Model);
+        
+        diskInfo = new DiskInfo
+        {
+            DisplayName = displayName,
+            Model = hddInfo.Model,
+            InterfaceType = hddInfo.InterfaceType,
+            MediaType = hddInfo.MediaType,
+            SerialNo = hddInfo.SerialNo
+        };
+        repository.Save(diskInfo);
+        
+        return diskInfo;
     }
 }

@@ -32,29 +32,30 @@ namespace PhotoTufin
             
             // directory selection
             var result = fbd.ShowDialog();
-            if (result != OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
+            var selectedPath = fbd.SelectedPath;
+            if (result != OK || string.IsNullOrWhiteSpace(selectedPath)) return;
             
             // display action
-            lblAction.Text = $"Scanning: {fbd.SelectedPath}";
+            lblAction.Text = $"Scanning: {selectedPath}";
             
             // remove tbl rows  
             viewPhotoList.Items.Clear();
+
+            var diskInfo = DiskInfoFactory.SaveDiskInfo(selectedPath);
             
             // find files and duplicates -> saves new files to db
-            var factory = new ImageInfoFactory(fbd.SelectedPath, Filter);
-            var imageInfos = factory.findImages();
+            var imageInfos = ScanFactory.FindImages(selectedPath, Filter);
+            lblNoDuplicates.Text = $"{ScanFactory.NoDuplicates.ToString()} Duplikate";
+            lblNoFiles.Text = $"{imageInfos.Count} Bilder";
             
-            // set the scan result as selected item
-            var diskInfo = DiskInfoFactory.GetDiskByScanResult(factory.HDDInfo);
+            // display action
+            lblAction.Text = $"Speicher in Datenbank: {imageInfos.Count} Bilder";
+            PhotoInfoFactory.SavePhotos(imageInfos, diskInfo);
             
+            // mandatory last step: trigger photo list 
             InitDiskComboBox();
             diskInfoBox.SelectedItem = diskInfo?.DisplayName;
-            //REFACTOR
-            
             dbMenuBar.Visibility = Visibility.Visible;
-            
-            lblNoDuplicates.Text = $"{factory.NoDuplicates.ToString()} Duplikate";
-            lblNoFiles.Text = $"{imageInfos.Count.ToString()} Bilder";
         }
     
         private void mnuExit_Click(object sender, RoutedEventArgs e)

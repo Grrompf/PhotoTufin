@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using PhotoTufin.Model;
 
@@ -147,6 +148,26 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
                     ( @DiskInfoId, @FileName, @FilePath, @Size, @HashString, @Tuplet, @CreatedAt );
                     SELECT last_insert_rowid()", photoInfo
             ).First();
+        
+        conn.Close();
+    }
+    
+    /// <summary>
+    /// Save data to table asynchronous.
+    /// </summary>
+    /// <param name="photoInfo"></param>
+    public static async Task SaveAsync(PhotoInfo photoInfo)
+    {
+        await using var conn = DbConnection();
+        conn.Open();
+            
+        // select query is for setting the Id of the model
+        photoInfo.Id = conn.Query<long>(
+            @"INSERT OR IGNORE INTO PhotoInfo 
+                    ( DiskInfoId, FileName, FilePath, Size, HashString, Tuplet, CreatedAt ) VALUES 
+                    ( @DiskInfoId, @FileName, @FilePath, @Size, @HashString, @Tuplet, @CreatedAt );
+                    SELECT last_insert_rowid()", photoInfo
+        ).First();
         
         conn.Close();
     }
