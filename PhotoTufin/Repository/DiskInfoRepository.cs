@@ -100,7 +100,7 @@ public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
         using var conn = DbConnection();
         conn.Open();
         
-        var itemsFound = conn.Query<DiskInfo>(@"SELECT * FROM DiskInfo").ToList();
+        var itemsFound = conn.Query<DiskInfo>(@"SELECT * FROM DiskInfo ORDER BY DisplayName").ToList();
         conn.Close();
         
         return itemsFound;

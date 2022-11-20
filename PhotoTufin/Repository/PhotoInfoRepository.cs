@@ -48,7 +48,8 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         // a count > 1 means there a more than just one - so it is a duplicate
         var result = conn.Query<PhotoInfo>(
             @"SELECT * FROM PhotoInfo WHERE HashString IN 
-                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)"
+                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)
+                 ORDER BY HashString, DiskInfoId, FilePath"
             ).ToList();
         
         conn.Close();
@@ -68,7 +69,8 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         
         var result = conn.Query<PhotoInfo>(
             @"SELECT * FROM PhotoInfo WHERE DiskInfoId = @DiskInfoId AND HashString IN 
-                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)",
+                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)
+                 ORDER BY HashString, FilePath",
             new {diskInfoId}
             ).ToList();
         
@@ -108,7 +110,8 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         
         var result = conn.Query<PhotoInfo>(
             @"SELECT * FROM PhotoInfo WHERE HashString = @HashString AND HashString IN 
-                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)",
+                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)
+                 ORDER BY DiskInfoId, FilePath",
             new {hashString}
         ).ToList();
         
@@ -126,7 +129,7 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         using var conn = DbConnection();
         conn.Open();
         
-        var itemsFound = conn.Query<PhotoInfo>(@"SELECT * FROM PhotoInfo").ToList();
+        var itemsFound = conn.Query<PhotoInfo>(@"SELECT * FROM PhotoInfo ORDER BY HashString, DiskInfoId, FilePath").ToList();
         conn.Close();
         
         return itemsFound;
@@ -152,26 +155,6 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         conn.Close();
     }
     
-    /// <summary>
-    /// Save data to table asynchronous.
-    /// </summary>
-    /// <param name="photoInfo"></param>
-    public static async Task SaveAsync(PhotoInfo photoInfo)
-    {
-        await using var conn = DbConnection();
-        conn.Open();
-            
-        // select query is for setting the Id of the model
-        photoInfo.Id = conn.Query<long>(
-            @"INSERT OR IGNORE INTO PhotoInfo 
-                    ( DiskInfoId, FileName, FilePath, Size, HashString, Tuplet, CreatedAt ) VALUES 
-                    ( @DiskInfoId, @FileName, @FilePath, @Size, @HashString, @Tuplet, @CreatedAt );
-                    SELECT last_insert_rowid()", photoInfo
-        ).First();
-        
-        conn.Close();
-    }
-
     /// <summary>
     /// Deletes all PhotoInfo of a DiskInfo (volume).   
     /// </summary>
