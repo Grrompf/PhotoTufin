@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PhotoTufin"
         xmlns:model="clr-namespace:PhotoTufin.Model"
         mc:Ignorable="d"
-        Title="Photo Tuplet Finder" Height="450" Width="800">
+        Title="Photo Tuplet Finder" Height="480" Width="840">
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.ExitCommand}" Executed="mnuExit_Click"/>
     </Window.CommandBindings>
@@ -96,10 +96,10 @@
                 </ListView.Resources>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Datei" Width="200" DisplayMemberBinding="{Binding (model:PhotoInfo.FileName)}" />
-                        <GridViewColumn Header="Hash" Width="200" DisplayMemberBinding="{Binding (model:PhotoInfo.HashString)}" />
-                        <GridViewColumn Header="Größe (kB)" Width="80" DisplayMemberBinding="{Binding (model:PhotoInfo.Size)}" />
-                        <GridViewColumn Header="Datum" Width="200" DisplayMemberBinding="{Binding (model:PhotoInfo.CreatedAt)}" />
+                        <GridViewColumn Header="Datei" Width="280" DisplayMemberBinding="{Binding (model:PhotoInfo.FileName)}"/>
+                        <GridViewColumn Header="Hash" Width="240" DisplayMemberBinding="{Binding (model:PhotoInfo.HashString)}" />
+                        <GridViewColumn Header="Größe (kB)" Width="70" DisplayMemberBinding="{Binding (model:PhotoInfo.Size)}" />
+                        <GridViewColumn Header="Datum" Width="150" DisplayMemberBinding="{Binding (model:PhotoInfo.CreatedAt)}" />
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -129,7 +129,7 @@
             </StatusBarItem>
             <Separator Grid.Column="3" />
             <StatusBarItem Grid.Column="4">
-                <TextBlock Name="lblSelectedDirectory" Text="kein Verzeichnis ausgewählt" />
+                <TextBlock Name="lblAction" Text="" />
             </StatusBarItem>
             <Separator Grid.Column="5" />
             <StatusBarItem Grid.Column="6" HorizontalContentAlignment="Right">

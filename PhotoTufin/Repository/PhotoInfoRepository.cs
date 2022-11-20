@@ -56,7 +56,7 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
     }
     
     /// <summary>
-    /// Find alle duplicates of a volume (DiskInfo) of a HDD or removable media.
+    /// Find all duplicates of a volume (DiskInfo) of a HDD or removable media.
     /// </summary>
     /// <param name="diskInfoId"></param>
     /// <returns>List</returns>
@@ -71,6 +71,25 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
             new {diskInfoId}
             ).ToList();
         
+        conn.Close();
+
+        return result;
+    }
+    
+    /// <summary>
+    /// Count all images of a volume (DiskInfo) of a HDD or removable media.
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    /// <returns>List</returns>
+    public static int GetImageCount(long diskInfoId)
+    {
+        using var conn = DbConnection();
+        conn.Open();
+        
+        var result = conn.ExecuteScalar<int>(
+            @"SELECT COUNT(*) FROM PhotoInfo WHERE DiskInfoId = @diskInfoId",
+            new { diskInfoId }
+        );
         conn.Close();
 
         return result;

@@ -53,10 +53,8 @@ public static class DiskInfoFactory
         
         // get next number
         var nextNumber = DiskInfoRepository.GetModelCount(model) + 1;
-        displayName += nextNumber;
+        displayName += $"- {nextNumber}";
         
-
         return displayName;
-
     }
 }

@@ -18,4 +18,13 @@ public static class PhotoInfoFactory
         var diskInfo = DiskInfoRepository.FindByDisplayName(displayName);
         return diskInfo == null ? emptyList : PhotoInfoRepository.FindDuplicatesByDiskInfo(diskInfo.Id);
     }
+    
+    public static int GetImageCount(string? displayName)
+    {
+        if (displayName == null)
+            return 0;
+        
+        var diskInfo = DiskInfoRepository.FindByDisplayName(displayName);
+        return diskInfo == null ? 0 : PhotoInfoRepository.GetImageCount(diskInfo.Id);
+    }
 }

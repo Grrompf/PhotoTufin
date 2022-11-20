@@ -30,12 +30,15 @@ namespace PhotoTufin
             
             using var fbd = new FolderBrowserDialog();
             
-            // remove tbl rows  
-            viewPhotoList.Items.Clear();
-            
             // directory selection
             var result = fbd.ShowDialog();
             if (result != OK || string.IsNullOrWhiteSpace(fbd.SelectedPath)) return;
+            
+            // display action
+            lblAction.Text = $"Scanning: {fbd.SelectedPath}";
+            
+            // remove tbl rows  
+            viewPhotoList.Items.Clear();
             
             // find files and duplicates -> saves new files to db
             var factory = new ImageInfoFactory(fbd.SelectedPath, Filter);
@@ -51,7 +54,6 @@ namespace PhotoTufin
             dbMenuBar.Visibility = Visibility.Visible;
             
             lblNoDuplicates.Text = $"{factory.NoDuplicates.ToString()} Duplikate";
-            lblSelectedDirectory.Text = $"Startverzeichnis: {fbd.SelectedPath}";
             lblNoFiles.Text = $"{imageInfos.Count.ToString()} Bilder";
         }
     
@@ -107,6 +109,11 @@ namespace PhotoTufin
             var displayName = ((ComboBox)sender).SelectedItem.ToString();
             ShowDiskInfo(displayName);
             ShowPhotoDuplicates(displayName);
+
+            var noImages = PhotoInfoFactory.GetImageCount(displayName); 
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblAction.Text = $"Anzeige der Duplikate auf {displayName}";
+            lblNoFiles.Text = $"{noImages} Bilder";
         }
 
         private void ShowPhotoDuplicates(string? displayName)
@@ -159,6 +166,10 @@ namespace PhotoTufin
             
             // disable btn (no selection)
             btnClear.IsEnabled = false;
+            
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblAction.Text = $"{displayName} wurde gelöscht";
+            lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
         }
     }
 }
