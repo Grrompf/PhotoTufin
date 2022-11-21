@@ -1,16 +1,17 @@
-﻿using System.Net.Mime;
-using System.Runtime.Versioning;
+﻿using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using PhotoTufin.Data;
 using PhotoTufin.Model;
+using PhotoTufin.Repository;
 using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
 using ComboBox = System.Windows.Controls.ComboBox;
 using ListView = System.Windows.Controls.ListView;
+using MessageBox = System.Windows.MessageBox;
 
 namespace PhotoTufin
 {
@@ -153,6 +154,14 @@ namespace PhotoTufin
             var displayName = diskInfoBox.SelectedItem.ToString();
             if (displayName == null)
                 return;
+            
+            var result = MessageBox.Show(
+                $"Möchtest du die Daten von \"{displayName}\" löschen ?",
+                "Sicherheitsabfrage",
+                MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            
+            if (result == MessageBoxResult.Cancel)
+                return;
 
             if (!DiskInfoFactory.DeleteDiskAndPhotoData(displayName))
                 return;
@@ -173,6 +182,38 @@ namespace PhotoTufin
             
             lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
             lblAction.Text = $"{displayName} wurde gelöscht";
+            lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+        }
+        
+        private void ButtonAllDataClear_OnClick(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show(
+                $"Möchtest du alle Daten löschen ?",
+                "Sicherheitsabfrage",
+                MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            
+            if (result == MessageBoxResult.Cancel)
+                return;
+
+            new PhotoInfoRepository().DropTable();
+            new DiskInfoRepository().DropTable();
+            
+            // clear comboBox
+            diskInfoBox.SelectedItem = null;
+            diskInfoBox.Items.Clear();
+            
+            // clear and hide the diskInfo bar 
+            viewDiskInfo.Items.Clear();
+            viewDiskInfo.Visibility = Visibility.Collapsed;
+            
+            // clear photo list
+            viewPhotoList.Items.Clear();
+            
+            // disable btn (no selection)
+            btnClear.IsEnabled = false;
+            
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblAction.Text = $"Komplette Datenbank wurde gelöscht";
             lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
         }
 
