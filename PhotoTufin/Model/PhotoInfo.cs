@@ -15,6 +15,13 @@ public class PhotoInfo : IModel, IPhotoInfo
     public long DiskInfoId { get; set; }
     
     /// <summary>
+    /// Inner Join. 
+    /// </summary>
+    public DiskInfo? DiskInfo { get; set; }
+
+    public string DisplayName => DiskInfo == null ? "Unknown" : DiskInfo.DisplayName;
+
+    /// <summary>
     /// Just the file name
     /// </summary>
     public string FileName { get; set; } = null!;

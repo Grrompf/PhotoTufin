@@ -84,7 +84,7 @@
             </ListView>
         </DockPanel>
         <Grid DockPanel.Dock="Top">
-            <ListView Margin="0" Name="viewPhotoList" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListView Margin="0" Name="viewPhotoList" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseUp="ViewPhotoList_OnPreviewMouseUp">
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left" />

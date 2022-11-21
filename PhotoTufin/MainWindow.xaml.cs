@@ -1,13 +1,16 @@
-﻿using System.Runtime.Versioning;
+﻿using System.Net.Mime;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using PhotoTufin.Data;
+using PhotoTufin.Model;
 using PhotoTufin.Search;
 using static System.Windows.Application;
 using static System.Windows.Forms.DialogResult;
 using ComboBox = System.Windows.Controls.ComboBox;
+using ListView = System.Windows.Controls.ListView;
 
 namespace PhotoTufin
 {
@@ -171,6 +174,18 @@ namespace PhotoTufin
             lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
             lblAction.Text = $"{displayName} wurde gelöscht";
             lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+        }
+
+        private void ViewPhotoList_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as ListView)?.SelectedItem;
+            if (item == null)
+                return;
+            
+            var selectedObject = (PhotoInfo)item;
+
+            var details = new DuplicateDetails(selectedObject);
+            details.ShowDialog();
         }
     }
 }

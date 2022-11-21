@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Dapper;
 using PhotoTufin.Model;
 
@@ -109,14 +108,21 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
         conn.Open();
         
         var result = conn.Query<PhotoInfo>(
-            @"SELECT * FROM PhotoInfo WHERE HashString = @HashString AND HashString IN 
-                 (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)
-                 ORDER BY DiskInfoId, FilePath",
+            @"SELECT * FROM PhotoInfo 
+                WHERE HashString = @HashString AND HashString IN 
+                (SELECT HashString FROM PhotoInfo GROUP BY HashString HAVING COUNT(HashString) > 1)
+                ORDER BY DiskInfoId, FilePath",
             new {hashString}
         ).ToList();
         
         conn.Close();
-
+        
+        // inner join and dapper is far too complicated
+        foreach (var photoInfo in result)
+        {
+            photoInfo.DiskInfo = new DiskInfoRepository().Find(photoInfo.DiskInfoId);
+        }
+        
         return result;
     }
     
