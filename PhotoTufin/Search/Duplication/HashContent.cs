@@ -4,8 +4,13 @@ using System.Security.Cryptography;
 
 namespace PhotoTufin.Search.Duplication;
 
-public class HashContent
+public static class HashContent
 {
+    /// <summary>
+    /// Creates a md5 hash of the file content. 
+    /// </summary>
+    /// <param name="pathToFile"></param>
+    /// <returns></returns>
     public static byte[]? readHash(string pathToFile)
     {
         try
@@ -23,6 +28,11 @@ public class HashContent
         return null;
     }
     
+    /// <summary>
+    /// Converts bytes to a hash string.
+    /// </summary>
+    /// <param name="hash"></param>
+    /// <returns></returns>
     public static string convertHash(byte[]? hash)
     {
         try

@@ -12,8 +12,6 @@ namespace PhotoTufin.Search.SystemIO;
 [SupportedOSPlatform("windows")]
 public class HDDInfoReader
 {
-    private HDDInfo? DiskInfo { get; set; }
-
     private string FullPath { get;}
     
     /// <summary>

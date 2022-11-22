@@ -7,10 +7,12 @@
         xmlns:model="clr-namespace:PhotoTufin.Model"
         mc:Ignorable="d"
         Title="Photo Tuplet Finder" Height="480" Width="840">
+    <!-- Commands e.g. key binding -->
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.ExitCommand}" Executed="mnuExit_Click"/>
     </Window.CommandBindings>
     <DockPanel Margin="10">
+        <!-- Menu -->
         <Menu DockPanel.Dock="Top" HorizontalAlignment="Stretch">
             <Menu.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -27,7 +29,7 @@
                 <MenuItem Header="_Beenden" InputGestureText="Ctrl+X" Command="{x:Static local:MainWindow.ExitCommand}" Click="mnuExit_Click"/>
             </MenuItem>
             <MenuItem Grid.Column="1" Header="_Scannen" ToolTip="Öffnet Verzeichnisauswahl um Bilder einzulesen" Click="mnuScan_Click" />
-            <MenuItem Grid.Column="2" Header="_Filter" Name="Filter" ToolTip="Setzt den Dateifilter beim Einlesen von Bildern" Click="Filter_OnClick">
+            <MenuItem Grid.Column="2" Header="_Filter" Name="Filter" ToolTip="Setzt den Dateifilter beim Einlesen von Bildern">
                 <MenuItem Header="bmp, dib"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
                 <MenuItem Header="gif"  ToolTip="Graphics Interchange Format" IsCheckable="True" IsChecked="False"/>
                 <MenuItem Header="jpg, jpeg, jpe, jfif"  ToolTip="Joint Photographic Expert Group" IsCheckable="True" IsChecked="True" />
@@ -58,11 +60,13 @@
             </MenuItem>
             <MenuItem Header="_Info"  Grid.Column="2" HorizontalAlignment="Right" Click="mnuInfo_Click" />
         </Menu>
+        <!-- Action bar: diskInfo comboBox and delete db buttons  -->
         <DockPanel Name="dbMenuBar" Margin="0 10 0 0" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="AliceBlue">
             <ComboBox Name="diskInfoBox" Margin="5,5,10,5" MinWidth="150" MinHeight="10" VerticalAlignment="Top" HorizontalAlignment="Left" SelectionChanged="DiskInfoBox_OnSelectionChanged"/>
             <Button Name="btnClear" Margin="5,5,10,5" MinWidth="100" Content="Disk löschen" IsEnabled="false" ToolTip="Löscht Daten des ausgewählten DiskInfos" Click="ButtonClear_OnClick"/>
             <Button Margin="5,5,10,5" MaxWidth="100" Content="DB löschen" ToolTip="Löscht alle Daten" Click="ButtonAllDataClear_OnClick" DockPanel.Dock="Right"/>
         </DockPanel>
+        <!-- DiskInfo bar: details on selected disk  -->
         <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="AliceBlue">
             <ListView Name="viewDiskInfo" Background="AliceBlue" BorderThickness="0">
                 <ListView.ItemTemplate>
@@ -81,6 +85,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </DockPanel>
+        <!-- Progressbar -->
         <Grid DockPanel.Dock="Top">
             <ProgressBar Name="dataSaveLvl" Minimum="0" Value="59" Maximum="100" Margin="5" Height="24" Foreground="#FF62FF7F" />
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -92,6 +97,7 @@
                 </TextBlock.Text>
             </TextBlock>
         </Grid>
+        <!-- listView: duplicates only -->
         <Grid DockPanel.Dock="Top">
             <ListView Margin="0" Name="viewPhotoList" MaxHeight="250" BorderThickness="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseUp="ViewPhotoList_OnPreviewMouseUp">
                 <ListView.Resources>
@@ -112,7 +118,8 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-        </Grid>    
+        </Grid>
+        <!-- Statusbar -->
         <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -21,9 +21,4 @@ public interface IPhotoInfo
     /// Hash of the file. Used to find duplicates. 
     /// </summary>
     public string HashString { get; set; }
-    
-    /// <summary>
-    /// If TRUE this image has duplicates
-    /// </summary>
-   // public bool Tuplet { get; set; }
 }

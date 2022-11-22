@@ -7,6 +7,7 @@
         xmlns:model="clr-namespace:PhotoTufin.Model"
         Title="Detailansicht der Duplikate" Height="450" Width="800">
     <DockPanel Margin="10">
+        <!-- listView: duplicates only -->
         <Grid DockPanel.Dock="Top" VerticalAlignment="Top" HorizontalAlignment="Stretch">
             <ListView Name="DuplicateList" Margin="0" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseUp="DuplicateList_OnGotFocus">
                 <ListView.Resources>
@@ -23,6 +24,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
+        <!-- status bar -->
         <StatusBar DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>

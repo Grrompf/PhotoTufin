@@ -16,16 +16,16 @@ public static class DiskInfoFactory
         return Repository.FindAll();
     }
 
-    public static DiskInfo? GetDiskByScanResult(HDDInfo? info)
-    {
-        return info == null ? null : Repository.FindBySerialNo(info.SerialNo);
-    }
-
     public static DiskInfo? GetDiskInfoByDisplayName(string? displayName)
     {
         return displayName == null ? null : DiskInfoRepository.FindByDisplayName(displayName);
     }
     
+    /// <summary>
+    /// Remove all disk related data from the database by its unique display name
+    /// </summary>
+    /// <param name="displayName"></param>
+    /// <returns></returns>
     public static bool DeleteDiskAndPhotoData(string displayName)
     {
         var diskInfo = GetDiskInfoByDisplayName(displayName);
@@ -41,6 +41,11 @@ public static class DiskInfoFactory
         return true;
     }
 
+    /// <summary>
+    /// Creates a unique display name by adding an ascnending number
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
     private static string CreateUniqueDisplayName(string model)
     {
         var words = model.Split(' ');
@@ -60,6 +65,11 @@ public static class DiskInfoFactory
         return displayName;
     }
 
+    /// <summary>
+    /// Saves a diskInfo as a scan result.
+    /// </summary>
+    /// <param name="selectedPath"></param>
+    /// <returns></returns>
     public static DiskInfo? SaveDiskInfo(string selectedPath)
     {
         var reader = new HDDInfoReader(selectedPath);

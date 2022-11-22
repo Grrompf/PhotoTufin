@@ -6,17 +6,17 @@ namespace PhotoTufin.Search;
 
 public class ImageInfo
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="fileInfo"></param>
     public ImageInfo(FileInfo fileInfo)
     {
         FileName = fileInfo.Name;
-        FullPath = fileInfo.FullName;
         FilePath = EvalFilePath(fileInfo.FullName);
         Size = (fileInfo.Length / 1024).ToString();
-        Date = fileInfo.CreationTime.ToShortDateString();
-        Tuplet = false;
-        Action = false;
-        Hash = HashContent.readHash(fileInfo.FullName);
-        HashString = HashContent.convertHash(Hash);
+        var hash = HashContent.readHash(fileInfo.FullName);
+        HashString = HashContent.convertHash(hash);
     }
     
     /// <summary>
@@ -28,24 +28,11 @@ public class ImageInfo
     /// Full file path without volume or netshare
     /// </summary>
     public string FilePath { get; }
-    
-    /// <summary>
-    /// Full path to the file e.g. D:\myDir\img.jpg
-    /// </summary>
-    public string FullPath { get; }
-    
+
     /// <summary>
     /// Filesize in kiloByte
     /// </summary>
     public string Size { get; }
-    
-    /// <summary>
-    /// The creation date of the file by means when the file was copied to that full path position 
-    /// </summary>
-    public string Date { get; }
-    public bool Tuplet { get; set; }
-    public bool Action { get; }
-    public byte[]? Hash { get; }
     
     /// <summary>
     /// Hash of the file. Used to find duplicates. 

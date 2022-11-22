@@ -19,6 +19,10 @@ public class PhotoInfo : IModel, IPhotoInfo
     /// </summary>
     public DiskInfo? DiskInfo { get; set; }
 
+    /// <summary>
+    /// Helper method for showing the displayName since dapper cannot provide the innerJoin properly.
+    /// This is not part of the entity.
+    /// </summary>
     public string DisplayName => DiskInfo == null ? "Unknown" : DiskInfo.DisplayName;
 
     /// <summary>

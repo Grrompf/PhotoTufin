@@ -32,7 +32,13 @@ public abstract class BaseRepository : IRepository
         conn.Close();
     }
     
+    /// <summary>
+    /// Use override to implement this method
+    /// </summary>
     public abstract void CreateTable();
 
+    /// <summary>
+    /// Use override to implement this method
+    /// </summary>
     public abstract void DropTable();
 }

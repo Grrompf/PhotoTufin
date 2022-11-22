@@ -6,21 +6,34 @@ namespace PhotoTufin;
 
 public partial class About
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public About()
     {
         InitializeComponent();
         Title = $"Über {App.Product}";
         AppName.Text = App.Title;
         Version.Text = $"Version: {App.Version}";
-        Author.Text  = $"Autor: Grrompf";
-        Company.Text = $"McGerhard Photography";
+        Author.Text  = "Autor: Grrompf";
+        Company.Text = "McGerhard Photography";
     }
     
+    /// <summary>
+    /// Exit the dialogue by btn
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void btnOK_Click(object sender, RoutedEventArgs e)
     {
         Close();
     }
     
+    /// <summary>
+    /// Starts browsing the hyperlink
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void btnUri_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not Hyperlink link) return;

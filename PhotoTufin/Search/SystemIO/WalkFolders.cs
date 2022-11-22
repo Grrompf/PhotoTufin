@@ -9,6 +9,11 @@ public class WalkFolders
     private readonly List<string> _extensionStrings;
     private readonly DirectoryInfo _searchStart;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="extensionStrings"></param>
     public WalkFolders(string path, List<string> extensionStrings)
     {
         _extensionStrings = extensionStrings;

@@ -5,6 +5,11 @@ namespace PhotoTufin.Search.Duplication;
 
 public static class DuplicateFinder
 {
+    /// <summary>
+    /// Finds instant duplicates of a scan (list of ImageInfos). Is not using the database. 
+    /// </summary>
+    /// <param name="imageInfos"></param>
+    /// <returns></returns>
     public static int findDuplicates(ref List<ImageInfo> imageInfos)
     {
         var dupes = imageInfos.GroupBy(x => x.HashString)
@@ -14,16 +19,6 @@ public static class DuplicateFinder
 
         var duplicates = dupes.ToList();
         
-        indicateDuplicates(ref imageInfos, duplicates);
-
         return duplicates.Count;
-    }
-
-    private static void indicateDuplicates(ref List<ImageInfo> imageInfos, ICollection<ImageInfo> duplicates)
-    {
-        foreach (var t in imageInfos.Where(duplicates.Contains))
-        {
-            t.Tuplet = true;
-        }
     }
 }

@@ -4,6 +4,13 @@ public class HDDInfo
 {
     private const string UNKNOWN = "Unknown";
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="serialNo"></param>
+    /// <param name="interfaceType"></param>
+    /// <param name="mediaType"></param>
     public HDDInfo(string model, string serialNo, string? interfaceType, string? mediaType)
     {
         Model = model;

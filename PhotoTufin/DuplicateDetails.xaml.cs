@@ -7,6 +7,10 @@ namespace PhotoTufin;
 
 public partial class DuplicateDetails
 {
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="photoInfo"></param>
     public DuplicateDetails(IPhotoInfo photoInfo)
     {
         InitializeComponent();
@@ -14,6 +18,10 @@ public partial class DuplicateDetails
         InitDuplicateList(photoInfo);
     }
 
+    /// <summary>
+    /// Fills the list and the count in the status bar
+    /// </summary>
+    /// <param name="photoInfo"></param>
     private void InitDuplicateList(IPhotoInfo photoInfo)
     {
         var list = new PhotoInfoRepository().FindDuplicatesByHashString(photoInfo.HashString);
@@ -26,6 +34,11 @@ public partial class DuplicateDetails
         NoFiles.Text = $"{DuplicateList.Items.Count} Duplikate";
     }
 
+    /// <summary>
+    /// Showing more disk related details of the duplicate 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void DuplicateList_OnGotFocus(object sender, RoutedEventArgs e)
     {
         var item = (sender as ListView)?.SelectedItem;

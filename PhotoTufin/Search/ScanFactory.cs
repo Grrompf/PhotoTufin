@@ -10,8 +10,17 @@ namespace PhotoTufin.Search;
 [SupportedOSPlatform("windows")]
 public static class ScanFactory
 {
+    /// <summary>
+    /// Duplicates on itself
+    /// </summary>
     public static int NoDuplicates { get; private set; }
     
+    /// <summary>
+    /// Finds all images by walking all folders by its extension (filter). 
+    /// </summary>
+    /// <param name="selectedPath"></param>
+    /// <param name="filter"></param>
+    /// <returns>List</returns>
     public static List<ImageInfo> FindImages(string selectedPath, MenuItem filter)
     {
         var fileExtensions = ImageFilter.makeFilter(filter);
@@ -19,8 +28,6 @@ public static class ScanFactory
         var imageInfos = search.search();
 
         NoDuplicates = DuplicateFinder.findDuplicates(ref imageInfos);
-
-        //SaveAsync(imageInfos, diskInfo);
 
         return imageInfos;
     }
