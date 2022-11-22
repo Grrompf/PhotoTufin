@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace PhotoTufin.Search.Filter;
 
-public class ImageFilter
+public static class ImageFilter
 {
     private static List<string> FileExtensions { get; } = new();
 
@@ -17,6 +17,7 @@ public class ImageFilter
     public static List<string> makeFilter(MenuItem Filter)
     {
         FileExtensions.Clear();
+        App.ClearFilterSetting();
 
         foreach ( var item in Filter.Items)
         {
@@ -25,8 +26,10 @@ public class ImageFilter
                 continue;
 
             var filter = mi.Header.ToString();
-            if (filter != null) 
-                convertHeaderToExtensions(filter);
+            if (filter == null) continue;
+            
+            App.SetFilterSetting(filter, mi.IsChecked);
+            convertHeaderToExtensions(filter);
         }
 
         return FileExtensions;

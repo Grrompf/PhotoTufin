@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -102,6 +103,64 @@ namespace PhotoTufin
                 var dbName = $"{product}.sqlite"; //PhotoTufin.sqlite
                 return $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar.ToString()}{dbName}";
             }
+        }
+        
+        /// <summary>
+        /// Get config setting by key. True if filter is checked.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static bool GetFilterSetting(string key)
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            var keySetting = config.AppSettings.Settings[key];
+
+            if (config.AppSettings.Settings[key] == null)
+                return false;
+            
+            return keySetting.Value == "1";
+        }
+ 
+        /// <summary>
+        /// Set configuration by key value pair
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="isChecked"></param>
+        public static void SetFilterSetting(string key, bool isChecked)
+        {
+            var value = isChecked ? "1" : "0";
+            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            
+            // if existing we first have to remove the key
+            if (config.AppSettings.Settings[key] != null)
+                config.AppSettings.Settings.Remove(key);
+            
+            config.AppSettings.Settings.Add(key, value);
+            
+            // save the updated config
+            config.Save(ConfigurationSaveMode.Modified);
+        }
+
+        /// <summary>
+        /// Removes all keys and values.
+        /// </summary>
+        public static void ClearFilterSetting()
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            foreach (var key in config.AppSettings.Settings.AllKeys)
+            {
+                if (config.AppSettings.Settings[key] != null)
+                    config.AppSettings.Settings.Remove(key);
+            }
+        }
+        
+        /// <summary>
+        /// Removes all keys and values.
+        /// </summary>
+        public static bool IsFilterSettingEmpty()
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            return config.AppSettings.Settings.AllKeys.Length == 0;
         }
     }
 }

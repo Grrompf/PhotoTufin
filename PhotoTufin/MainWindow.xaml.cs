@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dapper;
 using PhotoTufin.Data;
 using PhotoTufin.Model;
 using PhotoTufin.Repository;
@@ -26,6 +27,7 @@ namespace PhotoTufin
             InitializeComponent();
             Title = App.Product;
             AppVersion.Text = $"v{App.VersionShort}";
+            InitFilterSettings();
             InitDiskComboBox();
         }
         
@@ -99,6 +101,28 @@ namespace PhotoTufin
 
             //shows mnBar for db action
             dbMenuBar.Visibility = diskInfoBox.Items.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+        
+        /// <summary>
+        /// Init filter settings by configuration.
+        /// </summary>
+        private void InitFilterSettings()
+        {
+            // on first run have the default values
+            if (App.IsFilterSettingEmpty())
+                return;
+            
+            foreach ( var item in Filter.Items)
+            {
+                var mi = item as MenuItem;
+                if (mi is null or { IsCheckable: false} or {HasHeader: false}) 
+                    continue;
+
+                var filter = mi.Header.ToString();
+                if (filter == null) continue;
+
+                mi.IsChecked = App.GetFilterSetting(filter);  
+            }
         }
 
         /// <summary>
@@ -227,6 +251,11 @@ namespace PhotoTufin
 
             var details = new DuplicateDetails(selectedObject);
             details.ShowDialog();
+        }
+
+        private void Filter_OnClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

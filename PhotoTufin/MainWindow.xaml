@@ -24,12 +24,10 @@
                 </ItemsPanelTemplate>
             </Menu.ItemsPanel>
             <MenuItem  Grid.Column="0" Header="_Datei">
-                <MenuItem Header="_Not" />
-                <Separator />
                 <MenuItem Header="_Beenden" InputGestureText="Ctrl+X" Command="{x:Static local:MainWindow.ExitCommand}" Click="mnuExit_Click"/>
             </MenuItem>
             <MenuItem Grid.Column="1" Header="_Scannen" ToolTip="Öffnet Verzeichnisauswahl um Bilder einzulesen" Click="mnuScan_Click" />
-            <MenuItem Grid.Column="2" Header="Filter" Name="Filter" ToolTip="Setzt den Dateifilter beim Einlesen von Bildern">
+            <MenuItem Grid.Column="2" Header="_Filter" Name="Filter" ToolTip="Setzt den Dateifilter beim Einlesen von Bildern" Click="Filter_OnClick">
                 <MenuItem Header="bmp, dib"  ToolTip="Bitmap" IsCheckable="True" IsChecked="True"/>
                 <MenuItem Header="gif"  ToolTip="Graphics Interchange Format" IsCheckable="True" IsChecked="False"/>
                 <MenuItem Header="jpg, jpeg, jpe, jfif"  ToolTip="Joint Photographic Expert Group" IsCheckable="True" IsChecked="True" />
@@ -84,7 +82,18 @@
             </ListView>
         </DockPanel>
         <Grid DockPanel.Dock="Top">
-            <ListView Margin="0" Name="viewPhotoList" MaxHeight="300" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseUp="ViewPhotoList_OnPreviewMouseUp">
+            <ProgressBar Name="dataSaveLvl" Minimum="0" Value="59" Maximum="100" Margin="5" Height="24" Foreground="#FF62FF7F" />
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}Daten speichern: {0}/{1}">
+                        <Binding Path="Value" ElementName="dataSaveLvl" />
+                        <Binding Path="Maximum" ElementName="dataSaveLvl" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </Grid>
+        <Grid DockPanel.Dock="Top">
+            <ListView Margin="0" Name="viewPhotoList" MaxHeight="250" BorderThickness="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PreviewMouseUp="ViewPhotoList_OnPreviewMouseUp">
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
                         <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -111,29 +120,31 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                     </Grid>
                 </ItemsPanelTemplate>
             </StatusBar.ItemsPanel>
             <StatusBarItem>
-                <TextBlock Name="lblNoFiles" Text="keine Bilder" />
+                <Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1">
+                    <Border BorderBrush="Gray" BorderThickness="1,1,0,0">
+                        <TextBlock Name="lblNoFiles" Text="keine Bilder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5 0"/>
+                    </Border>
+                </Border> 
             </StatusBarItem>
-            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="1">
+                <Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1">
+                    <Border BorderBrush="Gray" BorderThickness="1,1,0,0">
+                        <TextBlock Name="lblNoDuplicates" Text="keine Duplikate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5 0" />
+                    </Border>
+                </Border> 
+            </StatusBarItem>
             <StatusBarItem Grid.Column="2">
-                <TextBlock Name="lblNoDuplicates" Text="keine Duplikate" />
-            </StatusBarItem>
-            <Separator Grid.Column="3" />
-            <StatusBarItem Grid.Column="4">
                 <TextBlock Name="lblAction" Text="" />
             </StatusBarItem>
-            <Separator Grid.Column="5" />
-            <StatusBarItem Grid.Column="6" HorizontalContentAlignment="Right">
-                <TextBlock Name="AppVersion" Text="1.0" />
+            <StatusBarItem Grid.Column="3" HorizontalContentAlignment="Right">
+                <TextBlock Name="AppVersion" Text="v1.0" />
             </StatusBarItem>
         </StatusBar>
     </DockPanel>
