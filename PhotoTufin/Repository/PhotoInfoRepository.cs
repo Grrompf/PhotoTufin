@@ -5,6 +5,9 @@ using PhotoTufin.Model;
 
 namespace PhotoTufin.Repository;
 
+/// <summary>
+/// Repository of photo informations
+/// </summary>
 public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
 {
     /// <summary>

@@ -2,6 +2,9 @@ using System;
 
 namespace PhotoTufin.Model;
 
+/// <summary>
+/// Entity model of hard disk infos.
+/// </summary>
 public class DiskInfo : IModel
 {
     /// <summary>

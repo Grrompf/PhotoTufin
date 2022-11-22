@@ -5,6 +5,9 @@ using PhotoTufin.Model;
 
 namespace PhotoTufin.Repository;
 
+/// <summary>
+/// Repository of disk informations
+/// </summary>
 public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
 {
     /// <summary>

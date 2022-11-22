@@ -7,6 +7,10 @@ using PhotoTufin.Search.SystemIO;
 
 namespace PhotoTufin.Search;
 
+/// <summary>
+/// Easy access for scanning a disk and finding images. This will create a list of files
+/// but no data persistence. 
+/// </summary>
 [SupportedOSPlatform("windows")]
 public static class ScanFactory
 {

@@ -4,6 +4,9 @@ using System.Security.Cryptography;
 
 namespace PhotoTufin.Search.Duplication;
 
+/// <summary>
+/// Helper for creating a hash of a file content. These are the core methods to identify duplicates. 
+/// </summary>
 public static class HashContent
 {
     /// <summary>

@@ -4,6 +4,10 @@ using System.Windows.Controls;
 
 namespace PhotoTufin.Search.Filter;
 
+/// <summary>
+/// Helper for an file extension filter. Using the user UI Filter of the windows menu and storing
+/// updated settings in a configuration. The new config will remember the filter settings on next start.   
+/// </summary>
 public static class ImageFilter
 {
     private static List<string> FileExtensions { get; } = new();

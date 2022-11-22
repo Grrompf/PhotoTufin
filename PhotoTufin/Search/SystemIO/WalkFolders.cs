@@ -4,6 +4,9 @@ using System.IO;
 
 namespace PhotoTufin.Search.SystemIO;
 
+/// <summary>
+/// Recursive walking down all subdirectories to find images by its extension.
+/// </summary>
 public class WalkFolders
 {
     private readonly List<string> _extensionStrings;

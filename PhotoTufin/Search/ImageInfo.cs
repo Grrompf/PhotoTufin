@@ -4,6 +4,9 @@ using PhotoTufin.Search.Duplication;
 
 namespace PhotoTufin.Search;
 
+/// <summary>
+/// This is a transfer data model for photos. This is not an entity!
+/// </summary>
 public class ImageInfo
 {
     /// <summary>

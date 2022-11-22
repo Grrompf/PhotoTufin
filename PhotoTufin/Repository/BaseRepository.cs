@@ -3,6 +3,9 @@ using Dapper;
 
 namespace PhotoTufin.Repository;
 
+/// <summary>
+/// Extend this base for creating a repository.
+/// </summary>
 public abstract class BaseRepository : IRepository
 {
     /// <summary>

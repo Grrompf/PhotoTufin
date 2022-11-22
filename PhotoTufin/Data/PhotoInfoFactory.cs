@@ -6,6 +6,9 @@ using PhotoTufin.Search;
 
 namespace PhotoTufin.Data;
 
+/// <summary>
+/// Easy access to photo related procedures on database. 
+/// </summary>
 [SupportedOSPlatform("windows")]
 public static class PhotoInfoFactory
 {

@@ -1,5 +1,8 @@
 namespace PhotoTufin.Search.SystemIO;
 
+/// <summary>
+/// Model for disk infos. This is not an entity. It is a transfer data model of the scan. 
+/// </summary>
 public class HDDInfo
 {
     private const string UNKNOWN = "Unknown";

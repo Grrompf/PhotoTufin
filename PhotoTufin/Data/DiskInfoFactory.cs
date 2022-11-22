@@ -6,6 +6,9 @@ using PhotoTufin.Search.SystemIO;
 
 namespace PhotoTufin.Data;
 
+/// <summary>
+/// Easy access to disk info related procedures. 
+/// </summary>
 [SupportedOSPlatform("windows")]
 public static class DiskInfoFactory
 {
@@ -42,7 +45,7 @@ public static class DiskInfoFactory
     }
 
     /// <summary>
-    /// Creates a unique display name by adding an ascnending number
+    /// Creates a unique display name by adding an ascending number
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>

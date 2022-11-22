@@ -2,6 +2,9 @@ using System;
 
 namespace PhotoTufin.Model;
 
+/// <summary>
+/// Entity model of photos
+/// </summary>
 public class PhotoInfo : IModel, IPhotoInfo
 {
     /// <summary>
