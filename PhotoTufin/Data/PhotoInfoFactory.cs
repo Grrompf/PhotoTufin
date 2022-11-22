@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
+using NLog;
 using PhotoTufin.Model;
 using PhotoTufin.Repository;
 using PhotoTufin.Search;
@@ -12,6 +14,8 @@ namespace PhotoTufin.Data;
 [SupportedOSPlatform("windows")]
 public static class PhotoInfoFactory
 {
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
+    
     private static PhotoInfoRepository PhotoInfoRepository { get; } = new();
 
     /// <summary>
@@ -22,12 +26,20 @@ public static class PhotoInfoFactory
     /// <returns></returns>
     public static List<PhotoInfo> GetDuplicatesByDiskInfo(string? displayName)
     {
-        var emptyList = new List<PhotoInfo>();
-        if (displayName == null)
-            return emptyList;
+        try
+        {
+            var emptyList = new List<PhotoInfo>();
+            if (displayName == null)
+                return emptyList;
         
-        var diskInfo = DiskInfoRepository.FindByDisplayName(displayName);
-        return diskInfo == null ? emptyList : PhotoInfoRepository.FindDuplicatesByDiskInfo(diskInfo.Id);
+            var diskInfo = DiskInfoRepository.FindByDisplayName(displayName);
+            return diskInfo == null ? emptyList : PhotoInfoRepository.FindDuplicatesByDiskInfo(diskInfo.Id);
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
+        return new List<PhotoInfo>();
     }
     
     /// <summary>
@@ -37,11 +49,20 @@ public static class PhotoInfoFactory
     /// <returns></returns>
     public static int GetImageCount(string? displayName)
     {
-        if (displayName == null)
-            return 0;
+        try
+        {
+            if (displayName == null)
+                return 0;
         
-        var diskInfo = DiskInfoRepository.FindByDisplayName(displayName);
-        return diskInfo == null ? 0 : PhotoInfoRepository.GetImageCount(diskInfo.Id);
+            var diskInfo = DiskInfoRepository.FindByDisplayName(displayName);
+            return diskInfo == null ? 0 : PhotoInfoRepository.GetImageCount(diskInfo.Id);
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
+
+        return 0;
     }
     
     /// <summary>
@@ -51,21 +72,29 @@ public static class PhotoInfoFactory
     /// <param name="diskInfo"></param>
     public static void SavePhotos(List<ImageInfo> imageInfos, IModel? diskInfo)
     {
-        if (diskInfo == null) return;
-        foreach (var image in imageInfos)
+        try
         {
-            if (image.HashString == null)
-                continue;
-            
-            var photo = new PhotoInfo
+            if (diskInfo == null) return;
+            foreach (var image in imageInfos)
             {
-                DiskInfoId = diskInfo.Id,
-                HashString = image.HashString,
-                FileName = image.FileName,
-                FilePath = image.FilePath,
-                Size = image.Size
-            };
-            PhotoInfoRepository.Save(photo);
+                if (image.HashString == null)
+                    continue;
+            
+                var photo = new PhotoInfo
+                {
+                    DiskInfoId = diskInfo.Id,
+                    HashString = image.HashString,
+                    FileName = image.FileName,
+                    FilePath = image.FilePath,
+                    Size = image.Size
+                };
+                PhotoInfoRepository.Save(photo);
+            }
         }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
+        
     }
 }

@@ -40,6 +40,9 @@
       <Resource Include="Ressources\Logo_McG1700-1-1589x1600.png" />
       <None Remove="Ressources\Elephant.svg" />
       <Resource Include="Ressources\Elephant.svg" />
+      <None Update="NLog.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

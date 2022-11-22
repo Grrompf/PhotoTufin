@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using NLog;
 using PhotoTufin.Search.Duplication;
 
 namespace PhotoTufin.Search;
@@ -9,6 +10,8 @@ namespace PhotoTufin.Search;
 /// </summary>
 public class ImageInfo
 {
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
+
     /// <summary>
     /// Constructor
     /// </summary>
@@ -58,9 +61,11 @@ public class ImageInfo
             
             return fullName[rootPath.Length..];
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return Path.DirectorySeparatorChar.ToString();
+            log.Error(e);
         }
+        
+        return Path.DirectorySeparatorChar.ToString();
     }
 }

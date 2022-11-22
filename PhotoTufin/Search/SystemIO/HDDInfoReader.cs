@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Management;
 using System.Runtime.Versioning;
+using NLog;
 
 namespace PhotoTufin.Search.SystemIO;
 
@@ -13,6 +14,7 @@ namespace PhotoTufin.Search.SystemIO;
 public class HDDInfoReader
 {
     private string FullPath { get;}
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
     
     /// <summary>
     ///  Constructor.
@@ -44,6 +46,7 @@ public class HDDInfoReader
         }
         catch (Exception e)
         {
+            log.Error(e);
             throw new Exception(e.Message);
         }
         
@@ -71,6 +74,7 @@ public class HDDInfoReader
         }
         catch (Exception e)
         {
+            log.Error(e);
             throw new Exception(e.Message);
         }
     }
@@ -117,6 +121,7 @@ public class HDDInfoReader
         }
         catch (Exception e)
         {
+            log.Error(e);
             throw new Exception(e.Message);
         }
     }

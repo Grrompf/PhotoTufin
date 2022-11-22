@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using NLog;
 
 namespace PhotoTufin.Search.SystemIO;
 
@@ -11,6 +12,7 @@ public class WalkFolders
 {
     private readonly List<string> _extensionStrings;
     private readonly DirectoryInfo _searchStart;
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     /// <summary>
     /// Constructor
@@ -58,7 +60,7 @@ public class WalkFolders
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            log.Error(e);
         }
     }
 
@@ -68,15 +70,22 @@ public class WalkFolders
     /// <param name="dirInfo"></param>
     private void walkFiles(DirectoryInfo dirInfo)
     {
-        // walk thru all files
-        foreach (var fileInfo in dirInfo.GetFiles())
+        try
         {
-            const StringComparison ignoreCase = StringComparison.OrdinalIgnoreCase;
-            if (_extensionStrings.FindIndex(x => x.Equals(fileInfo.Extension, ignoreCase)) == -1) continue;
+            // walk thru all files
+            foreach (var fileInfo in dirInfo.GetFiles())
+            {
+                const StringComparison ignoreCase = StringComparison.OrdinalIgnoreCase;
+                if (_extensionStrings.FindIndex(x => x.Equals(fileInfo.Extension, ignoreCase)) == -1) continue;
             
             
-            Count++; // use for debugging
-            Files.Add(new ImageInfo(fileInfo));
+                Count++; // use for debugging
+                Files.Add(new ImageInfo(fileInfo));
+            }
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
         }
     }
 }

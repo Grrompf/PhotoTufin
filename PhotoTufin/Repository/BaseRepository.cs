@@ -1,5 +1,7 @@
+using System;
 using System.Data.SQLite;
 using Dapper;
+using NLog;
 
 namespace PhotoTufin.Repository;
 
@@ -8,6 +10,8 @@ namespace PhotoTufin.Repository;
 /// </summary>
 public abstract class BaseRepository : IRepository
 {
+    protected static readonly Logger log = LogManager.GetCurrentClassLogger();
+    
     /// <summary>
     /// SQLite database file is in the application directory. The file name is the trimmed Productname of the application as
     /// defined in App.xaml.cs, e.g. "PhotoTufin.sqlite" 
@@ -29,10 +33,18 @@ public abstract class BaseRepository : IRepository
     /// <param name="sql"></param>
     protected static void ExecDbCmd(string sql)
     {
-        using var conn = DbConnection();
-        conn.Open();
-        conn.Execute(sql);
-        conn.Close();
+        try
+        {
+            using var conn = DbConnection();
+            conn.Open();
+            conn.Execute(sql);
+            conn.Close();
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+            throw;
+        }
     }
     
     /// <summary>

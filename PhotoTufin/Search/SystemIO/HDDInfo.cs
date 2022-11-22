@@ -6,7 +6,7 @@ namespace PhotoTufin.Search.SystemIO;
 public class HDDInfo
 {
     private const string UNKNOWN = "Unknown";
-
+    
     /// <summary>
     /// Constructor
     /// </summary>

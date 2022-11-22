@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using NLog;
 
 namespace PhotoTufin.Search.Filter;
 
@@ -11,32 +13,41 @@ namespace PhotoTufin.Search.Filter;
 public static class ImageFilter
 {
     private static List<string> FileExtensions { get; } = new();
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
 
     /// <summary>
     /// Reads the checked header infos of the GUI (menu: Filter).
     /// Return a collection of strings of selected image extensiosns.
     /// </summary>
     /// <param name="Filter"></param>
-    /// <returns></returns>
+    /// <returns>List</returns>
     public static List<string> makeFilter(MenuItem Filter)
     {
-        FileExtensions.Clear();
-        App.ClearFilterSetting();
-
-        foreach ( var item in Filter.Items)
+        try
         {
-            var mi = item as MenuItem;
-            if (mi is null or { IsCheckable: false} or {IsChecked: false} or {HasHeader: false}) 
-                continue;
+            FileExtensions.Clear();
+            App.ClearFilterSetting();
 
-            var filter = mi.Header.ToString();
-            if (filter == null) continue;
+            foreach ( var item in Filter.Items)
+            {
+                var mi = item as MenuItem;
+                if (mi is null or { IsCheckable: false} or {IsChecked: false} or {HasHeader: false}) 
+                    continue;
+
+                var filter = mi.Header.ToString();
+                if (filter == null) continue;
             
-            App.SetFilterSetting(filter, mi.IsChecked);
-            convertHeaderToExtensions(filter);
-        }
+                App.SetFilterSetting(filter, mi.IsChecked);
+                convertHeaderToExtensions(filter);
+            }
 
-        return FileExtensions;
+            return FileExtensions;
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+            throw;
+        }
     }
 
     /// <summary>
