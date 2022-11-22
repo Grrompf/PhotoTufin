@@ -1,5 +1,7 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using NLog;
 using PhotoTufin.Model;
 using PhotoTufin.Repository;
 
@@ -7,6 +9,8 @@ namespace PhotoTufin;
 
 public partial class DuplicateDetails
 {
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
+    
     /// <summary>
     /// Constructor
     /// </summary>
@@ -24,14 +28,21 @@ public partial class DuplicateDetails
     /// <param name="photoInfo"></param>
     private void InitDuplicateList(IPhotoInfo photoInfo)
     {
-        var list = new PhotoInfoRepository().FindDuplicatesByHashString(photoInfo.HashString);
-
-        foreach (var duplicate in list)
+        try
         {
-            DuplicateList.Items.Add(duplicate);
-        }
+            var list = new PhotoInfoRepository().FindDuplicatesByHashString(photoInfo.HashString);
 
-        NoFiles.Text = $"{DuplicateList.Items.Count} Duplikate";
+            foreach (var duplicate in list)
+            {
+                DuplicateList.Items.Add(duplicate);
+            }
+
+            NoFiles.Text = $"{DuplicateList.Items.Count} Duplikate";
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
     }
 
     /// <summary>
@@ -41,12 +52,20 @@ public partial class DuplicateDetails
     /// <param name="e"></param>
     private void DuplicateList_OnGotFocus(object sender, RoutedEventArgs e)
     {
-        var item = (sender as ListView)?.SelectedItem;
-        if (item == null)
-            return;
+        try
+        {
+            var item = (sender as ListView)?.SelectedItem;
+            if (item == null)
+                return;
             
-        var selectedObject = (PhotoInfo)item;
+            var selectedObject = (PhotoInfo)item;
         
-        DiskInfo.Text = $"{selectedObject.DiskInfo?.Model} ({selectedObject.DiskInfo?.MediaType})";
+            DiskInfo.Text = $"{selectedObject.DiskInfo?.Model} ({selectedObject.DiskInfo?.MediaType})";
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception);
+        }
+        
     }
 }

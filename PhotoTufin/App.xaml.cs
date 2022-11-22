@@ -3,6 +3,7 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using NLog;
 
 namespace PhotoTufin
 {
@@ -16,7 +17,8 @@ namespace PhotoTufin
         private const int YEAR  = 2022;
         private const int MONTH = 10;
         private const int DAY = 22;
-            
+        private static readonly Logger log = LogManager.GetCurrentClassLogger();
+        
         /// <summary>
         /// Gibt die Versionsnummer der Assembly zurück.
         /// </summary>
@@ -112,13 +114,21 @@ namespace PhotoTufin
         /// <returns></returns>
         public static bool GetFilterSetting(string key)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-            var keySetting = config.AppSettings.Settings[key];
+            try
+            {
+                var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                var keySetting = config.AppSettings.Settings[key];
 
-            if (config.AppSettings.Settings[key] == null)
-                return false;
+                if (config.AppSettings.Settings[key] == null)
+                    return false;
             
-            return keySetting.Value == "1";
+                return keySetting.Value == "1";
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                throw;
+            }
         }
  
         /// <summary>
@@ -128,17 +138,26 @@ namespace PhotoTufin
         /// <param name="isChecked"></param>
         public static void SetFilterSetting(string key, bool isChecked)
         {
-            var value = isChecked ? "1" : "0";
-            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+            try
+            {
+                var value = isChecked ? "1" : "0";
+                var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
             
-            // if existing we first have to remove the key
-            if (config.AppSettings.Settings[key] != null)
-                config.AppSettings.Settings.Remove(key);
+                // if existing we first have to remove the key
+                if (config.AppSettings.Settings[key] != null)
+                    config.AppSettings.Settings.Remove(key);
             
-            config.AppSettings.Settings.Add(key, value);
+                config.AppSettings.Settings.Add(key, value);
             
-            // save the updated config
-            config.Save(ConfigurationSaveMode.Modified);
+                // save the updated config
+                config.Save(ConfigurationSaveMode.Modified);
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                throw;
+            }
+            
         }
 
         /// <summary>
@@ -146,11 +165,19 @@ namespace PhotoTufin
         /// </summary>
         public static void ClearFilterSetting()
         {
-            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-            foreach (var key in config.AppSettings.Settings.AllKeys)
+            try
             {
-                if (config.AppSettings.Settings[key] != null)
-                    config.AppSettings.Settings.Remove(key);
+                var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                foreach (var key in config.AppSettings.Settings.AllKeys)
+                {
+                    if (config.AppSettings.Settings[key] != null)
+                        config.AppSettings.Settings.Remove(key);
+                }
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                throw;
             }
         }
         

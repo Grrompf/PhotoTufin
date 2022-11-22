@@ -1,8 +1,10 @@
-﻿using System.Runtime.Versioning;
+﻿using System;
+using System.Runtime.Versioning;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using NLog;
 using PhotoTufin.Data;
 using PhotoTufin.Model;
 using PhotoTufin.Repository;
@@ -21,6 +23,8 @@ namespace PhotoTufin;
 [SupportedOSPlatform("windows")]
 public partial class MainWindow
 {
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
+    
     /// <summary>
     /// Constructor
     /// </summary>
@@ -40,35 +44,41 @@ public partial class MainWindow
     /// <param name="e"></param>
     private void mnuScan_Click(object sender, RoutedEventArgs e)
     {
+        try
+        {
+            using var fbd = new FolderBrowserDialog();
             
-        using var fbd = new FolderBrowserDialog();
+            // directory selection
+            var result = fbd.ShowDialog();
+            var selectedPath = fbd.SelectedPath;
+            if (result != OK || string.IsNullOrWhiteSpace(selectedPath)) return;
             
-        // directory selection
-        var result = fbd.ShowDialog();
-        var selectedPath = fbd.SelectedPath;
-        if (result != OK || string.IsNullOrWhiteSpace(selectedPath)) return;
+            // display action
+            lblAction.Text = $"Scanning: {selectedPath}";
             
-        // display action
-        lblAction.Text = $"Scanning: {selectedPath}";
-            
-        // remove tbl rows  
-        viewPhotoList.Items.Clear();
+            // remove tbl rows  
+            viewPhotoList.Items.Clear();
 
-        var diskInfo = DiskInfoFactory.SaveDiskInfo(selectedPath);
+            var diskInfo = DiskInfoFactory.SaveDiskInfo(selectedPath);
             
-        // find files and duplicates -> saves new files to db
-        var imageInfos = ScanFactory.FindImages(selectedPath, Filter);
-        lblNoDuplicates.Text = $"{ScanFactory.NoDuplicates.ToString()} Duplikate";
-        lblNoFiles.Text = $"{imageInfos.Count} Bilder";
+            // find files and duplicates -> saves new files to db
+            var imageInfos = ScanFactory.FindImages(selectedPath, Filter);
+            lblNoDuplicates.Text = $"{ScanFactory.NoDuplicates.ToString()} Duplikate";
+            lblNoFiles.Text = $"{imageInfos.Count} Bilder";
             
-        // display action
-        lblAction.Text = $"Speicher in Datenbank: {imageInfos.Count} Bilder";
-        PhotoInfoFactory.SavePhotos(imageInfos, diskInfo);
+            // display action
+            lblAction.Text = $"Speicher in Datenbank: {imageInfos.Count} Bilder";
+            PhotoInfoFactory.SavePhotos(imageInfos, diskInfo);
             
-        // mandatory last step: trigger photo list 
-        InitDiskComboBox();
-        diskInfoBox.SelectedItem = diskInfo?.DisplayName;
-        dbMenuBar.Visibility = Visibility.Visible;
+            // mandatory last step: trigger photo list 
+            InitDiskComboBox();
+            diskInfoBox.SelectedItem = diskInfo?.DisplayName;
+            dbMenuBar.Visibility = Visibility.Visible;
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception);
+        }
     }
     
     /// <summary>
@@ -109,15 +119,22 @@ public partial class MainWindow
     /// </summary>
     private void InitDiskComboBox()
     {
-        diskInfoBox.Items.Clear();
-        var diskList = DiskInfoFactory.GetAllDisks();
-        foreach (var disk in diskList)
+        try
         {
-            diskInfoBox.Items.Add(disk.DisplayName);
-        }
+            diskInfoBox.Items.Clear();
+            var diskList = DiskInfoFactory.GetAllDisks();
+            foreach (var disk in diskList)
+            {
+                diskInfoBox.Items.Add(disk.DisplayName);
+            }
 
-        //shows mnBar for db action
-        dbMenuBar.Visibility = diskInfoBox.Items.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            //shows mnBar for db action
+            dbMenuBar.Visibility = diskInfoBox.Items.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
     }
         
     /// <summary>
@@ -125,20 +142,27 @@ public partial class MainWindow
     /// </summary>
     private void InitFilterSettings()
     {
-        // on first run have the default values
-        if (App.IsFilterSettingEmpty())
-            return;
-            
-        foreach ( var item in Filter.Items)
+        try
         {
-            var mi = item as MenuItem;
-            if (mi is null or { IsCheckable: false} or {HasHeader: false}) 
-                continue;
+            // on first run have the default values
+            if (App.IsFilterSettingEmpty())
+                return;
+            
+            foreach ( var item in Filter.Items)
+            {
+                var mi = item as MenuItem;
+                if (mi is null or { IsCheckable: false} or {HasHeader: false}) 
+                    continue;
 
-            var filter = mi.Header.ToString();
-            if (filter == null) continue;
+                var filter = mi.Header.ToString();
+                if (filter == null) continue;
 
-            mi.IsChecked = App.GetFilterSetting(filter);  
+                mi.IsChecked = App.GetFilterSetting(filter);  
+            }
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
         }
     }
 
@@ -149,17 +173,25 @@ public partial class MainWindow
     /// <param name="e"></param>
     private void DiskInfoBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (((ComboBox)sender).SelectedItem == null)
-            return;
+        try
+        {
+            if (((ComboBox)sender).SelectedItem == null)
+                return;
 
-        var displayName = ((ComboBox)sender).SelectedItem.ToString();
-        ShowDiskInfo(displayName);
-        ShowPhotoDuplicates(displayName);
+            var displayName = ((ComboBox)sender).SelectedItem.ToString();
+            ShowDiskInfo(displayName);
+            ShowPhotoDuplicates(displayName);
 
-        var noImages = PhotoInfoFactory.GetImageCount(displayName); 
-        lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
-        lblAction.Text = $"Anzeige der Duplikate auf {displayName}";
-        lblNoFiles.Text = $"{noImages} Bilder";
+            var noImages = PhotoInfoFactory.GetImageCount(displayName); 
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblAction.Text = $"Anzeige der Duplikate auf {displayName}";
+            lblNoFiles.Text = $"{noImages} Bilder";
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception);
+        }
+        
     }
 
     /// <summary>
@@ -168,15 +200,23 @@ public partial class MainWindow
     /// <param name="displayName"></param>
     private void ShowPhotoDuplicates(string? displayName)
     {
-        if (displayName == null)
-            return;
-            
-        var photoList = PhotoInfoFactory.GetDuplicatesByDiskInfo(displayName);    
-        viewPhotoList.Items.Clear();
-        foreach (var row in photoList)
+        try
         {
-            viewPhotoList.Items.Add(row);
+            if (displayName == null)
+                return;
+            
+            var photoList = PhotoInfoFactory.GetDuplicatesByDiskInfo(displayName);    
+            viewPhotoList.Items.Clear();
+            foreach (var row in photoList)
+            {
+                viewPhotoList.Items.Add(row);
+            }
         }
+        catch (Exception e)
+        {
+            log.Error(e);
+        } 
+        
     }
 
     /// <summary>
@@ -185,58 +225,73 @@ public partial class MainWindow
     /// <param name="displayName"></param>
     private void ShowDiskInfo(string? displayName)
     {
-        if (displayName == null)
-            return;
-            
-        var diskInfo = DiskInfoFactory.GetDiskInfoByDisplayName(displayName);
-        if (diskInfo != null)
+        try
         {
-            viewDiskInfo.Items.Clear();
-            viewDiskInfo.Items.Add(diskInfo);
+            if (displayName == null)
+                return;
+            
+            var diskInfo = DiskInfoFactory.GetDiskInfoByDisplayName(displayName);
+            if (diskInfo != null)
+            {
+                viewDiskInfo.Items.Clear();
+                viewDiskInfo.Items.Add(diskInfo);
+            }
+            viewDiskInfo.Visibility = diskInfo == null ? Visibility.Collapsed : Visibility.Visible;
+            btnClear.IsEnabled = diskInfo != null;
         }
-        viewDiskInfo.Visibility = diskInfo == null ? Visibility.Collapsed : Visibility.Visible;
-        btnClear.IsEnabled = diskInfo != null;
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
     }
 
     /// <summary>
-    /// Clears th database of a selected DiskInfo
+    /// Clears the database of a selected DiskInfo
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void ButtonClear_OnClick(object sender, RoutedEventArgs e)
     {
-        var displayName = diskInfoBox.SelectedItem.ToString();
-        if (displayName == null)
-            return;
+        try
+        {
+            var displayName = diskInfoBox.SelectedItem.ToString();
+            if (displayName == null)
+                return;
             
-        var result = MessageBox.Show(
-            $"Möchtest du die Daten von \"{displayName}\" löschen ?",
-            "Sicherheitsabfrage",
-            MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            var result = MessageBox.Show(
+                $"Möchtest du die Daten von \"{displayName}\" löschen ?",
+                "Sicherheitsabfrage",
+                MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             
-        if (result == MessageBoxResult.Cancel)
-            return;
+            if (result == MessageBoxResult.Cancel)
+                return;
 
-        if (!DiskInfoFactory.DeleteDiskAndPhotoData(displayName))
-            return;
+            if (!DiskInfoFactory.DeleteDiskAndPhotoData(displayName))
+                return;
             
-        // reset selection and remove item from comboBox
-        diskInfoBox.SelectedItem = null;
-        diskInfoBox.Items.Remove(displayName);
+            // reset selection and remove item from comboBox
+            diskInfoBox.SelectedItem = null;
+            diskInfoBox.Items.Remove(displayName);
             
-        // clear and hide the diskInfo bar 
-        viewDiskInfo.Items.Clear();
-        viewDiskInfo.Visibility = Visibility.Collapsed;
+            // clear and hide the diskInfo bar 
+            viewDiskInfo.Items.Clear();
+            viewDiskInfo.Visibility = Visibility.Collapsed;
             
-        // clear photo list
-        viewPhotoList.Items.Clear();
+            // clear photo list
+            viewPhotoList.Items.Clear();
             
-        // disable btn (no selection)
-        btnClear.IsEnabled = false;
+            // disable btn (no selection)
+            btnClear.IsEnabled = false;
             
-        lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
-        lblAction.Text = $"{displayName} wurde gelöscht";
-        lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblAction.Text = $"{displayName} wurde gelöscht";
+            lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception);
+        }
+        
     }
     
     /// <summary>
@@ -246,34 +301,41 @@ public partial class MainWindow
     /// <param name="e"></param>
     private void ButtonAllDataClear_OnClick(object sender, RoutedEventArgs e)
     {
-        var result = MessageBox.Show(
-            $"Möchtest du alle Daten löschen ?",
-            "Sicherheitsabfrage",
-            MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+        try
+        {
+            var result = MessageBox.Show(
+                $"Möchtest du alle Daten löschen ?",
+                "Sicherheitsabfrage",
+                MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             
-        if (result == MessageBoxResult.Cancel)
-            return;
+            if (result == MessageBoxResult.Cancel)
+                return;
 
-        new PhotoInfoRepository().DropTable();
-        new DiskInfoRepository().DropTable();
+            new PhotoInfoRepository().DropTable();
+            new DiskInfoRepository().DropTable();
             
-        // clear comboBox
-        diskInfoBox.SelectedItem = null;
-        diskInfoBox.Items.Clear();
+            // clear comboBox
+            diskInfoBox.SelectedItem = null;
+            diskInfoBox.Items.Clear();
             
-        // clear and hide the diskInfo bar 
-        viewDiskInfo.Items.Clear();
-        viewDiskInfo.Visibility = Visibility.Collapsed;
+            // clear and hide the diskInfo bar 
+            viewDiskInfo.Items.Clear();
+            viewDiskInfo.Visibility = Visibility.Collapsed;
             
-        // clear photo list
-        viewPhotoList.Items.Clear();
+            // clear photo list
+            viewPhotoList.Items.Clear();
             
-        // disable btn (no selection)
-        btnClear.IsEnabled = false;
+            // disable btn (no selection)
+            btnClear.IsEnabled = false;
             
-        lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
-        lblAction.Text = $"Komplette Datenbank wurde gelöscht";
-        lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblAction.Text = $"Komplette Datenbank wurde gelöscht";
+            lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception);
+        }
     }
 
     /// <summary>
@@ -283,13 +345,20 @@ public partial class MainWindow
     /// <param name="e"></param>
     private void ViewPhotoList_OnPreviewMouseUp(object sender, MouseButtonEventArgs e)
     {
-        var item = (sender as ListView)?.SelectedItem;
-        if (item == null)
-            return;
+        try
+        {
+            var item = (sender as ListView)?.SelectedItem;
+            if (item == null)
+                return;
             
-        var selectedObject = (PhotoInfo)item;
+            var selectedObject = (PhotoInfo)item;
 
-        var details = new DuplicateDetails(selectedObject);
-        details.ShowDialog();
+            var details = new DuplicateDetails(selectedObject);
+            details.ShowDialog();
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception);
+        }
     }
 }

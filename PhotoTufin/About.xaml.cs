@@ -1,11 +1,15 @@
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
+using NLog;
 
 namespace PhotoTufin;
 
 public partial class About
 {
+    private static readonly Logger log = LogManager.GetCurrentClassLogger();
+    
     /// <summary>
     /// Constructor
     /// </summary>
@@ -36,11 +40,20 @@ public partial class About
     /// <param name="e"></param>
     private void btnUri_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is not Hyperlink link) return;
+        try
+        {
+            if (sender is not Hyperlink link) return;
         
-        var defaultBrowser = new Process();
-        defaultBrowser.StartInfo.UseShellExecute = true;
-        defaultBrowser.StartInfo.FileName = link.NavigateUri.AbsoluteUri;
-        defaultBrowser.Start();
+            var defaultBrowser = new Process();
+            defaultBrowser.StartInfo.UseShellExecute = true;
+            defaultBrowser.StartInfo.FileName = link.NavigateUri.AbsoluteUri;
+            defaultBrowser.Start();
+        }
+        catch (Exception exception)
+        {
+            log.Error(exception);
+            throw;
+        }
+        
     }
 }
