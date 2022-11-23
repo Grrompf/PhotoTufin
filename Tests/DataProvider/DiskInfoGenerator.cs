@@ -22,11 +22,13 @@ public static class DiskInfoGenerator
            var interfacesIndex = rand.Next(interFaces.Length-1);
            var mediaTypesIndex = rand.Next(mediaTypes.Length-1);
            var modelsIndex = rand.Next(mediaTypes.Length-1);
-           
+           var displayName = "Test - " + new Random().Next(50);
+               
            var diskInfo = new DiskInfo()
            {
                InterfaceType = interFaces[interfacesIndex],
                MediaType = mediaTypes[mediaTypesIndex],
+               DisplayName = displayName,
                Model = models[modelsIndex],
                SerialNo = Guid.NewGuid().ToString()
            };

@@ -13,6 +13,7 @@ public class DiskInfoRepositoryTests
         InterfaceType = "SCSI",
         MediaType = "Fixed hard disk media",
         Model = "WD_BLACK SN750 SE 1TB",
+        DisplayName = "Test - 0815",
         SerialNo = "E823_8FA6_BF53_0231_001B_444A_487C_75B4"
     };
 
