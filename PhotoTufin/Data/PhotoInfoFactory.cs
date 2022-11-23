@@ -64,17 +64,19 @@ public static class PhotoInfoFactory
 
         return 0;
     }
-    
+
     /// <summary>
     /// Save list scan of photos into the database
     /// </summary>
+    /// <param name="progress"></param>
     /// <param name="imageInfos"></param>
     /// <param name="diskInfo"></param>
-    public static void SavePhotos(List<ImageInfo> imageInfos, IModel? diskInfo)
+    public static void SavePhotos(IProgress<int> progress, List<ImageInfo> imageInfos, IModel? diskInfo)
     {
         try
         {
             if (diskInfo == null) return;
+            var i = 0;
             foreach (var image in imageInfos)
             {
                 if (image.HashString == null)
@@ -89,6 +91,7 @@ public static class PhotoInfoFactory
                     Size = image.Size
                 };
                 PhotoInfoRepository.Save(photo);
+                progress?.Report(i++);
             }
         }
         catch (Exception e)

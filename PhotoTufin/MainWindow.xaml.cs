@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -62,23 +64,54 @@ public partial class MainWindow
             var diskInfo = DiskInfoFactory.SaveDiskInfo(selectedPath);
             
             // find files and duplicates -> saves new files to db
-            var imageInfos = ScanFactory.FindImages(selectedPath, Filter);
-            lblNoDuplicates.Text = $"{ScanFactory.NoDuplicates.ToString()} Duplikate";
-            lblNoFiles.Text = $"{imageInfos.Count} Bilder";
+            var imageInfos = StartScanning(selectedPath);
             
+            lblAction.Text = $"Found {imageInfos.Count}";
+
             // display action
             lblAction.Text = $"Speicher in Datenbank: {imageInfos.Count} Bilder";
-            PhotoInfoFactory.SavePhotos(imageInfos, diskInfo);
-            
-            // mandatory last step: trigger photo list 
-            InitDiskComboBox();
-            diskInfoBox.SelectedItem = diskInfo?.DisplayName;
-            dbMenuBar.Visibility = Visibility.Visible;
+            StartSaving(imageInfos, diskInfo);
         }
         catch (Exception exception)
         {
             log.Error(exception);
         }
+    }
+    
+    private List<ImageInfo> StartScanning(string selectedPath)
+    {
+        lblAction.Text = "scanning";
+        
+        // display action
+        var imageInfos = ScanFactory.FindImages(selectedPath, Filter);
+        
+        lblAction.Text = "Done!";
+        
+        return imageInfos;
+    }
+
+    private async void StartSaving(List<ImageInfo> imageInfos, DiskInfo? diskInfo)
+    {
+        // The Progress<T> constructor captures our UI context,
+        //  so the lambda will be run on the UI thread.
+        lblNoFiles.Text = $"{imageInfos.Count} Bilder";
+        progressBar.Visibility = Visibility.Visible;
+        dataSaveLvl.Maximum = imageInfos.Count;
+        var progress = new Progress<int>(percent =>
+        {
+            dataSaveLvl.Value = percent;
+        });
+
+        // DoProcessing is run on the thread pool.
+        await Task.Run(() => PhotoInfoFactory.SavePhotos(progress, imageInfos, diskInfo));
+        lblAction.Text = "Done!";
+        progressBar.Visibility = Visibility.Collapsed;
+        
+        // mandatory last step: trigger photo list 
+        InitDiskComboBox();
+        diskInfoBox.SelectedItem = diskInfo?.DisplayName;
+        lblNoDuplicates.Text = $"{viewPhotoList.Items.Count} Duplikate";
+        dbMenuBar.Visibility = Visibility.Visible;
     }
     
     /// <summary>

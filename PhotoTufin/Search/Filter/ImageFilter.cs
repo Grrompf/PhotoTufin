@@ -47,7 +47,7 @@ public static class ImageFilter
                     IsChecked = mi.IsChecked
                 };
 
-                repo.Save(filterConfig);;
+                repo.Save(filterConfig);
                 convertHeaderToExtensions(filter);
             }
 

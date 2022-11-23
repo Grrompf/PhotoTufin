@@ -31,6 +31,7 @@
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
       <PackageReference Include="System.Data.SQLite" Version="1.0.116" />
       <PackageReference Include="System.Management" Version="6.0.0" />
+      <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -46,6 +47,18 @@
       <None Update="README.nfo">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Remove="Ressources\barlineLoading16x16.gif" />
+      <Resource Include="Ressources\barlineLoading16x16.gif" />
+      <None Remove="Ressources\barlineLoading32x32.gif" />
+      <Resource Include="Ressources\barlineLoading32x32.gif" />
+      <None Remove="Ressources\loadingBar32x32.gif" />
+      <Resource Include="Ressources\loadingBar32x32.gif" />
+      <None Remove="Ressources\loadingBar_16x16.gif" />
+      <Resource Include="Ressources\loadingBar_16x16.gif" />
+      <None Remove="Ressources\spinReloader16x16.gif" />
+      <Resource Include="Ressources\spinReloader16x16.gif" />
+      <None Remove="Ressources\spinReloader32x32.gif" />
+      <Resource Include="Ressources\spinReloader32x32.gif" />
     </ItemGroup>
 
     <ItemGroup>

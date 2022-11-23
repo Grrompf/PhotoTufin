@@ -17,12 +17,7 @@ namespace PhotoTufin.Search;
 public static class ScanFactory
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-    
-    /// <summary>
-    /// Duplicates on itself
-    /// </summary>
-    public static int NoDuplicates { get; private set; }
-    
+
     /// <summary>
     /// Finds all images by walking all folders by its extension (filter). 
     /// </summary>
@@ -37,7 +32,7 @@ public static class ScanFactory
             var search = new WalkFolders(selectedPath, fileExtensions);
             var imageInfos = search.search();
 
-            NoDuplicates = DuplicateFinder.findDuplicates(ref imageInfos);
+            DuplicateFinder.findDuplicates(ref imageInfos);
 
             return imageInfos;
         }
