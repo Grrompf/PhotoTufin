@@ -137,11 +137,11 @@
                 </Border> 
             </StatusBarItem>
             <StatusBarItem Grid.Column="2">
-                <TextBlock Name="lblAction" Text="scanning" Foreground="DimGray"/>
+                <TextBlock Name="lblAction" Text="" Foreground="DimGray"/>
             </StatusBarItem>
             <StatusBarItem Grid.Column="3" HorizontalContentAlignment="Right">
                 <Grid Name="progressBar" Margin="10, 0" Visibility="Collapsed">
-                    <ProgressBar Width="300" MinHeight="16" Name="dataSaveLvl" Minimum="0" Value="100" Maximum="100" Margin="0" Foreground="#FF62FF7F" />
+                    <ProgressBar Width="300" MinHeight="16" Name="dataSaveLvl" Minimum="0" Value="0" Maximum="100" Margin="0" Foreground="#FF62FF7F" />
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#52564F" >
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}Data: {0}/{1}"> 

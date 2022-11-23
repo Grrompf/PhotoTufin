@@ -13,7 +13,7 @@ public class WalkFolders
     private readonly List<string> _extensionStrings;
     private readonly DirectoryInfo _searchStart;
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
+    
     /// <summary>
     /// Constructor
     /// </summary>

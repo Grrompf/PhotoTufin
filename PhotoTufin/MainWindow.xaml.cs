@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,6 +49,8 @@ public partial class MainWindow
     {
         try
         {
+            // display action
+            lblAction.Text = "Scanning (Zeit für Kaffee)";
             using var fbd = new FolderBrowserDialog();
             
             // directory selection
@@ -55,46 +58,28 @@ public partial class MainWindow
             var selectedPath = fbd.SelectedPath;
             if (result != OK || string.IsNullOrWhiteSpace(selectedPath)) return;
             
-            // display action
-            lblAction.Text = $"Scanning: {selectedPath}";
-            
             // remove tbl rows  
             viewPhotoList.Items.Clear();
-
             var diskInfo = DiskInfoFactory.SaveDiskInfo(selectedPath);
             
-            // find files and duplicates -> saves new files to db
-            var imageInfos = StartScanning(selectedPath);
+            // find files
+            var imageInfos = ScanFactory.FindImages(selectedPath, Filter);
+            lblNoFiles.Text = $"{imageInfos.Count} Bilder";
             
-            lblAction.Text = $"Found {imageInfos.Count}";
-
-            // display action
-            lblAction.Text = $"Speicher in Datenbank: {imageInfos.Count} Bilder";
+            // saves new files to db
             StartSaving(imageInfos, diskInfo);
+            lblAction.Text = "";
         }
         catch (Exception exception)
         {
             log.Error(exception);
         }
     }
-    
-    private List<ImageInfo> StartScanning(string selectedPath)
-    {
-        lblAction.Text = "scanning";
-        
-        // display action
-        var imageInfos = ScanFactory.FindImages(selectedPath, Filter);
-        
-        lblAction.Text = "Done!";
-        
-        return imageInfos;
-    }
 
     private async void StartSaving(List<ImageInfo> imageInfos, DiskInfo? diskInfo)
     {
         // The Progress<T> constructor captures our UI context,
         //  so the lambda will be run on the UI thread.
-        lblNoFiles.Text = $"{imageInfos.Count} Bilder";
         progressBar.Visibility = Visibility.Visible;
         dataSaveLvl.Maximum = imageInfos.Count;
         var progress = new Progress<int>(percent =>
@@ -104,7 +89,6 @@ public partial class MainWindow
 
         // DoProcessing is run on the thread pool.
         await Task.Run(() => PhotoInfoFactory.SavePhotos(progress, imageInfos, diskInfo));
-        lblAction.Text = "Done!";
         progressBar.Visibility = Visibility.Collapsed;
         
         // mandatory last step: trigger photo list 

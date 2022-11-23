@@ -17,7 +17,7 @@ namespace PhotoTufin.Search;
 public static class ScanFactory
 {
     private static readonly Logger log = LogManager.GetCurrentClassLogger();
-
+    
     /// <summary>
     /// Finds all images by walking all folders by its extension (filter). 
     /// </summary>
