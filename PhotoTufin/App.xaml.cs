@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using NLog;
@@ -103,10 +102,18 @@ namespace PhotoTufin
             {
                 var product = Regex.Replace(Product.Trim(), @"\s+", "");
                 var dbName = $"{product}.sqlite"; //PhotoTufin.sqlite
-                return $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar.ToString()}{dbName}";
+                var dir = System.Windows.Forms.Application.CommonAppDataPath;
+                return $"{dir}\\{dbName}";
             }
         }
-        
+
+        /// <summary>
+        /// Full path of the application.
+        /// </summary>
+        /// <returns>string</returns>
+        private static string AppPath => Assembly.GetExecutingAssembly().Location; //AppDomain.CurrentDomain.BaseDirectory + "PhotoTufin.dll";
+        //var appPath = Assembly.GetExecutingAssembly().Location";
+            
         /// <summary>
         /// Get config setting by key. True if filter is checked.
         /// </summary>
@@ -116,7 +123,7 @@ namespace PhotoTufin
         {
             try
             {
-                var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                var config = ConfigurationManager.OpenExeConfiguration(AppPath);
                 var keySetting = config.AppSettings.Settings[key];
 
                 if (config.AppSettings.Settings[key] == null)
@@ -141,7 +148,7 @@ namespace PhotoTufin
             try
             {
                 var value = isChecked ? "1" : "0";
-                var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                var config = ConfigurationManager.OpenExeConfiguration(AppPath);
             
                 // if existing we first have to remove the key
                 if (config.AppSettings.Settings[key] != null)
@@ -167,7 +174,7 @@ namespace PhotoTufin
         {
             try
             {
-                var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
+                var config = ConfigurationManager.OpenExeConfiguration(AppPath);
                 foreach (var key in config.AppSettings.Settings.AllKeys)
                 {
                     if (config.AppSettings.Settings[key] != null)
@@ -186,8 +193,17 @@ namespace PhotoTufin
         /// </summary>
         public static bool IsFilterSettingEmpty()
         {
-            var config = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location);
-            return config.AppSettings.Settings.AllKeys.Length == 0;
+            try
+            {
+                var config = ConfigurationManager.OpenExeConfiguration(AppPath);
+                return config.AppSettings.Settings.AllKeys.Length == 0;
+            }
+            catch (Exception e)
+            {
+                log.Error(e);
+                throw;
+            }
+            
         }
     }
 }
