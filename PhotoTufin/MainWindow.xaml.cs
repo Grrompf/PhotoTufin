@@ -144,8 +144,9 @@ public partial class MainWindow
     {
         try
         {
+            var repo = new FilterConfigRepository();
             // on first run have the default values
-            if (App.IsFilterSettingEmpty())
+            if (repo.FindAll().Count == 0)
                 return;
             
             foreach ( var item in Filter.Items)
@@ -155,9 +156,14 @@ public partial class MainWindow
                     continue;
 
                 var filter = mi.Header.ToString();
+                
                 if (filter == null) continue;
 
-                mi.IsChecked = App.GetFilterSetting(filter);  
+                var filterConfig = repo.FindByFilter(filter);
+                if (filterConfig == null)
+                    continue;
+                
+                mi.IsChecked = filterConfig.IsChecked;  
             }
         }
         catch (Exception e)

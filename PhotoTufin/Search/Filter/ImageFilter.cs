@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using NLog;
+using PhotoTufin.Model;
+using PhotoTufin.Repository;
 
 namespace PhotoTufin.Search.Filter;
 
@@ -26,7 +28,9 @@ public static class ImageFilter
         try
         {
             FileExtensions.Clear();
-            App.ClearFilterSetting();
+            
+            var repo = new FilterConfigRepository();
+            repo.DeleteAllData();
 
             foreach ( var item in Filter.Items)
             {
@@ -36,8 +40,14 @@ public static class ImageFilter
 
                 var filter = mi.Header.ToString();
                 if (filter == null) continue;
-            
-                App.SetFilterSetting(filter, mi.IsChecked);
+
+                var filterConfig = new FilterConfig
+                {
+                    Filter = filter,
+                    IsChecked = mi.IsChecked
+                };
+
+                repo.Save(filterConfig);;
                 convertHeaderToExtensions(filter);
             }
 

@@ -102,6 +102,27 @@ public class FilterConfigRepository : BaseRepository
     }
     
     /// <summary>
+    /// Clearing the table.
+    /// </summary>
+    public void DeleteAllData()
+    {
+        try
+        {
+            using var conn = DbConnection();
+            conn.Open();
+        
+            conn.Execute(@"DELETE FROM FilterConfig");
+    
+            conn.Close();
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
+        
+    }
+    
+    /// <summary>
     /// Creates table if not existing. Primary key is autoincremented.
     /// Filter is UNIQUE
     /// </summary>
