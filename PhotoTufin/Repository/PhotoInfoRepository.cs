@@ -114,7 +114,7 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
     /// </summary>
     /// <param name="diskInfoId"></param>
     /// <returns>List</returns>
-    public static int GetImageCount(long diskInfoId)
+    public int GetImageCount(long diskInfoId)
     {
         try
         {
@@ -239,6 +239,26 @@ public class PhotoInfoRepository : BaseRepository, IPhotoInfoRepository
             conn.Open();
             
             conn.Execute(@"DELETE FROM PhotoInfo WHERE DiskInfoId = @DiskInfoId", new { diskInfoId });
+        
+            conn.Close();
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
+    }
+    
+    /// <summary>
+    /// Deletes all PhotoInfo of the table.   
+    /// </summary>
+    public override void DeleteAllData()
+    {
+        try
+        {
+            using var conn = DbConnection();
+            conn.Open();
+            
+            conn.Execute(@"DELETE FROM PhotoInfo");
         
             conn.Close();
         }

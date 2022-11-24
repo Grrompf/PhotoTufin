@@ -50,6 +50,11 @@ public abstract class BaseRepository : IRepository
     /// <summary>
     /// Use override to implement this method
     /// </summary>
+    public abstract void DeleteAllData();
+    
+    /// <summary>
+    /// Use override to implement this method
+    /// </summary>
     public abstract void CreateTable();
 
     /// <summary>

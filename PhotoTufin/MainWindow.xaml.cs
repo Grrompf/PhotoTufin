@@ -205,7 +205,7 @@ public partial class MainWindow
             ShowPhotoDuplicates(displayName);
 
             var noImages = PhotoInfoFactory.GetImageCount(displayName); 
-            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count} Duplikate";
             lblAction.Text = $"Anzeige der Duplikate auf {displayName}";
             lblNoFiles.Text = $"{noImages} Bilder";
         }
@@ -305,9 +305,9 @@ public partial class MainWindow
             // disable btn (no selection)
             btnClear.IsEnabled = false;
             
-            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count} Duplikate";
             lblAction.Text = $"{displayName} wurde gelöscht";
-            lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+            lblNoFiles.Text = $"{viewPhotoList.Items.Count} Bilder";
         }
         catch (Exception exception)
         {
@@ -333,8 +333,8 @@ public partial class MainWindow
             if (result == MessageBoxResult.Cancel)
                 return;
 
-            new PhotoInfoRepository().DropTable();
-            new DiskInfoRepository().DropTable();
+            new PhotoInfoRepository().DeleteAllData();
+            new DiskInfoRepository().DeleteAllData();
             
             // clear comboBox
             diskInfoBox.SelectedItem = null;
@@ -350,9 +350,9 @@ public partial class MainWindow
             // disable btn (no selection)
             btnClear.IsEnabled = false;
             
-            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count.ToString()} Duplikate";
-            lblAction.Text = $"Komplette Datenbank wurde gelöscht";
-            lblNoFiles.Text = $"{viewPhotoList.Items.Count.ToString()} Bilder";
+            lblNoDuplicates.Text = $"{viewPhotoList.Items.Count} Duplikate";
+            lblAction.Text = "Komplette Datenbank wurde gelöscht";
+            lblNoFiles.Text = $"{viewPhotoList.Items.Count} Bilder";
         }
         catch (Exception exception)
         {

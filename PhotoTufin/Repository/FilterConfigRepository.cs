@@ -104,7 +104,7 @@ public class FilterConfigRepository : BaseRepository
     /// <summary>
     /// Clearing the table.
     /// </summary>
-    public void DeleteAllData()
+    public override void DeleteAllData()
     {
         try
         {

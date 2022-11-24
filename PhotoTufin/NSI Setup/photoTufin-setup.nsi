@@ -27,7 +27,7 @@ Name "PhotoTufinSetup"
 !define APPNAME "PhotoTupledFinder"
 !define SHORTNAME "PhotoTufin"
 !define COMPANYNAME "McGerhard Photography"
-!define VERSION "1.0.31.326"
+!define VERSION "1.0.32.328"
 !define PRODUCTNAME "Photo Tufin"
 !define PRODUCTVERSION "1.0" # Only 2 digits!
 !define BUILDDIR "C:\Users\Maerz\Projekte\PhotoTupletFinder\PhotoTufin\PhotoTufin\bin\Publish" #Directory of the build
@@ -44,7 +44,7 @@ SetDateSave on
 SetDatablockOptimize on
 CRCCheck on
 SilentInstall normal
-BGGradient 000000 800000 FFFFFF
+BGGradient 000000 003780 FFFFFF
 InstallColors FF8080 000030
 XPStyle on
 

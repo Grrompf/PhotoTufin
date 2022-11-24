@@ -125,14 +125,14 @@
             <StatusBarItem>
                 <Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1">
                     <Border BorderBrush="Gray" BorderThickness="1,1,0,0">
-                        <TextBlock Name="lblNoFiles" Text="keine Bilder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5 0"/>
+                        <TextBlock Name="lblNoFiles" Text="keine Bilder" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5 0" ToolTip="Bilder auf dem Speichermedium"/>
                     </Border>
                 </Border> 
             </StatusBarItem>
             <StatusBarItem Grid.Column="1">
                 <Border BorderBrush="Gainsboro" BorderThickness="0,0,1,1">
                     <Border BorderBrush="Gray" BorderThickness="1,1,0,0">
-                        <TextBlock Name="lblNoDuplicates" Text="keine Duplikate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5 0" />
+                        <TextBlock Name="lblNoDuplicates" Text="keine Duplikate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="5 0" ToolTip="Duplikate auf dem Speichermedium" />
                     </Border>
                 </Border> 
             </StatusBarItem>

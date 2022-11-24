@@ -197,6 +197,26 @@ public class DiskInfoRepository : BaseRepository, IDiskInfoRepository
         }
         
     }
+    
+    /// <summary>
+    /// Deletes all DiskInfo of the table.   
+    /// </summary>
+    public override void DeleteAllData()
+    {
+        try
+        {
+            using var conn = DbConnection();
+            conn.Open();
+            
+            conn.Execute(@"DELETE FROM DiskInfo");
+        
+            conn.Close();
+        }
+        catch (Exception e)
+        {
+            log.Error(e);
+        }
+    }
 
     /// <summary>
     /// Creates table if not existing. Primary key is autoimcremented while serialNo is UNIQUE

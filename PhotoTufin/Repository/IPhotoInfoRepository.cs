@@ -49,4 +49,11 @@ public interface IPhotoInfoRepository
     /// </summary>
     /// <param name="diskInfoId"></param>
     void DeleteByDiskInfo(long diskInfoId);
+
+    /// <summary>
+    /// Get the number of all images on a disk (Volume)
+    /// </summary>
+    /// <param name="diskInfoId"></param>
+    /// <returns></returns>
+    int GetImageCount(long diskInfoId);
 }
