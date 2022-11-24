@@ -27,7 +27,7 @@ Name "PhotoTufinSetup"
 !define APPNAME "PhotoTupledFinder"
 !define SHORTNAME "PhotoTufin"
 !define COMPANYNAME "McGerhard Photography"
-!define VERSION "1.0.32.328"
+!define VERSION "1.0.33.328"
 !define PRODUCTNAME "Photo Tufin"
 !define PRODUCTVERSION "1.0" # Only 2 digits!
 !define BUILDDIR "C:\Users\Maerz\Projekte\PhotoTupletFinder\PhotoTufin\PhotoTufin\bin\Publish" #Directory of the build
@@ -37,7 +37,7 @@ OutFile "${SHORTNAME}-${VERSION}-setup.exe"
 
 Caption "${APPNAME} v${VERSION} Setup"
 UninstallCaption "Uninstall ${APPNAME} v${VERSION}"
-BrandingText "Copyright © ${COMPANYNAME}. All rights reserved."
+BrandingText "Copyright ï¿½ ${COMPANYNAME}. All rights reserved."
 
 # installer options RTFM
 SetDateSave on
@@ -60,8 +60,8 @@ InstallDir "$PROGRAMFILES\${COMPANYNAME}\${APPNAME}"
 !insertmacro MUI_LANGUAGE "German"
 
 # descriptions of optional components
-LangString DESC_DESKTOP ${LANG_GERMAN} "Erstellt eine Verknüpfung auf dem Desktop"
-LangString DESC_START_MENU ${LANG_GERMAN} "Erstellt Einträge im Startmenu"
+LangString DESC_DESKTOP ${LANG_GERMAN} "Erstellt eine Verknï¿½pfung auf dem Desktop"
+LangString DESC_START_MENU ${LANG_GERMAN} "Erstellt Eintrï¿½ge im Startmenu"
 
 ;--------------------------------
 ;Version Information
@@ -73,13 +73,13 @@ LangString DESC_START_MENU ${LANG_GERMAN} "Erstellt Einträge im Startmenu"
   VIAddVersionKey /LANG=${LANG_GERMAN} "ProductVersion" "${PRODUCTVERSION}"
   VIAddVersionKey /LANG=${LANG_GERMAN} "Comments" "Only for internal use"
   VIAddVersionKey /LANG=${LANG_GERMAN} "CompanyName" "${COMPANYNAME}"
-  VIAddVersionKey /LANG=${LANG_GERMAN} "LegalCopyright" "Copyright © ${COMPANYNAME}. All rights reserved."
+  VIAddVersionKey /LANG=${LANG_GERMAN} "LegalCopyright" "Copyright ï¿½ ${COMPANYNAME}. All rights reserved."
   VIAddVersionKey /LANG=${LANG_GERMAN} "FileDescription" "${PRODUCTNAME} Setup Bootstrapper"
   VIAddVersionKey /LANG=${LANG_GERMAN} "FileVersion" "${VERSION}"
 
 ;--------------------------------
 
-Section "Desktop Verknüpfung" SectionDesktop
+Section "Desktop Verknï¿½pfung" SectionDesktop
   ;Desktop link
   CreateShortCut "$DESKTOP\${APPNAME}.lnk" "$INSTDIR\${SHORTNAME}.exe"
 SectionEnd
